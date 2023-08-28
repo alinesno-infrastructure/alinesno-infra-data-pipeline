@@ -15,27 +15,8 @@ import java.util.Map;
 /**
  * 数据写入
  */
-public abstract class IDataSourceWriter {
+public interface IDataSourceWriter {
 
-    public abstract void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException;
+    public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException;
 
-    public DataSource getDataSource(SinkWriter writer){
-
-        String password = writer.getPassword() ;
-        String url = writer.getJdbcUrl() ;
-        String driver = writer.getDriverClass() ;
-        String username = writer.getUsername() ;
-
-        Map<String, String> map = new HashMap<>();
-        map.put(DruidDataSourceFactory.PROP_DRIVERCLASSNAME, driver);
-        map.put(DruidDataSourceFactory.PROP_URL, url);
-        map.put(DruidDataSourceFactory.PROP_USERNAME, username);
-        map.put(DruidDataSourceFactory.PROP_PASSWORD, password);
-
-        try {
-            return DruidDataSourceFactory.createDataSource(map);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

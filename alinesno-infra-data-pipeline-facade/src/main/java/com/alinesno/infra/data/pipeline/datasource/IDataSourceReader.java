@@ -9,9 +9,9 @@ import java.sql.SQLException;
 /**
  * 数据读取
  */
-public abstract class IDataSourceReader {
+public interface IDataSourceReader {
 
-    public abstract File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException ;
+    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException ;
 
 
 }

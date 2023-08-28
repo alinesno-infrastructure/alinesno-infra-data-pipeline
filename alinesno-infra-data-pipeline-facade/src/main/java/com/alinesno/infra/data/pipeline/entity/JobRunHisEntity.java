@@ -18,9 +18,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @version 1.0.0
  */
 @TableName("job_run_his")
-public class JobRunHisEntity extends InfraBaseEntity {
-    private static final long serialVersionUID = 1L;
-    
+public class JobRunHisEntity extends BaseKettleEntity {
+
     /**
      * 作业ID
      */

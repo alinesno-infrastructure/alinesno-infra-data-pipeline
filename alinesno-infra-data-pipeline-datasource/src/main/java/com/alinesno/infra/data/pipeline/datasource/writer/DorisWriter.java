@@ -1,7 +1,7 @@
 package com.alinesno.infra.data.pipeline.datasource.writer;
 
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
-import com.alinesno.infra.data.pipeline.datasource.IDataSourceWriter;
+import com.alinesno.infra.data.pipeline.datasource.ComponentSinkWriter;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @Component("doris"+ PipeConstants.WRITER_SUFFIX)
-public class DorisWriter extends IDataSourceWriter {
+public class DorisWriter extends ComponentSinkWriter {
     @Override
     public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
 

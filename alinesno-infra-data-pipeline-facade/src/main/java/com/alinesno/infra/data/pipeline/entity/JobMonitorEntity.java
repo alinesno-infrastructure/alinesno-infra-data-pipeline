@@ -19,8 +19,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  */
 @TableName("job_monitor")
 public class JobMonitorEntity extends InfraBaseEntity {
-    private static final long serialVersionUID = 1L;
-    
+
     /**
      * 监控任务ID
      */

@@ -11,6 +11,8 @@ import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.enums.JobStatusEnums;
 import com.alinesno.infra.data.pipeline.enums.TransTypeEnums;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
+import com.alinesno.infra.data.pipeline.scheduler.event.AlarmEvent;
+import com.alinesno.infra.data.pipeline.scheduler.event.AlarmEventPublisher;
 import com.alinesno.infra.data.pipeline.service.IJobService;
 import com.alinesno.infra.data.pipeline.service.ITransService;
 import com.alinesno.infra.data.pipeline.transfer.IDataSourcePlugins;
@@ -56,36 +58,11 @@ public class DistSchedulerServiceImpl implements IDistSchedulerService {
     @Value("${alinesno.data.pipeline.workspacePath}")
     private String workspacePath;
 
+    @Autowired
+    private AlarmEventPublisher alarmEventPublisher ;
+
     public DistSchedulerServiceImpl() {
         // 构造函数
-    }
-
-    // 创建任务的实现
-    @Override
-    public Scheduled createTask(TaskInfoDto taskInfoDto) {
-
-
-        return null;
-    }
-
-    @Override
-    public void stopTask(String taskId) {
-        // 停止任务的实现
-    }
-
-    @Override
-    public void removeTask(String taskId) {
-        // 移除任务的实现
-    }
-
-    @Override
-    public List<Scheduled> listTask() {
-
-        return null;
-    }
-
-    @Override
-    public void createStepChainJob(JobQueueEntity job) {
     }
 
     @Override
@@ -113,6 +90,10 @@ public class DistSchedulerServiceImpl implements IDistSchedulerService {
         for (TransEntity trans : listTrans) {
 
             log.debug("--->>>>>>>>>>> step = {} , trans = {}", step ++ , JSONObject.toJSONString(trans));
+
+            if(trans.getStatus().equals(JobStatusEnums.COMPLETED.getStatus())){
+               continue;
+            }
 
             // 更新任务状态
             trans.setStatus(JobStatusEnums.PROCESSING.getStatus());
@@ -146,6 +127,13 @@ public class DistSchedulerServiceImpl implements IDistSchedulerService {
             } catch (Exception e) {
                 trans.setStatus(JobStatusEnums.FAILED.getStatus());
                 transService.update(trans);
+
+                AlarmEvent alarmEvent = new AlarmEvent(trans.getId()) ;
+                alarmEvent.setStep(step);
+                alarmEvent.setTransName(trans.getName());
+
+                alarmEventPublisher.publishEvent(alarmEvent);
+
                 throw new RuntimeException(e);
             }
 

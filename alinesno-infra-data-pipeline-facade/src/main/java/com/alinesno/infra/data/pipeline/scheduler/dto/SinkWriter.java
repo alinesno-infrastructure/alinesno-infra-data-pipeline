@@ -19,6 +19,102 @@ public class SinkWriter {
     private String username ;
     private String password ;
 
+    // kafka info
+    private String topic ;
+    private String bootstraps ;
+
+    // minio
+    private String endPoint ;
+    private String accessKey;
+    private String securityKey ;
+    private String bucket ;
+    private String ossPath ;
+
+    // FTP
+    private String ftpHost ;
+    private int ftpPort ;
+    private String ftpPath ;
+
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public String getSecurityKey() {
+        return securityKey;
+    }
+
+    public void setSecurityKey(String securityKey) {
+        this.securityKey = securityKey;
+    }
+
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucket) {
+        this.bucket = bucket;
+    }
+
+    public String getOssPath() {
+        return ossPath;
+    }
+
+    public void setOssPath(String ossPath) {
+        this.ossPath = ossPath;
+    }
+
+    public String getFtpHost() {
+        return ftpHost;
+    }
+
+    public void setFtpHost(String ftpHost) {
+        this.ftpHost = ftpHost;
+    }
+
+    public int getFtpPort() {
+        return ftpPort;
+    }
+
+    public void setFtpPort(int ftpPort) {
+        this.ftpPort = ftpPort;
+    }
+
+    public String getFtpPath() {
+        return ftpPath;
+    }
+
+    public void setFtpPath(String ftpPath) {
+        this.ftpPath = ftpPath;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getBootstraps() {
+        return bootstraps;
+    }
+
+    public void setBootstraps(String bootstraps) {
+        this.bootstraps = bootstraps;
+    }
+
     public String getName() {
         return name;
     }

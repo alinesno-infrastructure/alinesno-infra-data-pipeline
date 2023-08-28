@@ -10,8 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@Component("minio"+ PipeConstants.WRITER_SUFFIX)
-public class MinioWriter extends ComponentSinkWriter {
+@Component("ftp"+ PipeConstants.WRITER_SUFFIX)
+public class FtpWriter extends ComponentSinkWriter {
+
     @Override
     public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
 

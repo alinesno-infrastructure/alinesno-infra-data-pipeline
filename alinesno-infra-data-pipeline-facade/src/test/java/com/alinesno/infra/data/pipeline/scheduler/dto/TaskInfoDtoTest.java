@@ -4,8 +4,6 @@ package com.alinesno.infra.data.pipeline.scheduler.dto;
 import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SinkReaderEnums;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SourceReaderEnums;
-import com.alinesno.infra.data.pipeline.scheduler.reader.JdbcSourceReader;
-import com.alinesno.infra.data.pipeline.scheduler.writer.JdbcSinkWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,7 @@ class TaskInfoDtoTest {
         taskInfoDto.setSettings(settings);
 
         // 读取端
-        JdbcSourceReader reader = new JdbcSourceReader();
+        SourceReader reader = new SourceReader();
         reader.setName("mysql");
         reader.setType(SourceReaderEnums.MYSQL.getCode());
         reader.setDriverClass("com.mysql.cj.jdbc.Driver");
@@ -45,7 +43,7 @@ class TaskInfoDtoTest {
         taskInfoDto.setReader(reader);
 
         // 写入端
-        JdbcSinkWriter writer = new JdbcSinkWriter();
+        SinkWriter writer = new SinkWriter();
         writer.setName("clickhouse");
         writer.setType(SinkReaderEnums.CLICKHOUSE.getCode());
         writer.setDriverClass("com.mysql.cj.jdbc.Driver");

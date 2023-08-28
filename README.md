@@ -1,2 +1,7 @@
-# alinesno-infra-data-pipeline
-软件新基础设施，全称alinesno-infrastructure-platform（简称AIP)，通过建设软件新基础设施和平台，推动数字化转型和创新的发展，提高竞争力、降低成本、支持创新和业务拓展，以及提升团队协作效率
+# alinesno-infra-data-kettle
+提供数据集成的功能，用于将不同数据源的数据进行整合和转换。
+
+## 鸣谢
+
+- 集成学习参考资料[Quartz应用与集群原理分析](https://tech.meituan.com/2014/08/31/mt-crm-quartz.html)
+- 集成定时任务框架[quartz](https://github.com/kagkarlsson/db-scheduler)

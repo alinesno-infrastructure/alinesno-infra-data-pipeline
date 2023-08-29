@@ -14,6 +14,7 @@ public class SinkWriter {
     private String writeModel ; // insert/replace
 
     // jdbc info
+    private String tableName ;
     private String jdbcUrl ;
     private String driverClass ;
     private String username ;
@@ -34,6 +35,14 @@ public class SinkWriter {
     private String ftpHost ;
     private int ftpPort ;
     private String ftpPath ;
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 
     public String getEndPoint() {
         return endPoint;

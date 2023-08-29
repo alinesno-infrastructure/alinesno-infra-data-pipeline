@@ -164,24 +164,4 @@ public class DistSchedulerServiceImpl implements IDistSchedulerService {
         log.info("转换成流式查询时间:{}", SystemUtils.formatMilliseconds(stopWatch.getLastTaskTimeMillis()));
     }
 
-    /**
-     * 执行下一个任务服务
-     */
-    static class OnCompleteRemoveAndCreateNextStep implements CompletionHandler<TransEntity> {
-        private final String newTaskName;
-
-        public OnCompleteRemoveAndCreateNextStep(String newTaskName) {
-            this.newTaskName = newTaskName;
-        }
-
-        @Override
-        public void complete(ExecutionComplete executionComplete, ExecutionOperations<TransEntity> executionOperations) {
-
-            TaskInstance<?> taskInstance = executionComplete.getExecution().taskInstance;
-            TaskInstance<TransEntity> nextInstance = new TaskInstance<>(newTaskName, taskInstance.getId(), (TransEntity) taskInstance.getData());
-
-            executionOperations.removeAndScheduleNew(SchedulableInstance.of(nextInstance, Instant.now()));
-
-        }
-    }
 }

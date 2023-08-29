@@ -15,14 +15,19 @@ import org.apache.commons.io.LineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * TODO 需要异常数据和断连继传的问题
+ */
 @Component("clickhouse" + PipeConstants.WRITER_SUFFIX)
 public class ClickhouseWriter extends ComponentSinkWriter {
 
@@ -39,7 +44,8 @@ public class ClickhouseWriter extends ComponentSinkWriter {
         long readCount = 0L;
 
         Map<String , Integer> headerColumsMap = new HashMap<>();
-        Connection connection = getDataSource(taskInfoDto.getWriter()).getConnection() ;
+        DataSource  dataSource = getDataSource(taskInfoDto.getWriter()) ;
+        Connection connection = dataSource.getConnection() ;
 
         List<MappingBean> mappingBeans = taskInfoDto.getFileMap() ;
 
@@ -64,10 +70,12 @@ public class ClickhouseWriter extends ComponentSinkWriter {
 
                 if (readCount >= 50000) {
 
+                    // 做监控通知
                     transEvent.setTransCount(count);
                     transEventPublisher.publishEvent(transEvent);
 
-                    saveDb(jsonObjectList , connection , mappingBeans) ;
+                    // 保存到数据库中
+                    saveDb(jsonObjectList , connection , mappingBeans , taskInfoDto.getWriter().getTableName()) ;
 
                     readCount = 0L;
                     jsonObjectList = new ArrayList<>() ;
@@ -78,12 +86,12 @@ public class ClickhouseWriter extends ComponentSinkWriter {
             if(!it.hasNext()){
                 transEvent.setTransCount(count);
                 transEventPublisher.publishEvent(transEvent);
-                saveDb(jsonObjectList , connection , mappingBeans) ;
+                saveDb(jsonObjectList , connection , mappingBeans , taskInfoDto.getWriter().getTableName()) ;
             }
 
         } finally {
             IOUtils.closeQuietly(it);
-            connection.close();
+            DataSourceUtils.releaseConnection(connection , dataSource);
         }
 
     }

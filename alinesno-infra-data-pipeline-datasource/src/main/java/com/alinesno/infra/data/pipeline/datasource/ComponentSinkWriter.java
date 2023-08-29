@@ -21,14 +21,14 @@ public abstract class ComponentSinkWriter extends AbstractTemplates implements I
      * @param jsonObjectList
      * @param mappingBeans
      */
-    public void saveDb(List<JSONObject> jsonObjectList , Connection connection, List<MappingBean> mappingBeans) {
+    public void saveDb(List<JSONObject> jsonObjectList , Connection connection, List<MappingBean> mappingBeans , String tableName) {
 
         try {
             // 关闭自动提交
             connection.setAutoCommit(false);
 
             // 创建 PreparedStatement
-            String preparedStatementSql = buildPreparedStatementSql(mappingBeans) ;
+            String preparedStatementSql = buildPreparedStatementSql(mappingBeans , tableName) ;
             PreparedStatement preparedStatement = connection.prepareStatement(preparedStatementSql) ;
 
             // 批量插入数据
@@ -68,10 +68,9 @@ public abstract class ComponentSinkWriter extends AbstractTemplates implements I
 
     }
 
-    private String buildPreparedStatementSql(List<MappingBean> mappingBeans) {
+    private String buildPreparedStatementSql(List<MappingBean> mappingBeans, String tableName) {
 
         StringBuilder sb = new StringBuilder();
-        String tableName = "kfinfo" ;
 
         sb.append("INSERT INTO ")
                 .append(tableName)

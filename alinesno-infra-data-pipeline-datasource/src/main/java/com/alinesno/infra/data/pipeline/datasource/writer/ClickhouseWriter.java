@@ -1,12 +1,13 @@
 package com.alinesno.infra.data.pipeline.datasource.writer;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSinkWriter;
+import com.alinesno.infra.data.pipeline.datasource.MappingBean;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEvent;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
+import com.alinesno.infra.data.pipeline.datasource.mapping.SQLFieldMapping;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
-import com.alinesno.infra.data.pipeline.scheduler.dto.FieldMap;
-import com.alinesno.infra.data.pipeline.scheduler.dto.SinkWriter;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -18,63 +19,72 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 @Component("clickhouse" + PipeConstants.WRITER_SUFFIX)
 public class ClickhouseWriter extends ComponentSinkWriter {
 
-    private static final Logger log = LoggerFactory.getLogger(ClickhouseWriter.class) ;
+    private static final Logger log = LoggerFactory.getLogger(ClickhouseWriter.class);
 
     @Autowired
-    protected TransEventPublisher transEventPublisher ;
+    protected TransEventPublisher transEventPublisher;
 
     @Override
     public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
 
-        long count = 0L ;
-        long readCount = 0L ;
-        LineIterator it = FileUtils.lineIterator(filterFile , "UTF-8");
-        TransEvent transEvent = new TransEvent(trans.getId()) ;
-        transEvent.setTotalCount(trans.getTotalDataCount() );
+        List<JSONObject> jsonObjectList = new ArrayList<>() ;
+        long count = 0L;
+        long readCount = 0L;
+
+        Map<String , Integer> headerColumsMap = new HashMap<>();
+        Connection connection = getDataSource(taskInfoDto.getWriter()).getConnection() ;
+
+        List<MappingBean> mappingBeans = taskInfoDto.getFileMap() ;
+
+        LineIterator it = FileUtils.lineIterator(filterFile, "UTF-8");
+        TransEvent transEvent = new TransEvent(trans.getId());
+        transEvent.setTotalCount(trans.getTotalDataCount());
 
         try {
             while (it.hasNext()) {
                 String line = it.nextLine();
-                log.info("-->>>> excel count = {} , line = {}" , count++ , line);
-                readCount ++ ;
+                if (count == 0) {  // 处理头信息
+                    count ++ ;
+                    headerColumsMap = HandleColumn(line);
+                    continue;
+                }
+
+                log.info("-->>>> excel count = {} , line = {}", count++, line);
+                readCount++;
+
+                JSONObject jsonObject = SQLFieldMapping.mapping(headerColumsMap , line , mappingBeans) ;
+                jsonObjectList.add(jsonObject) ;
 
                 if (readCount >= 50000) {
 
                     transEvent.setTransCount(count);
                     transEventPublisher.publishEvent(transEvent);
 
-                    readCount = 0L ;
+                    saveDb(jsonObjectList , connection , mappingBeans) ;
+
+                    readCount = 0L;
+                    jsonObjectList = new ArrayList<>() ;
                 }
 
             }
+
+            if(!it.hasNext()){
+                transEvent.setTransCount(count);
+                transEventPublisher.publishEvent(transEvent);
+                saveDb(jsonObjectList , connection , mappingBeans) ;
+            }
+
         } finally {
             IOUtils.closeQuietly(it);
+            connection.close();
         }
-
-    }
-
-    /**
-     * 生成插入的SQL信息
-     * @param fileMap
-     * @return
-     */
-    private String genInsertSQL(List<FieldMap> fileMap) {
-
-        return null ;
-    }
-
-    /**
-     * 生成预处理数据
-     * @param fileMap
-     * @param writer
-     */
-    private void genPreparedStatement(List<FieldMap> fileMap, SinkWriter writer) {
 
     }
 

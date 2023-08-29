@@ -37,6 +37,11 @@ public abstract class AbstractTemplates {
         String driver = reader.getDriverClass() ;
         String username = reader.getUsername() ;
 
+        return buildDataSource(driver , url , username , password) ;
+    }
+
+    private DataSource buildDataSource(String driver, String url, String username, String password) {
+
         Map<String, String> map = new HashMap<>();
         map.put(DruidDataSourceFactory.PROP_DRIVERCLASSNAME, driver);
         map.put(DruidDataSourceFactory.PROP_URL, url);
@@ -54,4 +59,13 @@ public abstract class AbstractTemplates {
         }
     }
 
+    public DataSource getDataSource(SinkWriter writer){
+
+        String password = writer.getPassword() ;
+        String url = writer.getJdbcUrl() ;
+        String driver = writer.getDriverClass() ;
+        String username = writer.getUsername() ;
+
+        return buildDataSource(driver , url , username , password) ;
+    }
 }

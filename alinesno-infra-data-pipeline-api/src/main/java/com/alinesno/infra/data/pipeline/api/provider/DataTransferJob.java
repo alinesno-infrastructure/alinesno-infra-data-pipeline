@@ -24,7 +24,6 @@ public class DataTransferJob implements Job {
         JobDataMap jobDataMap = context.getJobDetail().getJobDataMap() ;
 
         Long jobId = jobDataMap.getLong("jobId") ;
-        log.debug("DataTransferJob job = {}" , jobId);
 
         IDistSchedulerService distSchedulerService = SpringContext.getBean(IDistSchedulerService.class) ;
 

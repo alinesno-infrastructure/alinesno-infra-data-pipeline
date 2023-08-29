@@ -91,9 +91,9 @@ public class DistSchedulerServiceImpl implements IDistSchedulerService {
 
             log.debug("--->>>>>>>>>>> step = {} , trans = {}", step ++ , JSONObject.toJSONString(trans));
 
-            if(trans.getStatus().equals(JobStatusEnums.COMPLETED.getStatus())){
-               continue;
-            }
+//            if(JobStatusEnums.COMPLETED.getStatus().equals(trans.getStatus())){
+//               continue;
+//            }
 
             // 更新任务状态
             trans.setStatus(JobStatusEnums.PROCESSING.getStatus());

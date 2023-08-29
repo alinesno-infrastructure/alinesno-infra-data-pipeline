@@ -2,6 +2,8 @@ package com.alinesno.infra.data.pipeline.scheduler.dto;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.alinesno.infra.data.pipeline.datasource.MappingBean;
+import com.alinesno.infra.data.pipeline.enums.DataMappingEnums;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SinkReaderEnums;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SourceReaderEnums;
 
@@ -46,10 +48,10 @@ class TaskInfoDtoTest {
         SinkWriter writer = new SinkWriter();
         writer.setName("clickhouse");
         writer.setType(SinkReaderEnums.CLICKHOUSE.getCode());
-        writer.setDriverClass("com.mysql.cj.jdbc.Driver");
-        writer.setJdbcUrl("jdbc:mysql://localhost:3306/dev_alinesno_infra_data_pipeline_v100?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL");
-        writer.setPassword("adminer");
-        writer.setUsername("root");
+        writer.setDriverClass("com.clickhouse.jdbc.ClickHouseDriver");
+        writer.setJdbcUrl("jdbc:clickhouse://127.0.0.1:8123/default?rewriteBatchedStatements=true") ;
+        writer.setUsername("default");
+        writer.setPassword("");
         writer.setWriteModel("append");
 
         taskInfoDto.setWriter(writer);
@@ -71,9 +73,43 @@ class TaskInfoDtoTest {
         taskInfoDto.setPlugins(plugins);
 
         // 字段映射关系
-        List<FieldMap> fileMap = new ArrayList<>() ;
+        List<MappingBean> mappingBeans = new ArrayList<>() ;
+        // 添加字段映射关系
+        mappingBeans.add(new MappingBean("Name", "Name", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("CardNo", "CardNo", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Descriot", "Descriot", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("CtfTp", "CtfTp", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("CtfId", "CtfId", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Gender", "Gender", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Birthday", "Birthday", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Address", "Address", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Zip", "Zip", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Dirty", "Dirty", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("District1", "District1", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("District2", "District2", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("District3", "District3", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("District4", "District4", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("District5", "District5", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("District6", "District6", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("FirstNm", "FirstNm", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("LastNm", "LastNm", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Duty", "Duty", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Mobile", "Mobile", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Tel", "Tel", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Fax", "Fax", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("EMail", "EMail", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Nation", "Nation", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Taste", "Taste", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Education", "Education", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Company", "Company", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("CTel", "CTel", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("CAddress", "CAddress", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("CZip", "CZip", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Family", "Family", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("Version", "Version", DataMappingEnums.COPY.getCode()));
+        mappingBeans.add(new MappingBean("id", "id", DataMappingEnums.COPY.getCode()));
 
-        taskInfoDto.setFileMap(fileMap);
+        taskInfoDto.setFileMap(mappingBeans);
 
         System.out.println("taskInfoDto = \r\n " + JSONObject.toJSONString(taskInfoDto));
     }

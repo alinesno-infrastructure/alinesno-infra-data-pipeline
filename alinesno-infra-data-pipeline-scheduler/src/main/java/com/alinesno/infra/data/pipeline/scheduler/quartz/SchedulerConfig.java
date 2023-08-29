@@ -42,7 +42,7 @@ public class SchedulerConfig {
        factory.setApplicationContextSchedulerContextKey("applicationContext");
        factory.setTaskExecutor(schedulerThreadPool());
        //factory.setQuartzProperties(quartzProperties());
-       factory.setStartupDelay(10);// 延迟10s执行
+       factory.setStartupDelay(0);// 延迟0s执行
        return factory;
     }
  

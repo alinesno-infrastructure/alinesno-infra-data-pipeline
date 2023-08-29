@@ -13,6 +13,11 @@
 	<artifactId>alinesno-infra-data-pipeline-datasource</artifactId>
 	<packaging>jar</packaging>
 
+	<properties>
+		<!-- clickhouse配置 -->
+		<clickhouse.jdbc.version>0.3.2</clickhouse.jdbc.version>
+	</properties>
+
 	<dependencies>
 
 		<!-- 引用公共门面服务 -->
@@ -27,6 +32,14 @@
 			<artifactId>druid</artifactId>
 			<version>1.2.18</version>
 		</dependency>
+
+		<!--clickhouse-->
+		<dependency>
+			<groupId>com.clickhouse</groupId>
+			<artifactId>clickhouse-jdbc</artifactId>
+			<version>${clickhouse.jdbc.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
@@ -44,7 +57,12 @@
 			<version>2.13.0</version>
 			<scope>compile</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 </project>

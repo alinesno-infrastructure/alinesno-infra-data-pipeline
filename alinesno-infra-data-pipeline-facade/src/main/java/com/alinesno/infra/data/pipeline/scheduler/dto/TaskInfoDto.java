@@ -1,5 +1,7 @@
 package com.alinesno.infra.data.pipeline.scheduler.dto;
 
+import com.alinesno.infra.data.pipeline.datasource.MappingBean;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class TaskInfoDto implements Serializable {
     private List<FilterPlugins> plugins ;
 
     // 字段映射关系
-    private List<FieldMap> fileMap ;
+    private List<MappingBean> fileMap ;
 
     public TaskInfoDto() {
     }
@@ -102,11 +104,11 @@ public class TaskInfoDto implements Serializable {
         this.plugins = plugins;
     }
 
-    public List<FieldMap> getFileMap() {
+    public List<MappingBean> getFileMap() {
         return fileMap;
     }
 
-    public void setFileMap(List<FieldMap> fileMap) {
+    public void setFileMap(List<MappingBean> fileMap) {
         this.fileMap = fileMap;
     }
 }

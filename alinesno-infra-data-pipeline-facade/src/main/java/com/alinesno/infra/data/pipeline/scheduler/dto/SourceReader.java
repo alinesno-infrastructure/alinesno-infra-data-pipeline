@@ -14,11 +14,31 @@ public class SourceReader {
     // 查询SQL
     private String querySql ;
 
+    // kafka info
+    private String topic ;
+    private String bootstraps ;
+
     // jdbc info
     private String jdbcUrl ;
     private String driverClass ;
     private String username ;
     private String password ;
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getBootstraps() {
+        return bootstraps;
+    }
+
+    public void setBootstraps(String bootstraps) {
+        this.bootstraps = bootstraps;
+    }
 
     public String getName() {
         return name;

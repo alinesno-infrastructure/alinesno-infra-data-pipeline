@@ -124,4 +124,9 @@ public class MySQLReader extends ComponentSourceReader {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

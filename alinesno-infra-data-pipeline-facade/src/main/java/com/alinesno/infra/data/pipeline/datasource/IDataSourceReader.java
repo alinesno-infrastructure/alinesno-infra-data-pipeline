@@ -11,7 +11,18 @@ import java.sql.SQLException;
  */
 public interface IDataSourceReader {
 
+    /**
+     * 读取数据
+     * @param taskInfoDto
+     * @param jobWorkspace
+     * @param trans
+     * @return
+     * @throws SQLException
+     */
     public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException ;
 
-
+    /**
+     * 禁止读取
+     */
+    public void destroy() ;
 }

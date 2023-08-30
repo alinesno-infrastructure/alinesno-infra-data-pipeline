@@ -16,4 +16,9 @@ public class OracleReader  extends ComponentSourceReader {
     public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {
         return null;
     }
+
+    @Override
+    public void destroy() {
+
+    }
 }

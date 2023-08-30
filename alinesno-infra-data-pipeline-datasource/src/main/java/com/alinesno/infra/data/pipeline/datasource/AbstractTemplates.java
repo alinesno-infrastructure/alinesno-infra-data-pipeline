@@ -25,7 +25,7 @@ public abstract class AbstractTemplates {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.ACKS_CONFIG, "1"); // 设置ack参数为1
+        props.put(ProducerConfig.ACKS_CONFIG, "0"); // 设置ack参数为0
 
         DefaultKafkaProducerFactory<String, String> factory = new DefaultKafkaProducerFactory<>(props);
 

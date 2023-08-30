@@ -9,6 +9,8 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public abstract class AbstractTemplates {
         return new KafkaTemplate<>(factory);
     }
 
-    public DataSource getDataSource(SourceReader reader){
+    public Connection getDataSource(SourceReader reader){
 
         String password = reader.getPassword() ;
         String url = reader.getJdbcUrl() ;
@@ -40,26 +42,18 @@ public abstract class AbstractTemplates {
         return buildDataSource(driver , url , username , password) ;
     }
 
-    private DataSource buildDataSource(String driver, String url, String username, String password) {
+    private Connection buildDataSource(String driver, String url, String username, String password) {
 
-        Map<String, String> map = new HashMap<>();
-        map.put(DruidDataSourceFactory.PROP_DRIVERCLASSNAME, driver);
-        map.put(DruidDataSourceFactory.PROP_URL, url);
-        map.put(DruidDataSourceFactory.PROP_USERNAME, username);
-        map.put(DruidDataSourceFactory.PROP_PASSWORD, password);
-
-        map.put(DruidDataSourceFactory.PROP_INITIALSIZE, "50") ;
-        map.put(DruidDataSourceFactory.PROP_MINIDLE, "5") ;
-        map.put(DruidDataSourceFactory.PROP_MAXACTIVE, "100") ;
-
-        try {
-            return DruidDataSourceFactory.createDataSource(map);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Connection con=null;
+        try{
+            Class.forName(driver);  //注册数据库驱动
+            con = DriverManager.getConnection(url , username , password);  //获取数据库连接
+        }catch(Exception ignored){
         }
+        return con;  //返回一个连接
     }
 
-    public DataSource getDataSource(SinkWriter writer){
+    public Connection getDataSource(SinkWriter writer){
 
         String password = writer.getPassword() ;
         String url = writer.getJdbcUrl() ;

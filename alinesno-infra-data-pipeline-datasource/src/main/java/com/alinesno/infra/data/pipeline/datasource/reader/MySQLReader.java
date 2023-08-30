@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
@@ -39,9 +40,7 @@ public class MySQLReader extends ComponentSourceReader {
 
         String querySql = buildQuerySql(taskInfoDto.getReader()) ;
 
-        DataSource dataSource = getDataSource(taskInfoDto.getReader());
-
-        Connection connection = dataSource.getConnection();
+        Connection connection = getDataSource(taskInfoDto.getReader());
 
         connection.setAutoCommit(false);
         PreparedStatement statement = connection.prepareStatement(querySql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -113,9 +112,13 @@ public class MySQLReader extends ComponentSourceReader {
         trans.setProcessDataCount(count);
 
         //先开后关原则
-        resultSet.close();
-        statement.close();
-        connection.close();
+        try{
+            // NO DOING
+            resultSet.close();
+            statement.close();
+        }finally {
+            connection.close();
+        }
 
         return file ;
 

@@ -15,10 +15,8 @@ import org.apache.commons.io.LineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -44,8 +42,7 @@ public class ClickhouseWriter extends ComponentSinkWriter {
         long readCount = 0L;
 
         Map<String , Integer> headerColumsMap = new HashMap<>();
-        DataSource  dataSource = getDataSource(taskInfoDto.getWriter()) ;
-        Connection connection = dataSource.getConnection() ;
+        Connection  connection = getDataSource(taskInfoDto.getWriter()) ;
 
         List<MappingBean> mappingBeans = taskInfoDto.getFileMap() ;
 
@@ -91,7 +88,7 @@ public class ClickhouseWriter extends ComponentSinkWriter {
 
         } finally {
             IOUtils.closeQuietly(it);
-            DataSourceUtils.releaseConnection(connection , dataSource);
+            connection.close();
         }
 
     }

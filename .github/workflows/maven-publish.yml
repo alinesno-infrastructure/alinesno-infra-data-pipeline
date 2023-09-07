@@ -160,7 +160,7 @@ jobs:
         run: murphysec scan . --token ${{ secrets.MURPHYSEC_TOKEN }}  --log-level debug
 
       - name: Build and Deploy to Nexus
-        run: mvn clean deploy --settings nexus-config.xml
+        run: mvn clean install --settings nexus-config.xml
 
       - name: local remote scp
         uses: cross-the-world/scp-pipeline@master
@@ -189,6 +189,8 @@ jobs:
             export ALIYUN_CR_REGISTORY=${{ env.ALIYUN_CR_REGISTORY }}
             export ALIYUN_CR_NAMESPACE=${{ env.ALIYUN_CR_NAMESPACE }}
             export NAMESPACE=${{ secrets.K8S_NAMESPACE }}
+            export JAVA_TOOL_OPTIONS="-Dspring.data.redis.host=${REDIS_HOST} \
+                        -Dserver.port=8080"
 
             export REDIS_HOST=${{ secrets.DEV_REDIS_HOST }}
             export WECHAT_MP_TOKEN=${{ secrets.WECHAT_MP_TOKEN }}

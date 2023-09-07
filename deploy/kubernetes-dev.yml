@@ -39,7 +39,8 @@ spec:
         image: ${ALIYUN_CR_REGISTORY}/${ALIYUN_CR_NAMESPACE}/${PROJECT_NAME}:${VERSION}
         env:
         - name: JAVA_TOOL_OPTIONS
-          value: "-Dspring.data.redis.host=${REDIS_HOST} -Dserver.port=8080"
+          value: |
+           ${JAVA_TOOL_OPTIONS}
         ports:
         - name: http
           containerPort: 8080

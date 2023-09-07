@@ -39,12 +39,7 @@ spec:
           image: ${ALIYUN_CR_REGISTORY}/${ALIYUN_CR_NAMESPACE}/${PROJECT_NAME}:${VERSION}
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: >
-                -Dspring.data.redis.host=${REDIS_HOST}
-                -Dspring.datasource.url=${DB_MYSQL_URL}
-                -Dspring.datasource.username=${DB_MYSQL_USRENAME}
-                -Dspring.datasource.password=${DB_MYSQL_PASSWORD}
-                -Dserver.port=8080
+              value: "-Dspring.data.redis.host=${REDIS_HOST} -Dspring.datasource.url=${DB_MYSQL_URL} -Dspring.datasource.username=${DB_MYSQL_USRENAME} -Dspring.datasource.password=${DB_MYSQL_PASSWORD} -Dserver.port=8080"
           ports:
             - name: http
               containerPort: 8080

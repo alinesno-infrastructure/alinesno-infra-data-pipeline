@@ -2,15 +2,10 @@ package com.alinesno.infra.data.pipeline.datasource.mapping;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.data.pipeline.datasource.MappingBean;
-import com.alinesno.infra.data.pipeline.enums.DataMappingEnums;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StopWatch;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数据映射关系输出
@@ -21,11 +16,12 @@ public class SQLFieldMapping {
 
     public static JSONObject mapping(Map<String , Integer> columsMap, String line , List<MappingBean> mappingList){
 
-       JSONObject object = new JSONObject()  ;
+       Map<String, Object> orderedMap = new LinkedHashMap<>();
+
+       JSONObject object = new JSONObject(orderedMap) ;
        String[] fieldValueArr = line.split("," , columsMap.size()) ;
 
         for(MappingBean b : mappingList){
-
             String value = mappingPluginValue(columsMap , fieldValueArr , b) ;
 
             String targetField = b.getTargetField() ;

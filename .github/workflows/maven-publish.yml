@@ -157,7 +157,7 @@ jobs:
           wget -q https://s.murphysec.com/release/install.sh -O - | /bin/bash
 
       - name: Code scan
-        run: murphysec scan . --token ${{ secrets.MURPHYSEC_TOKEN }}  --log-level debug
+        run: murphysec scan . --token ${{ secrets.MURPHYSEC_TOKEN }}
 
       - name: Build and Deploy to Nexus
         run: mvn clean install --settings nexus-config.xml
@@ -189,14 +189,13 @@ jobs:
             export ALIYUN_CR_REGISTORY=${{ env.ALIYUN_CR_REGISTORY }}
             export ALIYUN_CR_NAMESPACE=${{ env.ALIYUN_CR_NAMESPACE }}
             export NAMESPACE=${{ secrets.K8S_NAMESPACE }}
-            export JAVA_TOOL_OPTIONS="-Dspring.data.redis.host=${REDIS_HOST} -Dserver.port=8080"
 
             export REDIS_HOST=${{ secrets.DEV_REDIS_HOST }}
             export WECHAT_MP_TOKEN=${{ secrets.WECHAT_MP_TOKEN }}
             export INFRA_DEV_DOMAIN=${{ secrets.INFRA_DEV_DOMAIN }}
 
             export DEV_DB_MYSQL_URL=${{ secrets.DEV_DB_MYSQL_URL }}
-            export DEV_DB_MYSQL_USRENAME =${{ secrets.DEV_DB_MYSQL_USRENAME }}
+            export DEV_DB_MYSQL_USRENAME=${{ secrets.DEV_DB_MYSQL_USRENAME }}
             export DEV_DB_MYSQL_PASSWORD=${{ secrets.DEV_DB_MYSQL_PASSWORD }}
 
             envsubst < /home/github-action/kubernetes-${{ env.CURRENT_PROFIRE }}.yml | kubectl apply -f -

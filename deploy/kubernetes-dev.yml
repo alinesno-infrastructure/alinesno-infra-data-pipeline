@@ -41,10 +41,10 @@ spec:
         - name: JAVA_TOOL_OPTIONS
           value: |
             -Dspring.data.redis.host=${REDIS_HOST}
-            -Dserver.port=8080
-            -Dspring.datasource.url=${DEV_DB_MYSQL_URL}
+            -Dspring.datasource.url="${DEV_DB_MYSQL_URL}
             -Dspring.datasource.username=${DEV_DB_MYSQL_USRENAME}
             -Dspring.datasource.password=${DEV_DB_MYSQL_PASSWORD}
+            -Dserver.port=8080
         ports:
         - name: http
           containerPort: 8080

@@ -5,8 +5,8 @@ import com.alinesno.infra.data.pipeline.datasource.ComponentSinkWriter;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SinkWriter;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,15 +16,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * MinioWriter 类是 ComponentSinkWriter 的子类，用于将数据写入 MinIO。
+ * AliyunStorageWriter 类是 ComponentSinkWriter 的子类，用于将数据写入阿里云OSS。
  */
-@Component("minio" + PipeConstants.WRITER_SUFFIX)
-public class MinioWriter extends ComponentSinkWriter {
+@Component("aliyun" + PipeConstants.WRITER_SUFFIX)
+public class AliyunStorageWriter extends ComponentSinkWriter {
 
-    private static final Logger log = LoggerFactory.getLogger(MinioWriter.class);
+    private static final Logger log = LoggerFactory.getLogger(AliyunStorageWriter.class);
 
     /**
-     * 将数据写入 MinIO。
+     * 将数据写入阿里云OSS。
      *
      * @param taskInfoDto 任务信息对象
      * @param filterFile  要保存上传的文件
@@ -34,34 +34,28 @@ public class MinioWriter extends ComponentSinkWriter {
      */
     @Override
     public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
-
         SinkWriter writer = taskInfoDto.getWriter();
 
-        String endPoint = writer.getEndPoint();
         String accessKey = writer.getAccessKey();
-        String securityKey = writer.getSecurityKey();
+        String secretKey = writer.getSecurityKey();
+        String endpoint = writer.getEndPoint();
         String bucket = writer.getBucket();
         String ossPath = writer.getOssPath();
 
+        // 创建OSSClient实例
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKey, secretKey);
+
         try {
-            // 创建MinioClient对象
-            MinioClient minioClient = MinioClient.builder()
-                    .endpoint(endPoint)
-                    .credentials(accessKey, securityKey)
-                    .build();
+            // 上传文件到阿里云OSS
+            ossClient.putObject(bucket, ossPath, filterFile);
 
-            // 使用MinioClient对象上传文件
-            minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(bucket)
-                            .object(ossPath)
-                            .build()
-            );
-
-            log.info("File uploaded successfully to MinIO: {}", ossPath);
+            log.info("File uploaded successfully to Aliyun OSS: {}", ossPath);
         } catch (Exception e) {
-            log.error("Error uploading file to MinIO", e);
-            throw new IOException("Error uploading file to MinIO: " + e.getMessage());
+            log.error("Error uploading file to Aliyun OSS: {}", e.getMessage());
+            throw new IOException("Error uploading file to Aliyun OSS", e);
+        } finally {
+            // 关闭OSSClient实例
+            ossClient.shutdown();
         }
     }
 }

@@ -19,38 +19,50 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@Component("kafka"+ PipeConstants.WRITER_SUFFIX)
+/**
+ * KafkaWriter 类是 ComponentSinkWriter 的子类，用于将数据写入 Kafka。
+ */
+@Component("kafka" + PipeConstants.WRITER_SUFFIX)
 public class KafkaWriter extends ComponentSinkWriter {
 
-    private static final Logger log = LoggerFactory.getLogger(KafkaWriter.class) ;
+    private static final Logger log = LoggerFactory.getLogger(KafkaWriter.class);
     @Autowired
-    protected TransEventPublisher transEventPublisher ;
+    protected TransEventPublisher transEventPublisher;
 
+    /**
+     * 将数据写入 Kafka。
+     *
+     * @param taskInfoDto 任务信息对象
+     * @param filterFile  要保存上传的文件
+     * @param trans       TransEntity 对象
+     * @throws IOException  IO异常
+     * @throws SQLException SQL异常
+     */
     @Override
     public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
 
-        long count = 0L ;
-        long readCount = 0L ;
-        LineIterator it = FileUtils.lineIterator(filterFile , "UTF-8");
+        long count = 0L;
+        long readCount = 0L;
+        LineIterator it = FileUtils.lineIterator(filterFile, "UTF-8");
 
-        TransEvent transEvent = new TransEvent(trans.getId()) ;
-        transEvent.setTotalCount(trans.getTotalDataCount() );
+        TransEvent transEvent = new TransEvent(trans.getId());
+        transEvent.setTotalCount(trans.getTotalDataCount());
 
-        KafkaTemplate<String , String> kafkaTemplate = getKafkaTemplates(taskInfoDto.getWriter()) ;
+        KafkaTemplate<String, String> kafkaTemplate = getKafkaTemplates(taskInfoDto.getWriter());
 
         try {
             while (it.hasNext()) {
                 String line = it.nextLine();
-                log.info("-->>>> excel count = {} , line = {}" , count++ , line);
-                readCount ++ ;
+                log.info("-->>>> excel count = {} , line = {}", count++, line);
+                readCount++;
 
                 // Kafka writer
-                kafkaTemplate.send("topic" , line) ;
+                kafkaTemplate.send("topic", line);
 
                 if (readCount >= 50000) {
                     transEvent.setTransCount(count);
                     transEventPublisher.publishEvent(transEvent);
-                    readCount = 0L ;
+                    readCount = 0L;
                 }
             }
         } finally {

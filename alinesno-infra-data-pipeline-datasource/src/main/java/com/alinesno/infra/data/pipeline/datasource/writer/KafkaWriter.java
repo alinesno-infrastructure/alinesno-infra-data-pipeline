@@ -5,10 +5,12 @@ import com.alinesno.infra.data.pipeline.datasource.ComponentSinkWriter;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEvent;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.scheduler.dto.SinkWriter;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
+import org.elasticsearch.client.AdminClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,9 @@ public class KafkaWriter extends ComponentSinkWriter {
 
         TransEvent transEvent = new TransEvent(trans.getId());
         transEvent.setTotalCount(trans.getTotalDataCount());
+        SinkWriter kafkaWriter = taskInfoDto.getWriter();
 
-        KafkaTemplate<String, String> kafkaTemplate = getKafkaTemplates(taskInfoDto.getWriter());
+        KafkaTemplate<String, String> kafkaTemplate = getKafkaTemplates(kafkaWriter);
 
         try {
             while (it.hasNext()) {
@@ -57,7 +60,7 @@ public class KafkaWriter extends ComponentSinkWriter {
                 readCount++;
 
                 // Kafka writer
-                kafkaTemplate.send("topic", line);
+                kafkaTemplate.send(kafkaWriter.getTopic(), line);
 
                 if (readCount >= 50000) {
                     transEvent.setTransCount(count);

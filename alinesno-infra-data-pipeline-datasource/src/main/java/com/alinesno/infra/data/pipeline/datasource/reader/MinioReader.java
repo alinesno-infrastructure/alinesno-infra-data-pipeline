@@ -8,9 +8,13 @@ import io.minio.DownloadObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.errors.MinioException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -22,12 +26,15 @@ import java.sql.SQLException;
 @Component("minio" + PipeConstants.READER_SUFFIX)
 public class MinioReader extends ComponentSourceReader {
 
+    private static final Logger log = LoggerFactory.getLogger(MinioReader.class);
+
+
     /**
      * 从 MinIO 对象存储中读取数据。
      *
-     * @param taskInfoDto   任务信息对象
-     * @param jobWorkspace  作业工作目录
-     * @param trans         TransEntity 对象
+     * @param taskInfoDto  任务信息对象
+     * @param jobWorkspace 作业工作目录
+     * @param trans        TransEntity 对象
      * @return 读取到的文件
      * @throws SQLException SQL异常
      */
@@ -48,6 +55,12 @@ public class MinioReader extends ComponentSourceReader {
 
             // 下载文件到本地
             File outputFile = new File(jobWorkspace, objectName);
+
+            File parentDir = outputFile.getParentFile();
+            if (!parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+
             minioClient.downloadObject(
                     DownloadObjectArgs.builder()
                             .bucket(bucket)
@@ -55,6 +68,14 @@ public class MinioReader extends ComponentSourceReader {
                             .filename(outputFile.getAbsolutePath())
                             .build()
             );
+
+            // 统计处理的数据量
+            long count = 0;
+            BufferedReader reader = new BufferedReader(new FileReader(outputFile));
+            while (reader.readLine() != null) {
+                count++;
+            }
+            trans.setProcessDataCount(count);
 
             return outputFile;
         } catch (MinioException | IOException e) {

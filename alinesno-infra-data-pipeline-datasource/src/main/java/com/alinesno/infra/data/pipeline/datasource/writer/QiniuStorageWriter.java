@@ -45,7 +45,7 @@ public class QiniuStorageWriter extends ComponentSinkWriter {
         String ossPath = writer.getOssPath();
 
         // 构造一个带指定 Region 对象的配置类
-        Configuration cfg = new Configuration(Region.region0());
+        Configuration cfg = new Configuration(Region.region2()); // TODO 增强拓展性，保证不同地域的存储空间 Region 都能正常运行
         // ...其他参数参考类注释
 
         // ...生成上传凭证，然后准备上传

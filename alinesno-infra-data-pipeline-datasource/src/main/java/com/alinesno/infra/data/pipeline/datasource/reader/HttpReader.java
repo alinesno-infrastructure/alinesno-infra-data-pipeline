@@ -4,18 +4,19 @@ import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSourceReader;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
 
 @Component("http" + PipeConstants.READER_SUFFIX)
 public class HttpReader extends ComponentSourceReader {
+
+    private static final Logger log = LoggerFactory.getLogger(HttpReader.class) ;
 
     @Override
     public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {
@@ -44,6 +45,14 @@ public class HttpReader extends ComponentSourceReader {
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
+
+            // 统计处理的数据量
+            long count = 0;
+            BufferedReader reader = new BufferedReader(new FileReader(outputFile));
+            while (reader.readLine() != null) {
+                count++;
+            }
+            trans.setProcessDataCount(count);
 
             // 关闭流
             outputStream.close();

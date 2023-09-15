@@ -15,7 +15,8 @@ public enum SourceReaderEnums {
     ELASTICSEARCH("elasticsearch"), // Elasticsearch数据源
     MINIO("minio"), // MinIO数据源
     HIVE("hive"), // Hive数据源
-    REDIS("redis"); // Redis数据源
+    REDIS("redis"), // Redis数据源
+    QINIU("qiniu"); // Qiniu数据源
 
     private final String code;
 

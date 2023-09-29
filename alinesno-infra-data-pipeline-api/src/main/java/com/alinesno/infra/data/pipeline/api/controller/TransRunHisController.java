@@ -1,11 +1,11 @@
 package com.alinesno.infra.data.pipeline.api.controller;
 
-import com.alinesno.infra.data.pipeline.entity.TransRunHisEntity;
-import com.alinesno.infra.data.pipeline.service.ITransRunHisService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
-import com.alinesno.infra.common.core.rest.BaseController;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
+import com.alinesno.infra.common.web.adapter.rest.BaseController;
+import com.alinesno.infra.data.pipeline.entity.TransRunHisEntity;
+import com.alinesno.infra.data.pipeline.service.ITransRunHisService;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -50,7 +50,7 @@ public class TransRunHisController extends BaseController<TransRunHisEntity, ITr
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
-        return this.toDataInfo(model, this.getFeign(), page);
+        return this.toPage(model, this.getFeign(), page);
     }
 
     @Override

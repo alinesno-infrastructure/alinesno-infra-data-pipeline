@@ -4,10 +4,10 @@ _book
 .classpath
 .springBeans
 target
-build
 bin
 classpath-data.json
 sts-cache
+yarn.lock
 
 # Compiled class file
 *.class
@@ -38,6 +38,9 @@ hs_err_pid*
 *.iml
 .idea
 .idea/
+.project
+.settings
+target
 .DS_Store
 /.metadata/
 

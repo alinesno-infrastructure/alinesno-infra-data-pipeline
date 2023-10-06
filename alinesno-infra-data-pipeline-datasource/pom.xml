@@ -16,7 +16,7 @@
 	<properties>
 		<!-- clickhouse配置 -->
 		<clickhouse.jdbc.version>0.3.2</clickhouse.jdbc.version>
-		<spring-kafka.version>3.0.9</spring-kafka.version>
+		<spring-kafka.version>3.0.10</spring-kafka.version>
 	</properties>
 
 	<dependencies>

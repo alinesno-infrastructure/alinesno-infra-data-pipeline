@@ -1,5 +1,8 @@
 package com.alinesno.infra.data.pipeline.entity;
 
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
+import lombok.Data;
 import java.util.Date;
 
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
@@ -18,105 +21,46 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @version 1.0.0
  */
 @TableName("trans_run_his")
+@Data
 public class TransRunHisEntity extends InfraBaseEntity {
 
     /**
      * 转换ID
      */
     @TableField("monitor_trans_id")
+	@ColumnType(length=255)
+	@ColumnComment("转换ID")
     private String monitorTransId;
 
     /**
      * 执行开始时间
      */
     @TableField("start_time")
+	@ColumnType(length=255)
+	@ColumnComment("执行开始时间")
     private Date startTime;
 
     /**
      * 执行结束时间
      */
     @TableField("end_time")
+	@ColumnType(length=255)
+	@ColumnComment("执行结束时间")
     private Date endTime;
 
     /**
      * 转换执行结果,0:失败；1:成功
      */
     @TableField("run_status")
+	@ColumnType(length=255)
+	@ColumnComment("转换执行结果,0:失败；1:成功")
     private int runStatus;
 
     /**
      * 转换执行日志
      */
     @TableField("remark")
+	@ColumnType(length=255)
+	@ColumnComment("转换执行日志")
     private String remark;
-
-    /**
-     * 获取转换ID
-     */
-    public String getMonitorTransId() {
-        return monitorTransId;
-    }
-
-    /**
-     * 设置转换ID
-     */
-    public void setMonitorTransId(String monitorTransId) {
-        this.monitorTransId = monitorTransId;
-    }
-
-    /**
-     * 获取执行开始时间
-     */
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * 设置执行开始时间
-     */
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * 获取执行结束时间
-     */
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * 设置执行结束时间
-     */
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    /**
-     * 获取转换执行结果
-     */
-    public int getRunStatus() {
-        return runStatus;
-    }
-
-    /**
-     * 设置转换执行结果
-     */
-    public void setRunStatus(int runStatus) {
-        this.runStatus = runStatus;
-    }
-
-    /**
-     * 获取转换执行日志
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 设置转换执行日志
-     */
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

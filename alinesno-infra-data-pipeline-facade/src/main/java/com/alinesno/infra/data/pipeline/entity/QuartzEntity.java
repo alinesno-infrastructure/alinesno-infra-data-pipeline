@@ -1,5 +1,8 @@
 package com.alinesno.infra.data.pipeline.entity;
 
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
+import lombok.Data;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -16,45 +19,22 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @version 1.0.0
  */
 @TableName("quartz")
+@Data
 public class QuartzEntity extends InfraBaseEntity {
 
     /**
      * 任务描述
      */
     @TableField("quartz_description")
+	@ColumnType(length=255)
+	@ColumnComment("任务描述")
     private String quartzDescription;
 
     /**
      * 定时策略
      */
     @TableField("quartz_cron")
+	@ColumnType(length=255)
+	@ColumnComment("定时策略")
     private String quartzCron;
-
-    /**
-     * 获取任务描述
-     */
-    public String getQuartzDescription() {
-        return quartzDescription;
-    }
-
-    /**
-     * 设置任务描述
-     */
-    public void setQuartzDescription(String quartzDescription) {
-        this.quartzDescription = quartzDescription;
-    }
-
-    /**
-     * 获取定时策略
-     */
-    public String getQuartzCron() {
-        return quartzCron;
-    }
-
-    /**
-     * 设置定时策略
-     */
-    public void setQuartzCron(String quartzCron) {
-        this.quartzCron = quartzCron;
-    }
 }

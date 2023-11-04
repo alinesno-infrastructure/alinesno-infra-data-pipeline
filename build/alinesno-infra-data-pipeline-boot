@@ -1,0 +1,318 @@
+2023-09-06T10:25:57.130+08:00  INFO 23924 --- [restartedMain] c.a.i.d.p.DataPipelineApplication        : Starting DataPipelineApplication using Java 17.0.8 with PID 23924 (D:\project\vscode\alinesno\alinesno-infra-data-pipeline\alinesno-infra-data-pipeline-boot\target\classes started by 夏和圆周 in D:\project\vscode\alinesno\alinesno-infra-data-pipeline)
+2023-09-06T10:25:57.134+08:00 DEBUG 23924 --- [restartedMain] c.a.i.d.p.DataPipelineApplication        : Running with Spring Boot v3.1.2, Spring v6.0.11
+2023-09-06T10:25:57.138+08:00  INFO 23924 --- [restartedMain] c.a.i.d.p.DataPipelineApplication        : The following 5 profiles are active: "base", "security", "mybatis", "sa-token", "dev"
+2023-09-06T10:25:57.259+08:00  INFO 23924 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-09-06T10:25:57.259+08:00  INFO 23924 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-09-06T10:25:59.370+08:00  INFO 23924 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-09-06T10:25:59.375+08:00  INFO 23924 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2023-09-06T10:25:59.454+08:00  INFO 23924 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 0 Redis repository interfaces.
+2023-09-06T10:26:01.382+08:00  WARN 23924 --- [restartedMain] io.undertow.websockets.jsr               : UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+2023-09-06T10:26:01.433+08:00  INFO 23924 --- [restartedMain] io.undertow.servlet                      : Initializing Spring embedded WebApplicationContext
+2023-09-06T10:26:01.434+08:00  INFO 23924 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4174 ms
+2023-09-06T10:26:03.661+08:00  INFO 23924 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2023-09-06T10:26:03.678+08:00  INFO 23924 --- [restartedMain] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2023-09-06T10:26:03.679+08:00  INFO 23924 --- [restartedMain] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2023-09-06T10:26:03.686+08:00  INFO 23924 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-09-06T10:26:04.433+08:00  INFO 23924 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@72710d6a
+2023-09-06T10:26:04.439+08:00  INFO 23924 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-09-06T10:26:04.459+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.LocalDataSourceJobStore     : Using db table-based data access locking (synchronization).
+2023-09-06T10:26:04.464+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.LocalDataSourceJobStore     : JobStoreCMT initialized.
+2023-09-06T10:26:04.466+08:00  INFO 23924 --- [restartedMain] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'Cluster_Scheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.springframework.scheduling.quartz.LocalTaskExecutorThreadPool' - with -1 threads.
+  Using job-store 'org.springframework.scheduling.quartz.LocalDataSourceJobStore' - which supports persistence. and is not clustered.
+
+2023-09-06T10:26:04.467+08:00  INFO 23924 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'Cluster_Scheduler' initialized from an externally provided properties instance.
+2023-09-06T10:26:04.469+08:00  INFO 23924 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2023-09-06T10:26:04.475+08:00  INFO 23924 --- [restartedMain] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@74ebe0b8
+2023-09-06T10:26:05.823+08:00  INFO 23924 --- [restartedMain] org.redisson.Version                     : Redisson 3.20.1
+2023-09-06T10:26:06.476+08:00  INFO 23924 --- [redisson-netty-2-4] o.r.c.pool.MasterPubSubConnectionPool    : 1 connections initialized for 127.0.0.1/127.0.0.1:6379
+2023-09-06T10:26:06.594+08:00  INFO 23924 --- [redisson-netty-2-19] o.r.c.pool.MasterConnectionPool          : 24 connections initialized for 127.0.0.1/127.0.0.1:6379
+2023-09-06T10:26:08.104+08:00  INFO 23924 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-09-06T10:26:08.110+08:00  INFO 23924 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-09-06T10:26:08.333+08:00  INFO 23924 --- [restartedMain] io.undertow                              : starting server: Undertow - 2.3.7.Final
+2023-09-06T10:26:08.361+08:00  INFO 23924 --- [restartedMain] org.xnio                                 : XNIO version 3.8.8.Final
+2023-09-06T10:26:08.382+08:00  INFO 23924 --- [restartedMain] org.xnio.nio                             : XNIO NIO Implementation Version 3.8.8.Final
+2023-09-06T10:26:08.450+08:00  INFO 23924 --- [restartedMain] org.jboss.threads                        : JBoss Threads version 3.5.0.Final
+2023-09-06T10:26:08.614+08:00  INFO 23924 --- [restartedMain] o.s.b.w.e.undertow.UndertowWebServer     : Undertow started on port(s) 30202 (http)
+2023-09-06T10:26:08.618+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now
+2023-09-06T10:26:08.746+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.LocalDataSourceJobStore     : Freed 0 triggers from 'acquired' / 'blocked' state.
+2023-09-06T10:26:08.762+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.LocalDataSourceJobStore     : Recovering 0 jobs that were in-progress at the time of the last shut-down.
+2023-09-06T10:26:08.764+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.LocalDataSourceJobStore     : Recovery complete.
+2023-09-06T10:26:08.765+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.LocalDataSourceJobStore     : Removed 0 'complete' triggers.
+2023-09-06T10:26:08.768+08:00  INFO 23924 --- [restartedMain] o.s.s.quartz.LocalDataSourceJobStore     : Removed 0 stale fired job entries.
+2023-09-06T10:26:08.771+08:00  INFO 23924 --- [restartedMain] org.quartz.core.QuartzScheduler          : Scheduler Cluster_Scheduler_$_NON_CLUSTERED started.
+2023-09-06T10:26:08.791+08:00  INFO 23924 --- [restartedMain] c.a.i.d.p.DataPipelineApplication        : Started DataPipelineApplication in 12.891 seconds (process running for 14.154)
+2023-09-06T10:26:08.795+08:00 DEBUG 23924 --- [restartedMain] c.a.i.d.p.s.monitor.JobMonitorScheduler  : 查询任务列队是否存在
+2023-09-06T10:26:26.512+08:00  INFO 23924 --- [XNIO-1 task-2] io.undertow.servlet                      : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-09-06T10:26:26.513+08:00  INFO 23924 --- [XNIO-1 task-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-09-06T10:26:26.515+08:00  INFO 23924 --- [XNIO-1 task-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-09-06T10:26:26.715+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.JobMapper.selectById    : ==>  Preparing: SELECT id,trans_ids,git_id,relative_location,job_context,name,description,type,path,quartz,strategy AS syncStrategy,log_level,status,category_id,has_delete,delete_manager,application_id,application_name,tenant_id,field_id,department_id,field_prop,add_time,delete_time,has_status,update_time,operator_id,last_update_operator_id FROM job WHERE id=?
+2023-09-06T10:26:26.740+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.JobMapper.selectById    : ==> Parameters: 1697886824783536130(Long)
+2023-09-06T10:26:26.785+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.JobMapper.selectById    : <==      Total: 1
+2023-09-06T10:26:27.115+08:00  WARN 23924 --- [schedulerThreadPool-1] c.b.m.c.t.support.ReflectLambdaMeta      : Unable to make field private final java.lang.Class java.lang.invoke.SerializedLambda.capturingClass accessible: module java.base does not "opens java.lang.invoke" to unnamed module @6d8318c9
+2023-09-06T10:26:27.130+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectList  : ==>  Preparing: SELECT id,git_id,relative_location,trans_context,job_id,order_step,process_data_count,total_data_count,name,description,type,path,quartz,strategy AS syncStrategy,log_level,status,category_id,has_delete,delete_manager,application_id,application_name,tenant_id,field_id,department_id,field_prop,add_time,delete_time,has_status,update_time,operator_id,last_update_operator_id FROM trans WHERE (job_id = ?)
+2023-09-06T10:26:27.132+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectList  : ==> Parameters: 1697886824783536130(Long)
+2023-09-06T10:26:27.149+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectList  : <==      Total: 4
+2023-09-06T10:26:27.154+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : 开始进行数据查询.
+2023-09-06T10:26:27.194+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : --->>>>>>>>>>> step = 1 , trans = {"hasDelete":0,"hasStatus":0,"id":1697886824846450689,"jobId":1697886824783536130,"name":"mysql","orderStep":1,"processDataCount":101,"status":"completed","tenantId":"0","totalDataCount":0,"type":"reader","updateTime":"2023-09-02 16:18:58"}
+2023-09-06T10:26:27.227+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, process_data_count=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.229+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 1(Integer), 101(Long), 0(Long), mysql(String), reader(String), processing(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824846450689(Long)
+2023-09-06T10:26:27.239+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.343+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:1
+2023-09-06T10:26:27.344+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:2
+2023-09-06T10:26:27.345+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:3
+2023-09-06T10:26:27.345+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:4
+2023-09-06T10:26:27.345+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:5
+2023-09-06T10:26:27.345+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:6
+2023-09-06T10:26:27.345+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:7
+2023-09-06T10:26:27.346+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:8
+2023-09-06T10:26:27.346+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:9
+2023-09-06T10:26:27.346+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:10
+2023-09-06T10:26:27.347+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:11
+2023-09-06T10:26:27.348+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:12
+2023-09-06T10:26:27.349+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:13
+2023-09-06T10:26:27.350+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:14
+2023-09-06T10:26:27.351+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:15
+2023-09-06T10:26:27.352+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:16
+2023-09-06T10:26:27.353+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:17
+2023-09-06T10:26:27.353+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:18
+2023-09-06T10:26:27.353+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:19
+2023-09-06T10:26:27.353+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:20
+2023-09-06T10:26:27.353+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:21
+2023-09-06T10:26:27.353+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:22
+2023-09-06T10:26:27.353+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:23
+2023-09-06T10:26:27.355+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:24
+2023-09-06T10:26:27.355+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:25
+2023-09-06T10:26:27.355+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:26
+2023-09-06T10:26:27.355+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:27
+2023-09-06T10:26:27.355+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:28
+2023-09-06T10:26:27.355+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:29
+2023-09-06T10:26:27.356+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:30
+2023-09-06T10:26:27.356+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:31
+2023-09-06T10:26:27.356+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:32
+2023-09-06T10:26:27.356+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:33
+2023-09-06T10:26:27.356+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:34
+2023-09-06T10:26:27.356+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:35
+2023-09-06T10:26:27.357+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:36
+2023-09-06T10:26:27.357+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:37
+2023-09-06T10:26:27.357+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:38
+2023-09-06T10:26:27.358+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:39
+2023-09-06T10:26:27.358+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:40
+2023-09-06T10:26:27.358+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:41
+2023-09-06T10:26:27.359+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:42
+2023-09-06T10:26:27.359+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:43
+2023-09-06T10:26:27.359+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:44
+2023-09-06T10:26:27.359+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:45
+2023-09-06T10:26:27.360+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:46
+2023-09-06T10:26:27.360+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:47
+2023-09-06T10:26:27.360+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:48
+2023-09-06T10:26:27.360+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:49
+2023-09-06T10:26:27.361+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:50
+2023-09-06T10:26:27.361+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:51
+2023-09-06T10:26:27.361+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:52
+2023-09-06T10:26:27.361+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:53
+2023-09-06T10:26:27.361+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:54
+2023-09-06T10:26:27.362+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:55
+2023-09-06T10:26:27.362+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:56
+2023-09-06T10:26:27.362+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:57
+2023-09-06T10:26:27.363+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:58
+2023-09-06T10:26:27.364+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:59
+2023-09-06T10:26:27.364+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:60
+2023-09-06T10:26:27.364+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:61
+2023-09-06T10:26:27.364+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:62
+2023-09-06T10:26:27.365+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:63
+2023-09-06T10:26:27.365+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:64
+2023-09-06T10:26:27.365+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:65
+2023-09-06T10:26:27.366+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:66
+2023-09-06T10:26:27.367+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:67
+2023-09-06T10:26:27.367+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:68
+2023-09-06T10:26:27.367+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:69
+2023-09-06T10:26:27.367+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:70
+2023-09-06T10:26:27.368+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:71
+2023-09-06T10:26:27.368+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:72
+2023-09-06T10:26:27.368+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:73
+2023-09-06T10:26:27.369+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:74
+2023-09-06T10:26:27.369+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:75
+2023-09-06T10:26:27.370+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:76
+2023-09-06T10:26:27.371+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:77
+2023-09-06T10:26:27.371+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:78
+2023-09-06T10:26:27.371+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:79
+2023-09-06T10:26:27.373+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:80
+2023-09-06T10:26:27.374+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:81
+2023-09-06T10:26:27.376+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:82
+2023-09-06T10:26:27.377+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:83
+2023-09-06T10:26:27.377+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:84
+2023-09-06T10:26:27.377+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:85
+2023-09-06T10:26:27.378+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:86
+2023-09-06T10:26:27.378+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:87
+2023-09-06T10:26:27.378+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:88
+2023-09-06T10:26:27.378+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:89
+2023-09-06T10:26:27.378+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:90
+2023-09-06T10:26:27.380+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:91
+2023-09-06T10:26:27.380+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:92
+2023-09-06T10:26:27.380+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:93
+2023-09-06T10:26:27.381+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:94
+2023-09-06T10:26:27.381+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:95
+2023-09-06T10:26:27.382+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:96
+2023-09-06T10:26:27.383+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:97
+2023-09-06T10:26:27.383+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:98
+2023-09-06T10:26:27.384+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:99
+2023-09-06T10:26:27.384+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.datasource.reader.MySQLReader  : 查询数据:mysql , 指标:100
+2023-09-06T10:26:27.386+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.event.TransEventSubscriber   : trans count = TransEvent{totalCount=0, transCount=101, transId=1697886824846450689}
+2023-09-06T10:26:27.389+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectById  : ==>  Preparing: SELECT id,git_id,relative_location,trans_context,job_id,order_step,process_data_count,total_data_count,name,description,type,path,quartz,strategy AS syncStrategy,log_level,status,category_id,has_delete,delete_manager,application_id,application_name,tenant_id,field_id,department_id,field_prop,add_time,delete_time,has_status,update_time,operator_id,last_update_operator_id FROM trans WHERE id=?
+2023-09-06T10:26:27.390+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectById  : ==> Parameters: 1697886824846450689(Long)
+2023-09-06T10:26:27.399+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectById  : <==      Total: 1
+2023-09-06T10:26:27.405+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, process_data_count=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.406+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 1(Integer), 101(Long), 0(Long), mysql(String), reader(String), processing(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824846450689(Long)
+2023-09-06T10:26:27.410+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.450+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, process_data_count=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.451+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 1(Integer), 101(Long), 0(Long), mysql(String), reader(String), completed(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824846450689(Long)
+2023-09-06T10:26:27.455+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.460+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : --->>>>>>>>>>> step = 2 , trans = {"hasDelete":0,"hasStatus":0,"id":1697886824871616513,"jobId":1697886824783536130,"name":"安全过滤应用","orderStep":2,"status":"completed","tenantId":"0","totalDataCount":101,"type":"plugin","updateTime":"2023-09-02 16:18:58"}
+2023-09-06T10:26:27.463+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.467+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 2(Integer), 101(Long), 安全过滤应用(String), plugin(String), processing(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824871616513(Long)
+2023-09-06T10:26:27.470+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.477+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : 插件数据处理:com.alinesno.infra.data.pipeline.entity.TransEntity@336a73d3
+2023-09-06T10:26:27.480+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.481+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 2(Integer), 101(Long), 安全过滤应用(String), plugin(String), completed(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824871616513(Long)
+2023-09-06T10:26:27.485+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.491+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : --->>>>>>>>>>> step = 3 , trans = {"hasDelete":0,"hasStatus":0,"id":1697886824880005122,"jobId":1697886824783536130,"name":"去掉为空数据","orderStep":3,"status":"completed","tenantId":"0","totalDataCount":101,"type":"plugin","updateTime":"2023-09-02 16:18:58"}
+2023-09-06T10:26:27.493+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.496+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 3(Integer), 101(Long), 去掉为空数据(String), plugin(String), processing(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824880005122(Long)
+2023-09-06T10:26:27.502+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.508+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : 插件数据处理:com.alinesno.infra.data.pipeline.entity.TransEntity@5390d426
+2023-09-06T10:26:27.510+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.513+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 3(Integer), 101(Long), 去掉为空数据(String), plugin(String), completed(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824880005122(Long)
+2023-09-06T10:26:27.518+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.523+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : --->>>>>>>>>>> step = 4 , trans = {"hasDelete":0,"hasStatus":0,"id":1697886824880005123,"jobId":1697886824783536130,"name":"clickhouse","orderStep":4,"processDataCount":101,"status":"completed","tenantId":"0","totalDataCount":101,"type":"writer","updateTime":"2023-09-02 16:18:58"}
+2023-09-06T10:26:27.526+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, process_data_count=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.531+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 4(Integer), 101(Long), 101(Long), clickhouse(String), writer(String), processing(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824880005123(Long)
+2023-09-06T10:26:27.535+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.813+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 1 , line = 2757,20130311,1
+2023-09-06T10:26:27.819+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 2 , line = 415971,20121111,0
+2023-09-06T10:26:27.819+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 3 , line = 1372572,20120130,1
+2023-09-06T10:26:27.819+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 4 , line = 10339332,20110910,0
+2023-09-06T10:26:27.819+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 5 , line = 10642245,20130213,0
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 6 , line = 10923201,20110830,1
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 7 , line = 11768880,20120107,1
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 8 , line = 12519465,20130705,1
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 9 , line = 12950574,20090708,0
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 10 , line = 13735440,20120323,0
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 11 , line = 14510892,20140812,1
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 12 , line = 14905422,20110429,1
+2023-09-06T10:26:27.820+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 13 , line = 15786531,20080922,0
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 14 , line = 16265490,20091209,0
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 15 , line = 17431245,20110115,0
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 16 , line = 18190851,20110101,0
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 17 , line = 20087991,20100808,0
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 18 , line = 20570454,20081017,1
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 19 , line = 21137271,20110204,1
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 20 , line = 21415917,20060801,1
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 21 , line = 21887268,20100526,0
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 22 , line = 22602471,20090601,1
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 23 , line = 23208537,20080416,1
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 24 , line = 23927133,20081029,0
+2023-09-06T10:26:27.821+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 25 , line = 24829944,20140826,1
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 26 , line = 25807593,20141122,1
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 27 , line = 26629842,20131124,0
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 28 , line = 27213666,20080413,0
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 29 , line = 30595206,20070918,0
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 30 , line = 31235454,20110319,0
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 31 , line = 31795068,20071124,0
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 32 , line = 33062883,20100814,1
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 33 , line = 34582044,20121101,0
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 34 , line = 34911780,20100302,1
+2023-09-06T10:26:27.822+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 35 , line = 35831517,20110708,0
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 36 , line = 37273026,20120212,1
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 37 , line = 38061660,20111203,1
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 38 , line = 40305507,20111017,1
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 39 , line = 41643429,20140322,1
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 40 , line = 42687654,20090515,1
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 41 , line = 43241697,20120512,0
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 42 , line = 44716356,20130211,0
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 43 , line = 46013049,20140408,1
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 44 , line = 46951908,20091217,1
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 45 , line = 47742510,20140727,0
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 46 , line = 48655521,20110101,0
+2023-09-06T10:26:27.823+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 47 , line = 49167150,20130818,2
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 48 , line = 49983255,20140206,2
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 49 , line = 50238258,20101206,1
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 50 , line = 51103674,20110817,0
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 51 , line = 51880578,20110107,0
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 52 , line = 52529655,20130611,2
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 53 , line = 52744851,20120822,1
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 54 , line = 53433471,20120903,1
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 55 , line = 54855720,20130128,0
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 56 , line = 55875510,20120803,0
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 57 , line = 56663970,20091116,1
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 58 , line = 57494340,20140518,0
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 59 , line = 57711375,20130420,2
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 60 , line = 58199199,20110702,0
+2023-09-06T10:26:27.824+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 61 , line = 58463787,20100928,1
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 62 , line = 59069103,20060413,0
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 63 , line = 59596068,20130428,1
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 64 , line = 60387171,20130216,1
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 65 , line = 61079421,20130501,1
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 66 , line = 61620681,20130308,0
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 67 , line = 62879667,20111205,0
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 68 , line = 64343163,20100123,1
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 69 , line = 65312343,20090627,1
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 70 , line = 66248748,20120908,0
+2023-09-06T10:26:27.825+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 71 , line = 66755460,20110307,1
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 72 , line = 67443207,20080101,0
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 73 , line = 67985523,20120713,0
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 74 , line = 69057729,20110105,1
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 75 , line = 69435486,20120821,1
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 76 , line = 70069665,20100415,0
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 77 , line = 70835010,20140522,0
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 78 , line = 71726532,20110515,0
+2023-09-06T10:26:27.826+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 79 , line = 72231900,20110221,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 80 , line = 72746697,20140222,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 81 , line = 73291425,20100628,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 82 , line = 74459175,20130309,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 83 , line = 75343881,20120225,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 84 , line = 75613245,20111122,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 85 , line = 76580427,20120307,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 86 , line = 77933013,20100702,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 87 , line = 78375309,20130322,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 88 , line = 78962691,20130218,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 89 , line = 80014536,20120615,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 90 , line = 80512596,20130208,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 91 , line = 81793389,20130904,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 92 , line = 82783545,20140416,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 93 , line = 83472357,20130120,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 94 , line = 84835944,20111008,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 95 , line = 86731623,20131226,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 96 , line = 87659835,20110930,1
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 97 , line = 88290456,20090118,0
+2023-09-06T10:26:27.827+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 98 , line = 89520261,19840616,0
+2023-09-06T10:26:27.829+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 99 , line = 91177545,20100203,0
+2023-09-06T10:26:27.829+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.writer.ClickhouseWriter      : -->>>> excel count = 100 , line = 92116962,20120526,1
+2023-09-06T10:26:27.829+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.d.event.TransEventSubscriber   : trans count = TransEvent{totalCount=101, transCount=101, transId=1697886824880005123}
+2023-09-06T10:26:27.830+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectById  : ==>  Preparing: SELECT id,git_id,relative_location,trans_context,job_id,order_step,process_data_count,total_data_count,name,description,type,path,quartz,strategy AS syncStrategy,log_level,status,category_id,has_delete,delete_manager,application_id,application_name,tenant_id,field_id,department_id,field_prop,add_time,delete_time,has_status,update_time,operator_id,last_update_operator_id FROM trans WHERE id=?
+2023-09-06T10:26:27.830+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectById  : ==> Parameters: 1697886824880005123(Long)
+2023-09-06T10:26:27.833+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.selectById  : <==      Total: 1
+2023-09-06T10:26:27.836+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, process_data_count=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.836+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 4(Integer), 101(Long), 101(Long), clickhouse(String), writer(String), processing(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824880005123(Long)
+2023-09-06T10:26:27.839+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.841+08:00  WARN 23924 --- [schedulerThreadPool-1] c.c.j.internal.ClickHouseConnectionImpl  : [JDBC Compliant Mode] Transaction is not supported. Change jdbcCompliant to false to throw SQLException instead.
+2023-09-06T10:26:27.962+08:00  WARN 23924 --- [schedulerThreadPool-1] c.c.j.internal.ClickHouseConnectionImpl  : [JDBC Compliant Mode] Transaction is not supported. Change jdbcCompliant to false to throw SQLException instead.
+2023-09-06T10:26:27.964+08:00  WARN 23924 --- [schedulerThreadPool-1] c.c.j.internal.ClickHouseConnectionImpl  : [JDBC Compliant Mode] Transaction [09d88ed5-41cf-49f7-af60-e9998da2877d](2 queries & 0 savepoints) is committed.
+2023-09-06T10:26:27.965+08:00  WARN 23924 --- [schedulerThreadPool-1] c.c.j.internal.ClickHouseConnectionImpl  : [JDBC Compliant Mode] Transaction [320e1ffa-6c2f-4769-be49-3e57eaee381c](0 queries & 0 savepoints) is committed.
+2023-09-06T10:26:27.966+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==>  Preparing: UPDATE trans SET job_id=?, order_step=?, process_data_count=?, total_data_count=?, name=?, type=?, status=?, has_delete=?, tenant_id=?, has_status=?, update_time=? WHERE id=?
+2023-09-06T10:26:27.968+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : ==> Parameters: 1697886824783536130(Long), 4(Integer), 101(Long), 101(Long), clickhouse(String), writer(String), completed(String), 0(Integer), 0(String), 0(Integer), 2023-09-02 16:18:58.0(Timestamp), 1697886824880005123(Long)
+2023-09-06T10:26:27.970+08:00 DEBUG 23924 --- [schedulerThreadPool-1] c.a.i.d.p.mapper.TransMapper.updateById  : <==    Updates: 1
+2023-09-06T10:26:27.974+08:00  INFO 23924 --- [schedulerThreadPool-1] c.a.i.d.p.s.DistSchedulerServiceImpl     : 转换成流式查询时间:0秒819毫秒
+2023-09-06T10:28:21.073+08:00  INFO 23924 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler Cluster_Scheduler_$_NON_CLUSTERED paused.
+2023-09-06T10:28:21.076+08:00  INFO 23924 --- [SpringApplicationShutdownHook] io.undertow                              : stopping server: Undertow - 2.3.7.Final
+2023-09-06T10:28:21.080+08:00  INFO 23924 --- [SpringApplicationShutdownHook] io.undertow.servlet                      : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-09-06T10:28:21.119+08:00  INFO 23924 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler Cluster_Scheduler_$_NON_CLUSTERED shutting down.
+2023-09-06T10:28:21.119+08:00  INFO 23924 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler Cluster_Scheduler_$_NON_CLUSTERED paused.
+2023-09-06T10:28:21.119+08:00  INFO 23924 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler Cluster_Scheduler_$_NON_CLUSTERED shutdown complete.
+2023-09-06T10:28:21.120+08:00  INFO 23924 --- [SpringApplicationShutdownHook] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2023-09-06T10:28:21.122+08:00  INFO 23924 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-09-06T10:28:21.130+08:00  INFO 23924 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

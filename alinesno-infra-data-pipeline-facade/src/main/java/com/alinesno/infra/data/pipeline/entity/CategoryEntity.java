@@ -1,5 +1,8 @@
 package com.alinesno.infra.data.pipeline.entity;
 
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
+import lombok.Data;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -16,26 +19,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @version 1.0.0
  */
 @TableName("category")
+@Data
 public class CategoryEntity extends InfraBaseEntity {
 
     /**
      * categoryName
      */
     @TableField("category_name")
+	@ColumnType(length=255)
+	@ColumnComment("categoryName")
     private String categoryName;
-
-    /**
-     * 获取 categoryName
-     */
-    public String getCategoryName() {
-        return this.categoryName;
-    }
-
-    /**
-     * 设置 categoryName
-     */
-    public CategoryEntity setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-        return this;
-    }
 }

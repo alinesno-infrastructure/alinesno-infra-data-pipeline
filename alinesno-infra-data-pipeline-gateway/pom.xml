@@ -10,7 +10,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>alinesno-infra-data-pipeline-api</artifactId>
+	<artifactId>alinesno-infra-data-pipeline-gateway</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>

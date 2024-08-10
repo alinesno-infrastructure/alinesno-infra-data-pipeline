@@ -2,6 +2,9 @@ package com.alinesno.infra.data.pipeline.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
+import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 
 /**
  * 功能名： 【请填写功能名称】
@@ -27,18 +30,24 @@ public class JobEntity extends BaseKettleEntity {
      * 仓库名称
      */
     @TableField("git_id")
+    @ColumnType(value = MySqlTypeConstant.VARCHAR , length = 128)
+    @ColumnComment("仓库名称")
     private String gitId;
 
     /**
      * 作业文件路径
      */
     @TableField("relative_location")
+    @ColumnType(value = MySqlTypeConstant.VARCHAR , length = 128)
+    @ColumnComment("作业文件路径")
     private String relativeLocation;
 
     /**
      * 任务的上下文
      */
     @TableField("job_context")
+    @ColumnType(value = MySqlTypeConstant.TEXT)
+    @ColumnComment("任务上下文")
     private String jobContext ;
 
     public String getJobContext() {

@@ -9,11 +9,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dev_alinesno_infra_data_pipeline_v100?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL
     username: root
-    password: 123456
+    password: adminer
   data:
     redis:
       host: 127.0.0.1
       port: 6379
+      password: aip@local
   devtools:
     restart:
       enabled: true
@@ -22,6 +23,19 @@ alinesno:
   data:
     pipeline:
       workspacePath: ${user.home}/.infra-data-pipeline
+
+# actable配置
+actable:
+  table:
+    auto: update
+  model:
+    pack: com.alinesno.infra.data.pipeline.entity;
+  database:
+    type: mysql
+  index:
+    prefix: alinesno_data_pipeline_idx_
+  unique:
+    prefix: alinesno_data_pipeline_uni_
 
 # sa-token配置
 sa-token:

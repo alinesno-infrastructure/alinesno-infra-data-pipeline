@@ -65,7 +65,13 @@
 			<optional>true</optional>
 		</dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>com.alinesno.infra.data</groupId>
+            <artifactId>alinesno-infra-data-pipeline-initialize</artifactId>
+			<version>${revision}</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -2,7 +2,7 @@
   "name": "alinesno-infra-data-pipeline-ui",
   "version": "1.0.0",
   "description": "异构数据集成服务",
-  "author": "LuoXiaoDong",
+  "author": "luoxiaodong",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",

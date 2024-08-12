@@ -30,6 +30,8 @@
         <module>alinesno-infra-data-pipeline-adapter</module> <!-- 适配层 -->
         <module>alinesno-infra-data-pipeline-gateway</module>  <!-- 接口服务 -->
         <module>alinesno-infra-data-pipeline-client</module>  <!-- 对外引用 -->
+        <module>alinesno-infra-data-pipeline-initialize</module>  <!-- 初始化服务 -->
+
         <module>alinesno-infra-data-pipeline-boot</module>  <!-- 启动服务 -->
 
         <!-- 前端服务

@@ -1,19 +1,3 @@
---CREATE TABLE IF NOT EXISTS scheduled_tasks (
---    task_name VARCHAR(100) COMMENT '任务名称',
---    task_instance VARCHAR(100) COMMENT '任务实例',
---    task_data LONGBLOB COMMENT '任务数据',
---    execution_time TIMESTAMP COMMENT '执行时间',
---    picked BIT COMMENT '是否已被提取',
---    picked_by VARCHAR(50) COMMENT '提取者',
---    last_success TIMESTAMP COMMENT '最后成功时间',
---    last_failure TIMESTAMP COMMENT '最后失败时间',
---    consecutive_failures INT COMMENT '连续失败次数',
---    last_heartbeat TIMESTAMP COMMENT '最后心跳时间',
---    version BIGINT COMMENT '版本',
---    PRIMARY KEY (task_name, task_instance)
---) COMMENT='定时任务表';
-
-
 DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS;
 DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;
 DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE;
@@ -176,7 +160,6 @@ create index idx_qrtz_t_state on qrtz_triggers(TRIGGER_STATE);
 create index idx_qrtz_t_nf_st on qrtz_triggers(TRIGGER_STATE,NEXT_FIRE_TIME);
 create index idx_qrtz_ft_trig_name on qrtz_fired_triggers(TRIGGER_NAME);
 create index idx_qrtz_ft_trig_group on qrtz_fired_triggers(TRIGGER_GROUP);
-create index idx_qrtz_ft_trig_name on qrtz_fired_triggers(TRIGGER_NAME);
 create index idx_qrtz_ft_trig_n_g on qrtz_fired_triggers(TRIGGER_NAME,TRIGGER_GROUP);
 create index idx_qrtz_ft_trig_inst_name on qrtz_fired_triggers(INSTANCE_NAME);
 create index idx_qrtz_ft_job_name on qrtz_fired_triggers(JOB_NAME);

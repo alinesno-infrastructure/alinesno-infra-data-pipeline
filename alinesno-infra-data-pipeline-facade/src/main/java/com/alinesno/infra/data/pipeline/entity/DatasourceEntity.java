@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "api_datasource" , autoResultMap = true)
+@TableName(value = "pipeline_datasource" , autoResultMap = true)
 @Data
 public class DatasourceEntity extends InfraBaseEntity {
 

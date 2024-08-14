@@ -49,6 +49,15 @@ http://localhost:30202/v1/api/data/pipeline/runPipeline
 }
 ```
 
+## 性能要求
+ 
+性能指标：
+
+- 定时任务支持不少于2000个
+- 单表数据迁移不少于20亿
+- 文件数据迁移不少于20TB
+- 消息消费迁移不少于100亿条
+
 ## 鸣谢
 
 - 集成学习参考资料[Quartz应用与集群原理分析](https://tech.meituan.com/2014/08/31/mt-crm-quartz.html)

@@ -4,7 +4,7 @@ import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
-import com.alinesno.infra.data.pipeline.entity.BuildGitEntity;
+import com.alinesno.infra.data.pipeline.entity.GitEntity;
 import com.alinesno.infra.data.pipeline.service.IBuildGitService;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
 @RequestMapping("/api/infra/simple/crm/buildGit")
-public class BuildGitController extends BaseController<BuildGitEntity, IBuildGitService> {
+public class BuildGitController extends BaseController<GitEntity, IBuildGitService> {
 
     // 日志记录
     private static final Logger log = LoggerFactory.getLogger(BuildGitController.class);

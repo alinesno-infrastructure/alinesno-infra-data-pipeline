@@ -14,4 +14,9 @@ public interface IPipelineInitService {
      * 初始化演示任务
      */
     void initDemoJob();
+
+    /**
+     * 初始化读取源
+     */
+    void initReaderSource();
 }

@@ -10,4 +10,8 @@ public interface IPipelineInitService {
      */
     void initScheduler();
 
+    /**
+     * 初始化演示任务
+     */
+    void initDemoJob();
 }

@@ -3,7 +3,7 @@ package com.alinesno.infra.data.pipeline.service.impl;
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.common.facade.enums.HasStatusEnums;
 import com.alinesno.infra.data.pipeline.entity.ProjectEntity;
-import com.alinesno.infra.data.pipeline.enums.ProviderChannelEnum;
+import com.alinesno.infra.data.pipeline.enums.PluginEnum;
 import com.alinesno.infra.data.pipeline.mapper.ProjectMapper;
 import com.alinesno.infra.data.pipeline.service.IProjectService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -61,7 +61,7 @@ public class ProjectServiceImpl extends IBaseServiceImpl<ProjectEntity, ProjectM
         project.setProjectName("默认数据集成应用");
         project.setProjectDesc("包含所有的数据集成渠道查看权限，用于开发和验证场景");
         project.setProjectCode(code);
-        project.setDocumentType(ProviderChannelEnum.getAllNameStr());
+        project.setDocumentType(PluginEnum.getAllNameStr());
 
         save(project) ;
     }

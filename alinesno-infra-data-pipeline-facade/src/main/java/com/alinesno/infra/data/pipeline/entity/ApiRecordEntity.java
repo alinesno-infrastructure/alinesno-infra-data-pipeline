@@ -22,7 +22,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("api_record")
+@TableName("pipeline_api_record")
 @Table(comment = "操作日志记录")
 public class ApiRecordEntity extends InfraBaseEntity {
 

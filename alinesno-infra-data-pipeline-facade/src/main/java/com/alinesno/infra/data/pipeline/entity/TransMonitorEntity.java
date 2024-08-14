@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
-@TableName("trans_monitor")
+@TableName("pipeline_trans_monitor")
 public class TransMonitorEntity extends InfraBaseEntity {
 
     /**

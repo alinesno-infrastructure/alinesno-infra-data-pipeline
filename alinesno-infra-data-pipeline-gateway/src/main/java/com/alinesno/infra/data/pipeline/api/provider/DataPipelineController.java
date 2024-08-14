@@ -5,8 +5,7 @@ import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.data.pipeline.datasource.IDataTransferHandleService;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +19,11 @@ import java.sql.SQLException;
 /**
  * 构建任务对外服务
  */
+@Slf4j
 @Scope
 @RestController
 @RequestMapping("/v1/api/data/pipeline/")
 public class DataPipelineController {
-
-    private static final Logger log = LoggerFactory.getLogger(DataPipelineController.class) ;
 
     @Autowired
     private IDataTransferHandleService dataTransferHandleService ;

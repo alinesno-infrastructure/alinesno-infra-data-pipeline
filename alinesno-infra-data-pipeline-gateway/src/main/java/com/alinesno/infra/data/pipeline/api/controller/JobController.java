@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "Job")
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
-@RequestMapping("/api/infra/simple/crm/job")
+@RequestMapping("/api/infra/data/pipeline/job")
 public class JobController extends BaseController<JobEntity, IJobService> {
 
     // 日志记录

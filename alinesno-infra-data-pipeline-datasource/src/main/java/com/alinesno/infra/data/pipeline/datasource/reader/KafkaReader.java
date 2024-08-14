@@ -2,17 +2,15 @@ package com.alinesno.infra.data.pipeline.datasource.reader;
 
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSourceReader;
-import com.alinesno.infra.data.pipeline.datasource.IDataSourceReader;
 import com.alinesno.infra.data.pipeline.datasource.exception.ReaderSourceException;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -22,13 +20,11 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
-import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @Component("kafka" + PipeConstants.READER_SUFFIX)
 public class KafkaReader  extends ComponentSourceReader {
-
-    private static final Logger log = LoggerFactory.getLogger(KafkaReader.class) ;
 
     @Override
     public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {

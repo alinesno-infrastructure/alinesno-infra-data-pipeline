@@ -1,10 +1,10 @@
 package com.alinesno.infra.data.pipeline.entity;
 
-import java.util.Date;
-
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.util.Date;
 
 /**
  * 功能名：作业执行历史记录实体类
@@ -17,8 +17,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
-@TableName("job_run_his")
-public class JobRunHisEntity extends BaseKettleEntity {
+@TableName("pipeline_job_run_his")
+public class JobRunHisEntity extends InfraBaseEntity {
 
     /**
      * 作业ID

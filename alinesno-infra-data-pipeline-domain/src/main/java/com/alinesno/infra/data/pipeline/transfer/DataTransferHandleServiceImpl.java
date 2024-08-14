@@ -1,10 +1,6 @@
 package com.alinesno.infra.data.pipeline.transfer;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alinesno.infra.common.core.context.SpringContext;
-import com.alinesno.infra.data.pipeline.constants.PipeConstants;
-import com.alinesno.infra.data.pipeline.datasource.IDataSourceReader;
-import com.alinesno.infra.data.pipeline.datasource.IDataSourceWriter;
 import com.alinesno.infra.data.pipeline.datasource.IDataTransferHandleService;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
@@ -19,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -50,14 +45,14 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
 
 //        IDataSourceReader dataSourceReader = (IDataSourceReader) SpringContext.getBean(taskInfoDto.getReader().getType() + PipeConstants.READER_SUFFIX);
 //        IDataSourceWriter dataSourceWriter = (IDataSourceWriter) SpringContext.getBean(taskInfoDto.getWriter().getType() + PipeConstants.WRITER_SUFFIX);
-//
+
 //        // 读取数据
 //        String jobWorkspace = "" ;
 //        File sourceFile = dataSourceReader.readData(taskInfoDto, jobWorkspace, trans) ;
-//
+
 //        // 数据插件处理
 //        File filterFile = dataSourcePlugins.transformData(taskInfoDto , sourceFile) ;
-//
+
 //        // 写入数据
 //        dataSourceWriter.writerData(taskInfoDto , filterFile, trans) ;
 
@@ -68,8 +63,20 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
 
         // 创建一个Job
         JobEntity jobEntity = new JobEntity() ;
-        jobEntity.setName(taskInfoDto.getName());
-        jobEntity.setDescription(taskInfoDto.getDescribe());
+
+        jobEntity.setJobName(taskInfoDto.getName());
+        jobEntity.setJobDesc(taskInfoDto.getDescribe());
+
+        jobEntity.setSourceDbType(taskInfoDto.getReader().getType());
+        jobEntity.setSourceDbId(taskInfoDto.getReader().getId());
+
+        jobEntity.setTargetDbType(taskInfoDto.getWriter().getType());
+        jobEntity.setTargetDbId(taskInfoDto.getWriter().getId());
+
+        jobEntity.setJobCron(taskInfoDto.getSettings().getCron());
+        jobEntity.setStartTime(taskInfoDto.getSettings().getStartTime());
+        jobEntity.setEndTime(taskInfoDto.getSettings().getEndTime());
+
         jobEntity.setJobContext(JSONObject.toJSONString(taskInfoDto));
         jobService.save(jobEntity) ;
 
@@ -81,8 +88,10 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
         TransEntity readerTrans = new TransEntity() ;
         readerTrans.setJobId(jobEntity.getId());
         readerTrans.setOrderStep(1);
+
         readerTrans.setType(TransTypeEnums.READER.getCode());
         readerTrans.setName(taskInfoDto.getReader().getName());
+
         listTrans.add(readerTrans) ;
 
         // 处理插件
@@ -92,6 +101,7 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
         TransEntity writerTrans= new TransEntity() ;
         writerTrans.setOrderStep(listTrans.size()+1);
         writerTrans.setJobId(jobEntity.getId());
+
         writerTrans.setType(TransTypeEnums.WRITER.getCode());
         writerTrans.setName(taskInfoDto.getWriter().getName());
 

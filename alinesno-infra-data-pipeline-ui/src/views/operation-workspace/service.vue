@@ -6,7 +6,7 @@
 
         <div class="grid-content">
           <div class="panel-header">
-            <div class="header-title"><i class="fa-solid fa-fire"></i> 异常状态热力图</div>
+            <div class="header-title"><i class="fa-solid fa-fire"></i> 任务执行分布热力图</div>
           </div>
           <div class="panel-body acp-height-auto">
         <div class="box-header">
@@ -29,7 +29,7 @@
       <el-col :span="5">
         <div class="grid-content">
           <div class="panel-header">
-            <div class="header-title"><i class="fa-solid fa-user-nurse"></i> 接口调用统计</div>
+            <div class="header-title"><i class="fa-solid fa-user-nurse"></i> 数据集成统计</div>
           </div>
           <div class="panel-body acp-height-auto">
             <ul class="panel-item-text">

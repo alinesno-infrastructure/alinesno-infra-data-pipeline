@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
-@TableName("job_monitor")
+@TableName("pipeline_job_monitor")
 public class JobMonitorEntity extends InfraBaseEntity {
 
     /**

@@ -6,22 +6,30 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 支持的文档类型
+ * 支持的插件类型
  */
 @Getter
 public enum PluginEnum {
 
-    ALIYUN("Aliyun", "用于连接和管理阿里云服务", "fa-brands fa-alipay"),
-    DOCKER("Docker", "用于容器化应用部署和管理", "fa-brands fa-docker"),
-    KUBERNETES("Kubernetes", "用于容器编排和集群管理", "fa-brands fa-wordpress"),
-    JIRA("Jira", "用于敏捷项目管理和问题追踪", "fa-brands fa-envira"),
-    JENKINS("Jenkins", "用于持续集成和持续交付", "fa-brands fa-jenkins"),
-    PROMETHEUS("Prometheus", "用于监控和警报通知", "fa-brands fa-product-hunt"),
-    SERVER("Server", "用于服务器管理和监控", "fa-solid fa-server"),
-    SPRING_BOOT("SpringBoot", "用于构建和部署Spring Boot应用", "fa-solid fa-rocket"),
-    JAVA_APPLICATION("JavaApplication", "用于Java应用程序的部署和管理", "fa-brands fa-java"),
-    TOMCAT("Tomcat", "用于Apache Tomcat服务器的部署和管理", "fa-solid fa-truck-fast"),
-    ZBOX("Zbox", "用于项目管理和团队协作", "fa-solid fa-user-shield");
+    CLEAR_NULL("ClearNull", "清理数据字段空值，随机添加一个数字", "fa-solid fa-user-shield"),
+    CONVERT_CASE("ConvertCase", "将数据字段的文本转换为指定大小写", "fa-solid fa-text-height"),
+    REMOVE_DUPLICATES("RemoveDuplicates", "去除数据字段中的重复项", "fa-solid fa-ban"),
+    FORMAT_DATE("FormatDate", "将日期字段格式化为指定格式", "fa-solid fa-calendar-day"),
+    TRIM_WHITESPACE("TrimWhitespace", "去除数据字段中的前后空格", "fa-solid fa-space-shuttle"),
+    SPLIT_FIELD("SplitField", "将数据字段按指定分隔符拆分", "fa-solid fa-cut"),
+    MERGE_FIELDS("MergeFields", "将多个数据字段合并为一个", "fa-solid fa-plus"),
+    REPLACE_TEXT("ReplaceText", "替换数据字段中的指定文本", "fa-solid fa-exchange"),
+    FILL_MISSING("FillMissing", "用指定值填充缺失的数据", "fa-solid fa-fill"),
+    NORMALIZE_DATA("NormalizeData", "将数据字段的数值归一化到指定范围", "fa-solid fa-chart-line"),
+    ENCRYPT_DATA("EncryptData", "对数据字段进行简单的加密处理", "fa-solid fa-lock"),
+    DECRYPT_DATA("DecryptData", "对加密的数据字段进行解密处理", "fa-solid fa-unlock"),
+    FORMAT_DATA("FormatData", "将数据字段格式化为指定的输出格式", "fa-solid fa-pen"),
+    CLEAN_DATA("CleanData", "清洗数据字段中的异常值", "fa-solid fa-broom"),
+    MAP_VALUES("MapValues", "将数据字段中的值映射到另一组值", "fa-solid fa-map"),
+    CONVERT_TYPE("ConvertType", "将数据字段的值转换为另一种数据类型", "fa-solid fa-exchange-alt"),
+    REPLACE_PATTERN("ReplacePattern", "替换数据字段中的特定模式或值", "fa-solid fa-asterisk"),
+    VALIDATE_DATA("ValidateData", "验证数据字段中的数据是否符合预期格式", "fa-solid fa-check"),
+    MERGE_DATA("MergeData", "将来自不同源的数据合并到一起", "fa-solid fa-project-diagram");
 
     private final String name;
     private final String desc;

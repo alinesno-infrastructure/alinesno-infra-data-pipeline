@@ -163,7 +163,7 @@ public class CommonLoginController {
         Menu migrationManagementMenu = new Menu("Migration", "/migration", false, "noRedirect", "Layout", true, new Menu.Meta("迁移管理", "monitor", false, null),
                 List.of(
                         new Menu("Plugins", "data/pipeline/plugins/index", false, false, "data/pipeline/plugins/index", new Menu.Meta("插件管理", "peoples", false, null)),
-                        new Menu("Datasource", "data/pipeline/datasource/index", false, false, "data/pipeline/datasource/index", new Menu.Meta("数据接入", "server", false, null))
+                        new Menu("Datasource", "data/pipeline/readerSource/index", false, false, "data/pipeline/readerSource/index", new Menu.Meta("数据接入", "server", false, null))
                 ));
 
         Menu operationMonitoringMenu = new Menu("Monitoring", "/operation-monitoring", false, "noRedirect", "Layout", true, new Menu.Meta("运行监控", "monitor", false, null),

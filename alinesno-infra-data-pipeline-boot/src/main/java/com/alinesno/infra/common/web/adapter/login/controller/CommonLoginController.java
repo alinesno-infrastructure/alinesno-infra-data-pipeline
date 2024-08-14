@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.dto.LoginBodyDto;
 import com.alinesno.infra.common.web.adapter.dto.menus.Menu;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -139,36 +140,38 @@ public class CommonLoginController {
     @GetMapping("getRouters")
     public AjaxResult getRouters() {
 
-        Menu dashboardMenu = new Menu("概览", "/dashboard", false, "noRedirect", "Layout", true,
-                new Menu.Meta("概览", "dashboard", false, null),
+        Menu dashboardMenu = new Menu("Dashboard", "/dashboard", false, "noRedirect", "Layout", true, new Menu.Meta("概览", "dashboard", false, null),
                 List.of(
-                        new Menu("仪盘表", "index", false, false, "dashboard", new Menu.Meta("仪盘表", "dashboard", false, null)),
-                        new Menu("项目管理", "data/pipeline/project/index", false, false, "data/pipeline/project/index", new Menu.Meta("项目管理", "monitor", false, null))
+                        new Menu("Dashboard", "index", false, false, "dashboard", new Menu.Meta("仪盘表", "dashboard", false, null)),
+                        new Menu("ProjectIndex", "data/pipeline/project/index", false, false, "data/pipeline/project/index", new Menu.Meta("项目管理", "monitor", false, null))
                 ));
 
-        Menu taskManagementMenu = new Menu("任务管理", "/task", false, "noRedirect", "Layout", true,
-                new Menu.Meta("任务管理", "post", false, null),
+        Menu taskManagementMenu = new Menu("Task", "/task", false, "noRedirect", "Layout", true, new Menu.Meta("任务管理", "post", false, null),
                 List.of(
-                        new Menu("创建任务", "data/pipeline/task/create", false, false, "data/pipeline/task/create", new Menu.Meta("任务模板", "peoples", false, null)),
-                        new Menu("任务执行中", "data/pipeline/task/status", false, false, "data/pipeline/task/status", new Menu.Meta("任务执行中", "tree", false, null)),
-                        new Menu("异常历史", "data/pipeline/task/history", false, false, "data/pipeline/task/history", new Menu.Meta("异常任务", "message", false, null))
+                        new Menu("TaskCreate", "data/pipeline/task/list", false, false, "data/pipeline/task/list", new Menu.Meta("任务管理", "peoples", false, null)),
+                        new Menu("TaskInstant", "data/pipeline/task/status", false, false, "data/pipeline/task/status", new Menu.Meta("任务实例", "tree", false, null)),
+                        new Menu("TransList", "data/pipeline/trans/index", false, false, "data/pipeline/trans/index", new Menu.Meta("转换实例", "monitor", false, null)),
+                        new Menu("TaskHistory", "data/pipeline/task/history", false, false, "data/pipeline/task/history", new Menu.Meta("任务历史", "tree", false, null))
                 ));
 
-        Menu migrationManagementMenu = new Menu("迁移管理", "/migration", false, "noRedirect", "Layout", true,
-                new Menu.Meta("迁移管理", "monitor", false, null),
-                List.of(
-                        new Menu("插件管理", "data/pipeline/plugins/index", false, false, "data/pipeline/plugins/index", new Menu.Meta("插件管理", "peoples", false, null)),
-                        new Menu("数据接入", "data/pipeline/datasource/index", false, false, "data/pipeline/datasource/index", new Menu.Meta("数据源管理", "server", false, null))
-                ));
-
-        Menu operationMonitoringMenu = new Menu("运行监控", "/operation-monitoring", false, "noRedirect", "Layout", true,
-                new Menu.Meta("运行监控", "monitor", false, null),
-                List.of(
-                        new Menu("迁移日志", "data/pipeline/record/index", false, false, "data/pipeline/record/index", new Menu.Meta("迁移日志", "redis", false, null)),
-                        new Menu("运行监控", "data/pipeline/monitor/index", false, false, "data/pipeline/monitor/index", new Menu.Meta("运行监控", "redis", false, null))
-                ));
-
-        List<Menu> menus = List.of(dashboardMenu, taskManagementMenu, migrationManagementMenu, operationMonitoringMenu);
+        List<Menu> menus = getMenus(dashboardMenu, taskManagementMenu);
         return AjaxResult.success(menus);
+    }
+
+    @NotNull
+    private static List<Menu> getMenus(Menu dashboardMenu, Menu taskManagementMenu) {
+        Menu migrationManagementMenu = new Menu("Migration", "/migration", false, "noRedirect", "Layout", true, new Menu.Meta("迁移管理", "monitor", false, null),
+                List.of(
+                        new Menu("Plugins", "data/pipeline/plugins/index", false, false, "data/pipeline/plugins/index", new Menu.Meta("插件管理", "peoples", false, null)),
+                        new Menu("Datasource", "data/pipeline/datasource/index", false, false, "data/pipeline/datasource/index", new Menu.Meta("数据接入", "server", false, null))
+                ));
+
+        Menu operationMonitoringMenu = new Menu("Monitoring", "/operation-monitoring", false, "noRedirect", "Layout", true, new Menu.Meta("运行监控", "monitor", false, null),
+                List.of(
+                        new Menu("RecordIndex", "data/pipeline/record/index", false, false, "data/pipeline/record/index", new Menu.Meta("迁移日志", "redis", false, null)),
+                        new Menu("MonitorIndex", "data/pipeline/monitor/index", false, false, "data/pipeline/monitor/index", new Menu.Meta("运行监控", "redis", false, null))
+                ));
+
+        return List.of(dashboardMenu, taskManagementMenu, migrationManagementMenu, operationMonitoringMenu);
     }
 }

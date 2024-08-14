@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
-@TableName("trans_run_his")
+@TableName("pipeline_trans_run_his")
 public class TransRunHisEntity extends InfraBaseEntity {
 
     /**

@@ -1,6 +1,6 @@
 package com.alinesno.infra.data.pipeline.api.utils;
 
-import com.alinesno.infra.data.pipeline.entity.DatasourceEntity;
+import com.alinesno.infra.data.pipeline.entity.ReaderSourceEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
@@ -21,7 +21,7 @@ public class DbParserUtils {
 	 * 解析mysql jdbc链接
 	 * @param jdbcUrl
 	 */
-	public static void parserJdbcUrl(DatasourceEntity e , String jdbcUrl) {
+	public static void parserJdbcUrl(ReaderSourceEntity e , String jdbcUrl) {
 		
 		String pattern="jdbc:(?<type>[a-z]+)://(?<host>[a-zA-Z0-9-//.]+):(?<port>[0-9]+)/(?<database>[a-zA-Z0-9_]+)?";
         Pattern namePattern = Pattern.compile(pattern);
@@ -53,10 +53,10 @@ public class DbParserUtils {
         Assert.hasLength(port , "数据端口类型为空");
         Assert.hasLength(database , "数据库名类型为空");
        
-        e.setDbPort(port);
-        e.setDbName(database) ; 
-        e.setDbUrl(host) ; 
-        e.setJdbcUrl(jdbcUrl); 
+        e.setReaderPort(port);
+        e.setReaderName(database) ;
+        e.setReaderUrl(host) ;
+        e.setJreadercUrl(jdbcUrl);
         
 	}
 

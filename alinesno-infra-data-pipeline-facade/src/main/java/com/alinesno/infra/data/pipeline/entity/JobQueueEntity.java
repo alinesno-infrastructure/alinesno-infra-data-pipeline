@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * TransferQueueEntity 类是任务列表实体类，用于表示任务的转移队列信息。
  * 它包含了转移名称、转移数据和状态等字段，用于记录任务的相关信息。
  */
-@TableName("job_queue") // 指定数据库表名
+@TableName("pipeline_job_queue") // 指定数据库表名
 public class JobQueueEntity extends InfraBaseEntity {
 
     /**

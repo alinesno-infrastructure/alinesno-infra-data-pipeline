@@ -7,8 +7,8 @@
               <el-form-item label="应用名称" prop="typeName">
                  <el-input v-model="queryParams.typeName" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
               </el-form-item>
-              <el-form-item label="应用名称" prop="channelDesc">
-                 <el-input v-model="queryParams['condition[channelDesc|like]']" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+              <el-form-item label="应用名称" prop="pluginDesc">
+                 <el-input v-model="queryParams['condition[pluginDesc|like]']" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
               </el-form-item>
               <el-form-item>
                  <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -44,8 +44,8 @@
               </el-table-column>
 
               <!-- 业务字段-->
-              <el-table-column label="类型名称" align="center" width="150" key="channelName" prop="channelName" v-if="columns[0].visible" />
-              <el-table-column label="类型描述" align="left" key="channelDesc" prop="channelDesc" v-if="columns[0].visible" />
+              <el-table-column label="类型名称" align="center" width="150" key="pluginName" prop="pluginName" v-if="columns[0].visible" />
+              <el-table-column label="类型描述" align="left" key="pluginDesc" prop="pluginDesc" v-if="columns[0].visible" />
               <el-table-column label="是否开启" align="center" width="200" key="isOpen" prop="isOpen" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
                     <el-switch

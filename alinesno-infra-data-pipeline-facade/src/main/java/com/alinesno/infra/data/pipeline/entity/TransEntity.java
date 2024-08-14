@@ -1,7 +1,10 @@
 package com.alinesno.infra.data.pipeline.entity;
 
+import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 转换实体类
@@ -14,8 +17,65 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
-@TableName("trans")
-public class TransEntity extends BaseKettleEntity {
+@EqualsAndHashCode(callSuper = true)
+@Data
+@TableName("pipeline_trans")
+public class TransEntity extends InfraBaseEntity {
+
+    /**
+     * 名称
+     */
+    @TableField("name")
+    private String name;
+
+    /**
+     * 描述
+     */
+    @TableField("description")
+    private String description;
+
+    /**
+     * 类型
+     */
+    @TableField("type")
+    private String type;
+
+    /**
+     * 路径
+     */
+    @TableField("path")
+    private String path;
+
+    /**
+     * Quartz
+     */
+    @TableField("quartz")
+    private String quartz;
+
+    /**
+     * 同步策略
+     */
+    @TableField("strategy")
+    private String syncStrategy;
+
+    /**
+     * 日志级别
+     */
+    @TableField("log_level")
+    private String logLevel;
+
+    /**
+     * 状态
+     */
+    @TableField("status")
+    private String status;
+
+    /**
+     * 分类ID
+     */
+    @TableField("category_id")
+    private String categoryId;
+
 
     /**
      * 仓库名称
@@ -58,72 +118,4 @@ public class TransEntity extends BaseKettleEntity {
      */
     @TableField("total_data_count")
     private Long totalDataCount ;
-
-    public Long getProcessDataCount() {
-        return processDataCount;
-    }
-
-    public void setProcessDataCount(Long processDataCount) {
-        this.processDataCount = processDataCount;
-    }
-
-    public Long getTotalDataCount() {
-        return totalDataCount;
-    }
-
-    public void setTotalDataCount(Long totalDataCount) {
-        this.totalDataCount = totalDataCount;
-    }
-
-    public int getOrderStep() {
-        return orderStep;
-    }
-
-    public void setOrderStep(int orderStep) {
-        this.orderStep = orderStep;
-    }
-
-    public Long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
-
-    public String getTransContext() {
-        return transContext;
-    }
-
-    public void setTransContext(String transContext) {
-        this.transContext = transContext;
-    }
-
-    /**
-     * 获取仓库名称
-     */
-    public String getGitId() {
-        return gitId;
-    }
-
-    /**
-     * 设置仓库名称
-     */
-    public void setGitId(String gitId) {
-        this.gitId = gitId;
-    }
-
-    /**
-     * 获取转换文件路径
-     */
-    public String getRelativeLocation() {
-        return relativeLocation;
-    }
-
-    /**
-     * 设置转换文件路径
-     */
-    public void setRelativeLocation(String relativeLocation) {
-        this.relativeLocation = relativeLocation;
-    }
 }

@@ -1,7 +1,7 @@
 package com.alinesno.infra.data.pipeline.service.impl;
 
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
-import com.alinesno.infra.data.pipeline.entity.BuildGitEntity;
+import com.alinesno.infra.data.pipeline.entity.GitEntity;
 import com.alinesno.infra.data.pipeline.mapper.BuildGitMapper;
 import com.alinesno.infra.data.pipeline.service.IBuildGitService;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @autor luoxiaodong
  */
 @Service
-public class BuildGitServiceImpl extends IBaseServiceImpl<BuildGitEntity, BuildGitMapper> implements IBuildGitService {
+public class BuildGitServiceImpl extends IBaseServiceImpl<GitEntity, BuildGitMapper> implements IBuildGitService {
     //日志记录
     @SuppressWarnings("unused")
     private static final Logger log = LoggerFactory.getLogger(BuildGitServiceImpl.class);

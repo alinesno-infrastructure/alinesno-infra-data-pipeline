@@ -6,17 +6,17 @@ import lombok.Getter;
 public enum DbEnums {
 
     MYSQL("mysql", "MySQL", "com.mysql.cj.jdbc.Driver", "fa-brands fa-mysql"),
-    ORACLE("oracle", "Oracle", "oracle.jdbc.driver.OracleDriver", "fa-brands fa-java"),
-    SQLSERVER("sqlserver", "SQLServer", "com.microsoft.sqlserver.jdbc.SQLServerDriver", "fa-brands fa-windows"),
-    POSTGRESQL("postgresql", "PostgreSQL", "org.postgresql.Driver", "fa-brands fa-postgres"),
-    DB2("db2", "DB2", "com.ibm.db2.jcc.DB2Driver", "fa-brands fa-linux"),
+    ORACLE("oracle", "Oracle", "oracle.jdbc.driver.OracleDriver", "fa-brands fa-oracle"),
+    SQLSERVER("sqlserver", "SQLServer", "com.microsoft.sqlserver.jdbc.SQLServerDriver", "fa-brands fa-microsoft"),
+    POSTGRESQL("postgresql", "PostgreSQL", "org.postgresql.Driver", "fa-brands fa-postgresql"),
+    DB2("db2", "DB2", "com.ibm.db2.jcc.DB2Driver", "fa-brands fa-ibm"),
     MONGODB("mongodb", "MongoDB", "com.mongodb.jdbc.MongoDriver", "fa-brands fa-mongodb"),
-    CASSANDRA("cassandra", "Cassandra", "com.datastax.oss.driver.internal.core.cql.CqlRequestHandler", "fa-solid fa-database"),
+    CASSANDRA("cassandra", "Cassandra", "com.datastax.oss.driver.internal.core.cql.CqlRequestHandler", "fa-brands fa-cassandra"),
     ELASTICSEARCH("elasticsearch", "Elasticsearch", "org.elasticsearch.client.jdbc.ElasticsearchDriver", "fa-brands fa-elastic"),
-    HBASE("hbase", "HBase", "org.apache.hadoop.hbase.jdbc.HBaseDriver", "fa-solid fa-database"),
-    HIVE("hive", "Hive", "org.apache.hive.jdbc.HiveDriver", "fa-solid fa-database"),
-    KAFKA("kafka", "Kafka", "org.apache.kafka.jdbc.KafkaDriver", "fa-brands fa-apache"),
-    KUDU("kudu", "Kudu", "org.apache.kudu.jdbc.KuduDriver", "fa-solid fa-database"),
+    HBASE("hbase", "HBase", "org.apache.hadoop.hbase.jdbc.HBaseDriver", "fa-brands fa-hadoop"),
+    HIVE("hive", "Hive", "org.apache.hive.jdbc.HiveDriver", "fa-brands fa-hive"),
+    KAFKA("kafka", "Kafka", "org.apache.kafka.jdbc.KafkaDriver", "fa-brands fa-kafka"),
+    KUDU("kudu", "Kudu", "org.apache.kudu.jdbc.KuduDriver", "fa-brands fa-kudu"),
     REDIS("redis", "Redis", "redis.clients.jedis.JedisDriver", "fa-brands fa-redis"),
     S3("s3", "S3", "com.amazonaws.jdbc.AWSJDBCDriver", "fa-brands fa-amazon"),
     SFTP("sftp", "SFTP", "com.jcraft.jsch.jdbc.JSchDriver", "fa-solid fa-upload"),
@@ -26,17 +26,15 @@ public enum DbEnums {
     HTTP("http", "HTTP", "org.apache.http.jdbc.HttpDriver", "fa-solid fa-globe"),
     WEBSERVICE("webservice", "WebService", "org.apache.axis.jdbc.AxisDriver", "fa-solid fa-cloud"),
     JDBC("jdbc", "JDBC", "org.apache.derby.jdbc.EmbeddedDriver", "fa-brands fa-java"),
-    JSON("json", "JSON", "org.json.JSONDriver", "fa-solid fa-file-code"),
-    XML("xml", "XML", "org.w3c.dom.jdbc.DomDriver", "fa-solid fa-file-code"),
+    JSON("json", "JSON", "org.json.JSONDriver", "fa-solid fa-file-json"),
+    XML("xml", "XML", "org.w3c.dom.jdbc.DomDriver", "fa-solid fa-file-xml"),
     CSV("csv", "CSV", "org.apache.commons.csv.CsvDriver", "fa-solid fa-file-csv"),
-    FIXED("fixed", "Fixed", "org.apache.commons.fixed.FixedDriver", "fa-solid fa-file-code"),
-    AVRO("avro", "Avro", "org.apache.avro.jdbc.AvroDriver", "fa-solid fa-file-code"),
-    PARQUET("parquet", "Parquet", "org.apache.parquet.jdbc.ParquetDriver", "fa-solid fa-file-code"),
-    ORC("orc", "ORC", "org.apache.orc.jdbc.OrcDriver", "fa-solid fa-file-code"),
+    FIXED("fixed", "Fixed", "org.apache.commons.fixed.FixedDriver", "fa-solid fa-file"),
+    AVRO("avro", "Avro", "org.apache.avro.jdbc.AvroDriver", "fa-solid fa-file"),
+    PARQUET("parquet", "Parquet", "org.apache.parquet.jdbc.ParquetDriver", "fa-solid fa-file"),
+    ORC("orc", "ORC", "org.apache.orc.jdbc.OrcDriver", "fa-solid fa-file"),
     EXCEL("excel", "Excel", "org.apache.poi.jdbc.ExcelDriver", "fa-solid fa-file-excel"),
-    LUCENE("lucene", "Lucene", "org.apache.lucene.jdbc.LuceneDriver", "fa-solid fa-search")
-
-    ;
+    LUCENE("lucene", "Lucene", "org.apache.lucene.jdbc.LuceneDriver", "fa-solid fa-search");
 
     private final String driverName;
     private final String dbType;

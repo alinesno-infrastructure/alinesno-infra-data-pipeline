@@ -27,7 +27,7 @@ alinesno:
 # actable配置
 actable:
   table:
-    auto: update
+    auto: create
   model:
     pack: com.alinesno.infra.data.pipeline.entity;
   database:

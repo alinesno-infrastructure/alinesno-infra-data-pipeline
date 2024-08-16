@@ -439,6 +439,35 @@ const handleChangStatusField = async(field , value , id) => {
      }
 }
 
+ /* 立即执行一次 */
+function handleRun(row) {
+   this.$modal.confirm('确认要立即执行一次"' + row.jobName + '"任务吗？').then(function() {
+      return runJob(row.jobId, row.jobGroup);
+   }).then(() => {
+      this.$modal.msgSuccess("执行成功");
+   }).catch(() => {});
+} 
+
+/** 任务详细信息 */
+function handleView(row) {
+   getJob(row.jobId).then(response => {
+      this.form = response.data;
+      this.openView = true;
+   });
+} 
+
+/** cron表达式按钮操作 */
+function handleShowCron() {
+   this.expression = this.form.cronExpression;
+   this.openCron = true;
+}
+
+/** 任务日志列表查询 */
+function handleJobLog(row) {
+   const jobId = row.jobId || 0;
+   this.$router.push('/monitor/job-log/index/' + jobId)
+}
+
 /** 提交配置文档类型 */
 function submitDocumentTypeForm(){
   // TODO 待保存任务文档类型

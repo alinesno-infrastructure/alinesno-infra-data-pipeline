@@ -3,14 +3,16 @@ package com.alinesno.infra.data.pipeline.api.controller;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
+import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
+import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.service.IJobService;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
@@ -26,17 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  * @author  luoxiaodong
  */
+@Slf4j
 @Api(tags = "Job")
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
 @RequestMapping("/api/infra/data/pipeline/job")
 public class JobController extends BaseController<JobEntity, IJobService> {
 
-    // 日志记录
-    private static final Logger log = LoggerFactory.getLogger(JobController.class);
-
     @Autowired
     private IJobService service;
+
+    @Autowired
+    private Scheduler scheduler ;
 
     /**
      * 获取JobEntity的DataTables数据。
@@ -50,6 +53,80 @@ public class JobController extends BaseController<JobEntity, IJobService> {
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
         return this.toPage(model, this.getFeign(), page);
+    }
+
+    /**
+     * 运行一次
+     * @param jobId
+     * @return
+     */
+    @PostMapping("runOneTime")
+    public AjaxResult runOneTime(String jobId) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(jobId, PipeConstants.JOB_GROUP_NAME);
+        scheduler.triggerJob(jobKey);
+
+        return AjaxResult.success() ;
+    }
+
+    /**
+     * 暂停触发器
+     * @param jobId
+     * @return
+     */
+    @PostMapping("pauseTrigger")
+    public AjaxResult pauseTrigger(String jobId) throws SchedulerException {
+        scheduler.pauseTrigger(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));
+        return AjaxResult.success();
+    }
+
+    /**
+     * 任务的恢复
+     * @param jobId
+     * @return
+     */
+    @PostMapping("resumeTrigger")
+    public AjaxResult resumeTrigger(String jobId) throws SchedulerException {
+        scheduler.resumeTrigger(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME)) ;
+        return AjaxResult.success();
+    }
+
+    /**
+     * 删除任务
+     * @param jobId
+     * @return
+     */
+    @PostMapping("deleteJob")
+    public AjaxResult deleteJob(String jobId) throws SchedulerException {
+
+        scheduler.pauseTrigger(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));//暂停触发器
+        scheduler.unscheduleJob(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));//移除触发器
+        scheduler.deleteJob(JobKey.jobKey(jobId , PipeConstants.JOB_GROUP_NAME));//删除Job
+
+        return AjaxResult.success();
+    }
+
+    /**
+     * 更新定时任务
+     * @param jobId
+     * @param cron
+     * @return
+     */
+    @PostMapping("updateJob")
+    public AjaxResult updateJob(String jobId , String cron) throws SchedulerException {
+
+        TriggerKey triggerKey = TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME);
+
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+        CronTrigger trigger = TriggerBuilder.newTrigger()
+                .usingJobData("jobId", jobId)
+                .withIdentity(jobId , PipeConstants.TRIGGER_GROUP_NAME)
+                .withSchedule(scheduleBuilder)
+                .startNow()
+                .build();
+
+        //按新的trigger重新设置job执行
+        scheduler.rescheduleJob(triggerKey, trigger);
+        return AjaxResult.success();
     }
 
     @Override

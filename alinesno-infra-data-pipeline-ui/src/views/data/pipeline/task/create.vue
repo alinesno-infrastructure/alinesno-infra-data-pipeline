@@ -4,6 +4,7 @@
      <el-row :gutter="20">
         <!--应用数据-->
         <el-col :span="24" :xs="24">
+         
            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
               <el-form-item label="应用名称" prop="dbName">
                  <el-input v-model="queryParams.dbName" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />

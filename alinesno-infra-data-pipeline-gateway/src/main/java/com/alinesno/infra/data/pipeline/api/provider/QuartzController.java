@@ -1,12 +1,12 @@
 package com.alinesno.infra.data.pipeline.api.provider;
 
 import com.alinesno.infra.common.facade.response.AjaxResult;
+import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import io.jsonwebtoken.lang.Assert;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * QuartzController
+ */
+@Slf4j
 @RestController
 @RequestMapping("/v1/api/data/quartz/")
 public class QuartzController {
-
-    private static final Logger log = LoggerFactory.getLogger(QuartzController.class) ;
-
-    public static String TRIGGER_GROUP_NAME = "quartz_pipeline_trigger";
-    public static String JOB_GROUP_NAME = "quartz_job";
 
     @Autowired
     private Scheduler scheduler ;
@@ -35,7 +34,7 @@ public class QuartzController {
         Assert.hasLength(jobId , "任务标识为空");
         Assert.hasLength(cron , "触发构建为空");
 
-        TriggerKey triggerKey = TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME);
+        TriggerKey triggerKey = TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME);
         CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 
         if(trigger != null){
@@ -44,13 +43,13 @@ public class QuartzController {
 
         JobDetail jobDetail = JobBuilder.newJob(DataTransferJob.class)
                 .usingJobData("jobId", jobId)
-                .withIdentity(jobId , JOB_GROUP_NAME)
+                .withIdentity(jobId , PipeConstants.JOB_GROUP_NAME)
                 .build();//执行
 
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
         trigger = TriggerBuilder.newTrigger()
                 .usingJobData("jobId", jobId)
-                .withIdentity(jobId , TRIGGER_GROUP_NAME)
+                .withIdentity(jobId , PipeConstants.TRIGGER_GROUP_NAME)
                 .withSchedule(scheduleBuilder)
                 .startNow()
                 .build();
@@ -68,7 +67,7 @@ public class QuartzController {
      */
     @PostMapping("pauseTrigger")
     public AjaxResult pauseTrigger(String jobId) throws SchedulerException {
-        scheduler.pauseTrigger(TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME));
+        scheduler.pauseTrigger(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));
         return AjaxResult.success();
     }
 
@@ -79,7 +78,7 @@ public class QuartzController {
      */
     @PostMapping("runOneTime")
     public AjaxResult runOneTime(String jobId) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(jobId,JOB_GROUP_NAME);
+        JobKey jobKey = JobKey.jobKey(jobId,PipeConstants.JOB_GROUP_NAME);
         scheduler.triggerJob(jobKey);
 
         return AjaxResult.success() ;
@@ -92,7 +91,7 @@ public class QuartzController {
      */
     @PostMapping("startJob")
     public AjaxResult startJob(String jobId) throws SchedulerException {
-        scheduler.resumeTrigger(TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME));//恢复Trigger
+        scheduler.resumeTrigger(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));//恢复Trigger
         return AjaxResult.success();
     }
 
@@ -103,7 +102,7 @@ public class QuartzController {
      */
     @PostMapping("unscheduleJob")
     public AjaxResult unscheduleJob(String jobId) throws SchedulerException {
-        scheduler.unscheduleJob(TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME));//移除触发器
+        scheduler.unscheduleJob(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));//移除触发器
         return AjaxResult.success();
     }
 
@@ -114,7 +113,7 @@ public class QuartzController {
      */
     @PostMapping("resumeTrigger")
     public AjaxResult resumeTrigger(String jobId) throws SchedulerException {
-        scheduler.resumeTrigger(TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME)) ;
+        scheduler.resumeTrigger(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME)) ;
         return AjaxResult.success();
     }
 
@@ -126,9 +125,9 @@ public class QuartzController {
     @PostMapping("deleteJob")
     public AjaxResult deleteJob(String jobId) throws SchedulerException {
 
-        scheduler.pauseTrigger(TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME));//暂停触发器
-        scheduler.unscheduleJob(TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME));//移除触发器
-        scheduler.deleteJob(JobKey.jobKey(jobId , JOB_GROUP_NAME));//删除Job
+        scheduler.pauseTrigger(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));//暂停触发器
+        scheduler.unscheduleJob(TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME));//移除触发器
+        scheduler.deleteJob(JobKey.jobKey(jobId , PipeConstants.JOB_GROUP_NAME));//删除Job
 
         return AjaxResult.success();
     }
@@ -217,12 +216,12 @@ public class QuartzController {
     @PostMapping("updateJob")
     public AjaxResult updateJob(String jobId , String cron) throws SchedulerException {
 
-        TriggerKey triggerKey = TriggerKey.triggerKey(jobId , TRIGGER_GROUP_NAME);
+        TriggerKey triggerKey = TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME);
 
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
         CronTrigger trigger = TriggerBuilder.newTrigger()
                 .usingJobData("jobId", jobId)
-                .withIdentity(jobId , TRIGGER_GROUP_NAME)
+                .withIdentity(jobId , PipeConstants.TRIGGER_GROUP_NAME)
                 .withSchedule(scheduleBuilder)
                 .startNow()
                 .build();

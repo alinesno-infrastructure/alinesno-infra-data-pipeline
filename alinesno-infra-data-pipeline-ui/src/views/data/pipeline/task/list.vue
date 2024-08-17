@@ -112,9 +112,11 @@
                               <el-button link type="primary" icon="DArrowRight">更多</el-button>
                               <template #dropdown>
                                  <el-dropdown-menu>
-                                    <el-dropdown-item command="handleRun" icon="CaretRight" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">执行一次</el-dropdown-item>
-                                    <el-dropdown-item command="handleView" icon="View" style="font-size:13px"  v-hasPermi="['monitor:job:query']">任务详细</el-dropdown-item>
-                                    <el-dropdown-item command="handleJobLog" icon="Operation" style="font-size:13px"  v-hasPermi="['monitor:job:query']">调度日志</el-dropdown-item>
+                                    <el-dropdown-item @click="handleRunOneTime(row)" icon="CaretRight" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">执行一次</el-dropdown-item>
+                                    <el-dropdown-item @click="handlePauseTrigger(row)" icon="SwitchButton" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">暂停任务</el-dropdown-item>
+                                    <el-dropdown-item @click="handleResumeTrigger(row)" icon="Open" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">恢复任务</el-dropdown-item>
+                                    <el-dropdown-item @click="handleView(row)" icon="View" style="font-size:13px"  v-hasPermi="['monitor:job:query']">任务详细</el-dropdown-item>
+                                    <el-dropdown-item @click="handleJobLog(row)" icon="Operation" style="font-size:13px"  v-hasPermi="['monitor:job:query']">调度日志</el-dropdown-item>
                                  </el-dropdown-menu>
                               </template>
                         </el-dropdown>
@@ -259,6 +261,9 @@ import {
   getJob,
   updateJob,
   addJob,
+  runOneTime , 
+  resumeTrigger,
+  pauseTrigger,
   changStatusField
 } from "@/api/data/pipeline/job";
 
@@ -278,6 +283,8 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+const openCron = ref(false);
+const expression = ref("");
 
 // 是否打开配置文档
 const openDocumentTypeDialog = ref(false);
@@ -440,9 +447,9 @@ const handleChangStatusField = async(field , value , id) => {
 }
 
  /* 立即执行一次 */
-function handleRun(row) {
+function handleRunOneTime(row) {
    this.$modal.confirm('确认要立即执行一次"' + row.jobName + '"任务吗？').then(function() {
-      return runJob(row.jobId, row.jobGroup);
+      return runOneTime(row.jobId, row.jobGroup);
    }).then(() => {
       this.$modal.msgSuccess("执行成功");
    }).catch(() => {});
@@ -450,22 +457,38 @@ function handleRun(row) {
 
 /** 任务详细信息 */
 function handleView(row) {
-   getJob(row.jobId).then(response => {
-      this.form = response.data;
-      this.openView = true;
+   getJob(row.id).then(response => {
+      // this.form = response.data;
+      // this.openView = true;
+      console.log(response)
    });
 } 
 
+/** 暂停按钮操作 */
+function handleResumeTrigger(row){
+   resumeTrigger(row.id).then(response => {
+      this.$modal.msgSuccess("执行成功");
+   });
+}
+
+/** 恢复按钮操作 */
+function handlePauseTrigger(row){
+   pauseTrigger(row.id).then(response => {
+      this.$modal.msgSuccess("执行成功");
+   });
+}
+
+
 /** cron表达式按钮操作 */
 function handleShowCron() {
-   this.expression = this.form.cronExpression;
-   this.openCron = true;
+   expression.value = this.form.cronExpression;
+   openCron.value = true;
 }
 
 /** 任务日志列表查询 */
 function handleJobLog(row) {
-   const jobId = row.jobId || 0;
-   this.$router.push('/monitor/job-log/index/' + jobId)
+   const jobId = row.id || 0;
+   router.push('/monitor/job-log/index/' + jobId)
 }
 
 /** 提交配置文档类型 */

@@ -20,9 +20,55 @@ var managerUrl = {
     detailUrl: prefix +"detail",
     removeUrl: prefix + "delete" ,
     exportUrl: prefix + "exportExcel",
+    runOneTime: prefix + "runOneTime", // 立即执行一次job
+    pauseTrigger: prefix + "pauseTrigger", // 暂停trigger
+    resumeTrigger: prefix + "resumeTrigger", // 恢复trigger 
+    deleteJob: prefix + "deleteJob", // 删除job
+    updateJob: prefix + "updateJob", // 更新job
     changeField: prefix + "changeField",
     listAllJob: prefix + "listAllJob",
     downloadfile: prefix + "downloadfile"
+}
+
+// 立即执行一次job
+export function runOneTime(jobId){
+  return request({
+    url: managerUrl.runOneTime + "?jobId=" + parseStrEmpty(data.jobId),
+    method: 'get',
+  })
+}
+
+// 暂停trigger
+export function pauseTrigger(jobId){
+  return request({
+    url: managerUrl.pauseTrigger + "?triggerId=" + parseStrEmpty(jobId),
+    method: 'get',
+  })
+}
+
+// 恢复trigger
+export function resumeTrigger(jobId){
+  return request({
+    url: managerUrl.resumeTrigger + "?triggerId=" + parseStrEmpty(jobId),
+    method: 'get',
+  })
+}
+
+// 删除job
+export function deleteJob(jobId){
+  return request({
+    url: managerUrl.deleteJob + "?jobId=" + parseStrEmpty(jobId),
+    method: 'get',
+  })
+}
+
+// 更新job
+export function updateJob(data){
+  return request({
+    url: managerUrl.updateJob ,
+    method: 'post',
+    data: data
+  })
 }
 
 // 列出所有集成渠道

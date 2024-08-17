@@ -18,7 +18,7 @@ class TaskInfoDtoTest {
 
     static void testToString(){
         TaskInfoDto taskInfoDto = new TaskInfoDto() ;
-        taskInfoDto.setName("data_pipeline_mysql_to_clickhouse");
+        taskInfoDto.setName("data_pipeline_mysql_to_mysql");
         taskInfoDto.setDescribe("存储服务数据迁移到数据仓库中.");
 
         // 上下文环境
@@ -38,20 +38,26 @@ class TaskInfoDtoTest {
         reader.setType(SourceReaderEnums.MYSQL.getCode());
         reader.setDriverClass("com.mysql.cj.jdbc.Driver");
         reader.setJdbcUrl("jdbc:mysql://localhost:3306/dev_alinesno_infra_data_pipeline_v100?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL");
-        reader.setPassword("adminer");
         reader.setUsername("root");
+        reader.setPassword("adminer");
         reader.setQuerySql("select * from kfinfo");
 
         taskInfoDto.setReader(reader);
 
         // 写入端
         SinkWriter writer = new SinkWriter();
-        writer.setName("clickhouse");
-        writer.setType(SinkReaderEnums.CLICKHOUSE.getCode());
-        writer.setDriverClass("com.clickhouse.jdbc.ClickHouseDriver");
-        writer.setJdbcUrl("jdbc:clickhouse://127.0.0.1:8123/default?rewriteBatchedStatements=true") ;
-        writer.setUsername("default");
-        writer.setPassword("");
+//        writer.setName("clickhouse");
+//        writer.setType(SinkReaderEnums.CLICKHOUSE.getCode());
+//        writer.setDriverClass("com.clickhouse.jdbc.ClickHouseDriver");
+//        writer.setJdbcUrl("jdbc:clickhouse://127.0.0.1:8123/default?rewriteBatchedStatements=true") ;
+//        writer.setUsername("default");
+//        writer.setPassword("");
+        writer.setName("mysql");
+        writer.setType(SinkReaderEnums.MYSQL.getCode());
+        writer.setDriverClass("com.mysql.cj.jdbc.Driver");
+        writer.setJdbcUrl("jdbc:mysql://localhost:3306/dev_alinesno_infra_data_pipeline_v100_2?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL");
+        writer.setUsername("root");
+        writer.setPassword("adminer");
         writer.setWriteModel("append");
 
         taskInfoDto.setWriter(writer);
@@ -109,7 +115,7 @@ class TaskInfoDtoTest {
         mappingBeans.add(new MappingBean("Version", "Version", DataMappingEnums.COPY.getCode()));
         mappingBeans.add(new MappingBean("id", "id", DataMappingEnums.COPY.getCode()));
 
-        taskInfoDto.setFileMap(mappingBeans);
+        taskInfoDto.setFieldMap(mappingBeans);
 
         System.out.println("taskInfoDto = \r\n " + JSONObject.toJSONString(taskInfoDto));
     }

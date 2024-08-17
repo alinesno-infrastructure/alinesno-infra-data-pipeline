@@ -36,7 +36,7 @@
               <el-table-column type="selection" width="50" align="center" />
               
               <el-table-column label="图标" align="center" width="60" key="icon" v-if="columns[5].visible">
-                 <template #default="scope">
+                 <template #scope>
                     <span style="font-size:25px;color:#3b5998">
                        <i class="fa-solid fa-file-word" />
                     </span>
@@ -108,15 +108,15 @@
                        <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:Job:remove']">删除</el-button>
                     </el-tooltip>
                     <el-tooltip content="更多" placement="top" v-if="scope.row.JobId !== 1">
-                        <el-dropdown style="margin-top:2px;" :hide-on-click="false">
+                        <el-dropdown style="margin-top:2px;" :hide-on-click="false" @command="(command) => handleCommand(command, scope.row)">
                               <el-button link type="primary" icon="DArrowRight">更多</el-button>
                               <template #dropdown>
                                  <el-dropdown-menu>
-                                    <el-dropdown-item @click="handleRunOneTime(row)" icon="CaretRight" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">执行一次</el-dropdown-item>
-                                    <el-dropdown-item @click="handlePauseTrigger(row)" icon="SwitchButton" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">暂停任务</el-dropdown-item>
-                                    <el-dropdown-item @click="handleResumeTrigger(row)" icon="Open" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">恢复任务</el-dropdown-item>
-                                    <el-dropdown-item @click="handleView(row)" icon="View" style="font-size:13px"  v-hasPermi="['monitor:job:query']">任务详细</el-dropdown-item>
-                                    <el-dropdown-item @click="handleJobLog(row)" icon="Operation" style="font-size:13px"  v-hasPermi="['monitor:job:query']">调度日志</el-dropdown-item>
+                                    <el-dropdown-item command="handleRunOneTime" icon="CaretRight" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">执行一次</el-dropdown-item>
+                                    <el-dropdown-item command="handlePauseTrigger" icon="SwitchButton" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">暂停任务</el-dropdown-item>
+                                    <el-dropdown-item command="handleResumeTrigger" icon="Open" style="font-size:13px" v-hasPermi="['monitor:job:changeStatus']">恢复任务</el-dropdown-item>
+                                    <el-dropdown-item command="handleView" icon="View" style="font-size:13px"  v-hasPermi="['monitor:job:query']">任务详细</el-dropdown-item>
+                                    <el-dropdown-item command="handleJobLog" icon="Operation" style="font-size:13px"  v-hasPermi="['monitor:job:query']">调度日志</el-dropdown-item>
                                  </el-dropdown-menu>
                               </template>
                         </el-dropdown>
@@ -448,11 +448,17 @@ const handleChangStatusField = async(field , value , id) => {
 
  /* 立即执行一次 */
 function handleRunOneTime(row) {
-   this.$modal.confirm('确认要立即执行一次"' + row.jobName + '"任务吗？').then(function() {
-      return runOneTime(row.jobId, row.jobGroup);
-   }).then(() => {
-      this.$modal.msgSuccess("执行成功");
-   }).catch(() => {});
+   console.log('row = ' + row);
+   // proxy.$modal.confirm('确认要立即执行一次"' + row.jobName + '"任务吗？').then(function() {
+   //    return runOneTime(row.id).then(res => {
+   //       console.info("res = " + res);
+   //    });
+   // }).then(() => {
+   //    proxy.$modal.msgSuccess("执行成功");
+   // }).catch(() => {});
+   runOneTime(row.id).then(res => {
+      console.info("res = " + res);
+   });
 } 
 
 /** 任务详细信息 */
@@ -494,6 +500,29 @@ function handleJobLog(row) {
 /** 提交配置文档类型 */
 function submitDocumentTypeForm(){
   // TODO 待保存任务文档类型
+}
+
+/** 下拉事件 */
+function handleCommand(command,row){
+   switch (command) {
+      case "handleRunOneTime":
+         handleRunOneTime(row);
+         break;
+      case "handlePauseTrigger":
+         handlePauseTrigger(row);
+         break;
+      case "handleResumeTrigger":
+         handleResumeTrigger(row);
+         break;
+      case "handleView":
+         handleView(row);
+         break;
+      case "handleJobLog":
+         handleJobLog(row);
+         break;
+      default:
+         break;
+   }
 }
 
 getList();

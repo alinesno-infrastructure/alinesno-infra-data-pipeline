@@ -1,7 +1,7 @@
 package com.alinesno.infra.data.pipeline.scheduler.quartz;
 
 import com.alinesno.infra.common.core.context.SpringContext;
-import com.alinesno.infra.data.pipeline.scheduler.IDistSchedulerService;
+import com.alinesno.infra.data.pipeline.scheduler.IQuartzSchedulerService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 
@@ -24,7 +24,7 @@ public class DataTransferJob implements Job {
         Long jobId = jobDataMap.getLong("jobId") ;
         log.debug("JobId = {}" , jobId);
 
-        IDistSchedulerService distSchedulerService = SpringContext.getBean(IDistSchedulerService.class) ;
+        IQuartzSchedulerService distSchedulerService = SpringContext.getBean(IQuartzSchedulerService.class) ;
 
         try {
             distSchedulerService.createCronJob(jobId);

@@ -2,8 +2,9 @@ package com.alinesno.infra.data.pipeline.scheduler.controller;
 
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
-import com.alinesno.infra.data.pipeline.scheduler.quartz.DataTransferJob;
+import com.alinesno.infra.data.pipeline.scheduler.IQuartzSchedulerService;
 import com.alinesno.infra.data.pipeline.scheduler.quartz.QuartzJobsVO;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
@@ -30,34 +31,16 @@ public class QuartzController {
     @Autowired
     private Scheduler scheduler ;
 
+    @Autowired
+    private IQuartzSchedulerService distSchedulerService ;
+
     @PostMapping("addJob")
     public AjaxResult addJob(String jobId , String cron) throws SchedulerException {
 
         Assert.hasLength(jobId , "任务标识为空");
         Assert.hasLength(cron , "触发构建为空");
 
-        TriggerKey triggerKey = TriggerKey.triggerKey(jobId , PipeConstants.TRIGGER_GROUP_NAME);
-        CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-
-        if(trigger != null){
-            return AjaxResult.error(jobId, "定时任务已存在.") ;
-        }
-
-        JobDetail jobDetail = JobBuilder.newJob(DataTransferJob.class)
-                .usingJobData("jobId", jobId)
-                .withIdentity(jobId , PipeConstants.JOB_GROUP_NAME)
-                .build();//执行
-
-        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
-        trigger = TriggerBuilder.newTrigger()
-                .usingJobData("jobId", jobId)
-                .withIdentity(jobId , PipeConstants.TRIGGER_GROUP_NAME)
-                .withSchedule(scheduleBuilder)
-                .startNow()
-                .build();
-
-        scheduler.scheduleJob(jobDetail, trigger);
-        log.debug("Quartz 创建了job:{}" , jobDetail.getKey());
+        distSchedulerService.addJob(jobId , cron);
 
         return AjaxResult.success();
     }
@@ -232,5 +215,35 @@ public class QuartzController {
         //按新的trigger重新设置job执行
         scheduler.rescheduleJob(triggerKey, trigger);
         return AjaxResult.success();
+    }
+
+    /**
+     * 查询所有运行中的任务列表
+     */
+    @SneakyThrows
+    @GetMapping("/getRunningJob")
+    public AjaxResult getRunningJob() {
+
+        List<QuartzJobsVO> jobList = new ArrayList<>();
+
+        List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
+        for (JobExecutionContext executingJob : executingJobs) {
+
+            QuartzJobsVO runJob = new QuartzJobsVO();
+
+            JobDetail jobDetail = executingJob.getJobDetail();
+            JobKey jobKey = jobDetail.getKey();
+
+            log.debug("任务名称:{},任务组名:{}" , jobKey.getName() , jobKey.getGroup());
+
+            runJob.setJobId(jobKey.getName());
+            runJob.setJobDetailName(jobKey.getName());
+            runJob.setGroupName(jobKey.getGroup());
+            runJob.setJobCronExpression("触发器:" + executingJob.getTrigger().getKey());
+
+            jobList.add(runJob);
+        }
+
+        return AjaxResult.success(jobList);
     }
 }

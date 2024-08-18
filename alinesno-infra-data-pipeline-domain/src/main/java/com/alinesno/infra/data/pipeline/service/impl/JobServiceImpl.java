@@ -4,8 +4,7 @@ import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.mapper.JobMapper;
 import com.alinesno.infra.data.pipeline.service.IJobService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0.0
  * @autor luoxiaodong
  */
+@Slf4j
 @Service
 public class JobServiceImpl extends IBaseServiceImpl<JobEntity, JobMapper> implements IJobService {
-    // 日志记录
-    @SuppressWarnings("unused")
-    private static final Logger log = LoggerFactory.getLogger(JobServiceImpl.class);
 }

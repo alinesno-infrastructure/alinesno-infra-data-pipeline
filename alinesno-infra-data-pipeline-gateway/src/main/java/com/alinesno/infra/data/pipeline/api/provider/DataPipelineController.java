@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.data.pipeline.datasource.IDataTransferHandleService;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
+import com.alinesno.infra.data.pipeline.scheduler.IQuartzSchedulerService;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class DataPipelineController {
     @Autowired
     private IDataTransferHandleService dataTransferHandleService ;
 
+    @Autowired
+    private IQuartzSchedulerService distSchedulerService ;
+
     /**
      * 运行数据抽取服务
      * @param taskInfoDto
@@ -39,6 +43,7 @@ public class DataPipelineController {
         log.debug("taskInfo = {}" , JSONObject.toJSON(taskInfoDto));
 
         JobEntity job = dataTransferHandleService.analyzeTaskInfo(taskInfoDto);
+        distSchedulerService.addJob(job.getId()+"" , job.getJobCron()) ;
 
         return AjaxResult.success("任务保存成功." , job.getId());
     }

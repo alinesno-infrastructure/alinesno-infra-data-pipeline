@@ -33,8 +33,8 @@ var managerUrl = {
 // 立即执行一次job
 export function runOneTime(jobId){
   return request({
-    url: managerUrl.runOneTime + "?jobId=" + parseStrEmpty(data.jobId),
-    method: 'get',
+    url: managerUrl.runOneTime + "?jobId=" + parseStrEmpty(jobId),
+    method: 'post',
   })
 }
 
@@ -63,13 +63,13 @@ export function deleteJob(jobId){
 }
 
 // 更新job
-export function updateJob(data){
-  return request({
-    url: managerUrl.updateJob ,
-    method: 'post',
-    data: data
-  })
-}
+// export function updateJob(data){
+//   return request({
+//     url: managerUrl.updateJob ,
+//     method: 'post',
+//     data: data
+//   })
+// }
 
 // 列出所有集成渠道
 export function listAllJob(){

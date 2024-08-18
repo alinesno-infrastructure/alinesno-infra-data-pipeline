@@ -29,9 +29,9 @@ public class JobEntity extends InfraBaseEntity {
 
     // 所属项目
     @TableField("project_id")
-    @ColumnType(value = MySqlTypeConstant.VARCHAR , length = 128)
+    @ColumnType(value = MySqlTypeConstant.INT)
     @ColumnComment("所属项目")
-    private String projectId;
+    private Long projectId;
 
     // 任务名称
     @TableField("job_name")

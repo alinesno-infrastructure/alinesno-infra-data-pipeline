@@ -1,18 +1,19 @@
 package com.alinesno.infra.data.pipeline.initialize.impl;
 
-import com.alinesno.infra.data.pipeline.entity.ReaderSourceEntity;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
+import com.alinesno.infra.data.pipeline.entity.ReaderSourceEntity;
 import com.alinesno.infra.data.pipeline.initialize.IPipelineInitService;
 import com.alinesno.infra.data.pipeline.initialize.builder.DataInitializer;
 import com.alinesno.infra.data.pipeline.initialize.builder.DataSourceSamples;
 import com.alinesno.infra.data.pipeline.service.IJobService;
 import com.alinesno.infra.data.pipeline.service.IReaderSourceService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class PipelineInitServiceImpl implements IPipelineInitService {
 
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
     @Autowired
     private DataSource dataSource;
 
@@ -36,15 +39,18 @@ public class PipelineInitServiceImpl implements IPipelineInitService {
     @Autowired
     private IReaderSourceService readerSourceService ;
 
-    @SneakyThrows
     @Override
     public void initScheduler() {
-        Resource classPathResource = new ClassPathResource("scheduler/init_scheduler.sql");
 
-        EncodedResource encodedResource = new EncodedResource(classPathResource, "utf-8");
-        ScriptUtils.executeSqlScript(dataSource.getConnection(), encodedResource);
+        try{
+            jdbcTemplate = new NamedParameterJdbcTemplate(new JdbcTemplate(dataSource));
+            Resource classPathResource = new ClassPathResource("scheduler/init_scheduler.sql");
 
-        log.info("初始化定时任务成功");
+            EncodedResource encodedResource = new EncodedResource(classPathResource, "utf-8");
+            ScriptUtils.executeSqlScript(dataSource.getConnection(), encodedResource);
+        }catch (Exception e){
+            log.error("初始化调度器异常:{}",e.getMessage());
+        }
     }
 
     @Override

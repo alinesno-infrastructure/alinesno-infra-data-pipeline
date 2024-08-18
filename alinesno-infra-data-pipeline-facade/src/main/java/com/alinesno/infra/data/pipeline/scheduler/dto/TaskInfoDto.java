@@ -1,6 +1,7 @@
 package com.alinesno.infra.data.pipeline.scheduler.dto;
 
 import com.alinesno.infra.data.pipeline.datasource.MappingBean;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * 任务信息
  */
+@Data
 public class TaskInfoDto implements Serializable {
 
     // taskInfo
@@ -31,84 +33,6 @@ public class TaskInfoDto implements Serializable {
     private List<FilterPlugins> plugins ;
 
     // 字段映射关系
-    private List<MappingBean> fileMap ;
+    private List<MappingBean> fieldMap ;
 
-    public TaskInfoDto() {
-    }
-
-    public TaskInfoDto(String taskType) {
-        this.taskType = taskType;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescribe() {
-        return describe;
-    }
-
-    public void setDescribe(String describe) {
-        this.describe = describe;
-    }
-
-    public String getTaskType() {
-        return taskType;
-    }
-
-    public void setTaskType(String taskType) {
-        this.taskType = taskType;
-    }
-
-    public TaskContext getContext() {
-        return context;
-    }
-
-    public void setContext(TaskContext context) {
-        this.context = context;
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
-
-    public SourceReader getReader() {
-        return reader;
-    }
-
-    public void setReader(SourceReader reader) {
-        this.reader = reader;
-    }
-
-    public SinkWriter getWriter() {
-        return writer;
-    }
-
-    public void setWriter(SinkWriter writer) {
-        this.writer = writer;
-    }
-
-    public List<FilterPlugins> getPlugins() {
-        return plugins;
-    }
-
-    public void setPlugins(List<FilterPlugins> plugins) {
-        this.plugins = plugins;
-    }
-
-    public List<MappingBean> getFileMap() {
-        return fileMap;
-    }
-
-    public void setFileMap(List<MappingBean> fileMap) {
-        this.fileMap = fileMap;
-    }
 }

@@ -56,7 +56,7 @@ public class DorisWriter extends ComponentSinkWriter {
         Map<String, Integer> headerColumsMap = new HashMap<>();
         Connection connection = getDataSource(taskInfoDto.getWriter());
 
-        List<MappingBean> mappingBeans = taskInfoDto.getFileMap();
+        List<MappingBean> mappingBeans = taskInfoDto.getFieldMap();
 
         LineIterator it = FileUtils.lineIterator(filterFile, "UTF-8");
         TransEvent transEvent = new TransEvent(trans.getId());

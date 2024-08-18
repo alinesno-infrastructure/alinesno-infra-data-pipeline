@@ -149,7 +149,7 @@ public class CommonLoginController {
         Menu taskManagementMenu = new Menu("Task", "/task", false, "noRedirect", "Layout", true, new Menu.Meta("任务管理", "post", false, null),
                 List.of(
                         new Menu("TaskCreate", "data/pipeline/task/list", false, false, "data/pipeline/task/list", new Menu.Meta("任务管理", "peoples", false, null)),
-                        new Menu("TaskInstant", "data/pipeline/task/status", false, false, "data/pipeline/task/status", new Menu.Meta("任务实例", "tree", false, null)),
+                        new Menu("TaskInstant", "data/pipeline/taskInstance/index", false, false, "data/pipeline/taskInstance/index", new Menu.Meta("任务实例", "tree", false, null)),
                         new Menu("TransList", "data/pipeline/trans/index", false, false, "data/pipeline/trans/index", new Menu.Meta("转换实例", "monitor", false, null)),
                         new Menu("TaskHistory", "data/pipeline/task/history", false, false, "data/pipeline/task/history", new Menu.Meta("任务历史", "tree", false, null))
                 ));

@@ -41,16 +41,16 @@ export function runOneTime(jobId){
 // 暂停trigger
 export function pauseTrigger(jobId){
   return request({
-    url: managerUrl.pauseTrigger + "?triggerId=" + parseStrEmpty(jobId),
-    method: 'get',
+    url: managerUrl.pauseTrigger + "?jobId=" + parseStrEmpty(jobId),
+    method: 'post',
   })
 }
 
 // 恢复trigger
 export function resumeTrigger(jobId){
   return request({
-    url: managerUrl.resumeTrigger + "?triggerId=" + parseStrEmpty(jobId),
-    method: 'get',
+    url: managerUrl.resumeTrigger + "?jobId=" + parseStrEmpty(jobId),
+    method: 'post',
   })
 }
 
@@ -58,7 +58,7 @@ export function resumeTrigger(jobId){
 export function deleteJob(jobId){
   return request({
     url: managerUrl.deleteJob + "?jobId=" + parseStrEmpty(jobId),
-    method: 'get',
+    method: 'post',
   })
 }
 

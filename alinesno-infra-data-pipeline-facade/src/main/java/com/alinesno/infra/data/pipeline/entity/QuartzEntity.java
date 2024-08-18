@@ -3,6 +3,8 @@ package com.alinesno.infra.data.pipeline.entity;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 定时任务表实体类
@@ -15,6 +17,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("quartz")
 public class QuartzEntity extends InfraBaseEntity {
 
@@ -30,31 +34,4 @@ public class QuartzEntity extends InfraBaseEntity {
     @TableField("quartz_cron")
     private String quartzCron;
 
-    /**
-     * 获取任务描述
-     */
-    public String getQuartzDescription() {
-        return quartzDescription;
-    }
-
-    /**
-     * 设置任务描述
-     */
-    public void setQuartzDescription(String quartzDescription) {
-        this.quartzDescription = quartzDescription;
-    }
-
-    /**
-     * 获取定时策略
-     */
-    public String getQuartzCron() {
-        return quartzCron;
-    }
-
-    /**
-     * 设置定时策略
-     */
-    public void setQuartzCron(String quartzCron) {
-        this.quartzCron = quartzCron;
-    }
 }

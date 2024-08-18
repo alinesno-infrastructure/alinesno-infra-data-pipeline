@@ -5,7 +5,7 @@ import com.alinesno.infra.data.pipeline.datasource.IDataTransferHandleService;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.enums.TransTypeEnums;
-import com.alinesno.infra.data.pipeline.scheduler.IDistSchedulerService;
+import com.alinesno.infra.data.pipeline.scheduler.IQuartzSchedulerService;
 import com.alinesno.infra.data.pipeline.scheduler.dto.FilterPlugins;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import com.alinesno.infra.data.pipeline.service.IJobService;
@@ -38,7 +38,7 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
     private ITransService transService ;
 
     @Autowired
-    private IDistSchedulerService schedulerService ;
+    private IQuartzSchedulerService schedulerService ;
 
     @Override
     public void transferData(TaskInfoDto taskInfoDto) throws IOException, SQLException {

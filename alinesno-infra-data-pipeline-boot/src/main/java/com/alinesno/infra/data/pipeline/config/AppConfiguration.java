@@ -34,7 +34,8 @@ public class AppConfiguration implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        pipelineInitService.initScheduler(); // 初始化定时任务
+
+        // pipelineInitService.initScheduler(); // 初始化定时任务
 
         pipelineInitService.initDemoJob() ; // 初始化演示任务
 

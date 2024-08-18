@@ -1,13 +1,7 @@
 package com.alinesno.infra.data.pipeline.scheduler.monitor;
 
-import com.alinesno.infra.data.pipeline.entity.JobQueueEntity;
-import com.alinesno.infra.data.pipeline.scheduler.IDistSchedulerService;
+import com.alinesno.infra.data.pipeline.scheduler.IQuartzSchedulerService;
 import com.alinesno.infra.data.pipeline.service.IJobQueueService;
-import com.github.kagkarlsson.scheduler.Scheduler;
-import com.github.kagkarlsson.scheduler.task.helper.RecurringTask;
-import com.github.kagkarlsson.scheduler.task.helper.Tasks;
-import com.github.kagkarlsson.scheduler.task.schedule.Schedule;
-import com.github.kagkarlsson.scheduler.task.schedule.Schedules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +10,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
 
 /**
  * 任务守护进程
@@ -35,7 +26,7 @@ public class JobMonitorScheduler implements ApplicationRunner {
     private IJobQueueService jobQueueService ;
 
     @Autowired
-    private IDistSchedulerService schedulerService ;
+    private IQuartzSchedulerService schedulerService ;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

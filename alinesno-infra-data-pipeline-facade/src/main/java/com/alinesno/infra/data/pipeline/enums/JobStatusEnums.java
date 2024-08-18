@@ -1,8 +1,11 @@
 package com.alinesno.infra.data.pipeline.enums;
 
+import lombok.Getter;
+
 /**
  * 任务状态
  */
+@Getter
 public enum JobStatusEnums {
     /**
      * 表示任务处于待处理状态
@@ -32,11 +35,4 @@ public enum JobStatusEnums {
         this.label = label;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public String getLabel() {
-        return label;
-    }
 }

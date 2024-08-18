@@ -9,11 +9,10 @@ import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
 import com.alinesno.infra.data.pipeline.datasource.mapping.SQLFieldMapping;
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,15 +20,20 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ClickhouseWriter 类是 ComponentSinkWriter 的子类，用于将数据写入 Clickhouse 数据库。
+ *
+ * @author luoxiaodong
+ * @version 1.0.0
  */
+@Slf4j
 @Component("clickhouse" + PipeConstants.WRITER_SUFFIX)
 public class ClickhouseWriter extends ComponentSinkWriter {
-
-    private static final Logger log = LoggerFactory.getLogger(ClickhouseWriter.class);
 
     @Autowired
     protected TransEventPublisher transEventPublisher;
@@ -53,7 +57,7 @@ public class ClickhouseWriter extends ComponentSinkWriter {
         Map<String, Integer> headerColumsMap = new HashMap<>();
         Connection connection = getDataSource(taskInfoDto.getWriter());
 
-        List<MappingBean> mappingBeans = taskInfoDto.getFileMap();
+        List<MappingBean> mappingBeans = taskInfoDto.getFieldMap();
 
         LineIterator it = FileUtils.lineIterator(filterFile, "UTF-8");
         TransEvent transEvent = new TransEvent(trans.getId());

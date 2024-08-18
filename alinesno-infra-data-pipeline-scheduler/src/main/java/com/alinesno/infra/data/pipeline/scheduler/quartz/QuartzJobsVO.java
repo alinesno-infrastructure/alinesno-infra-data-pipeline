@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class QuartzJobsVO {
+    private String jobId; // 作业ID
     private String jobDetailName; // JobDetail的名称
     private String groupName; // JobDetail所属的组名
     private String jobCronExpression; // Job的Cron表达式或者触发器的键

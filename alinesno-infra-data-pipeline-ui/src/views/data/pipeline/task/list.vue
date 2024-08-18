@@ -458,6 +458,7 @@ function handleRunOneTime(row) {
    // }).catch(() => {});
    runOneTime(row.id).then(res => {
       console.info("res = " + res);
+      proxy.$modal.msgSuccess("执行成功");
    });
 } 
 
@@ -473,14 +474,14 @@ function handleView(row) {
 /** 暂停按钮操作 */
 function handleResumeTrigger(row){
    resumeTrigger(row.id).then(response => {
-      this.$modal.msgSuccess("执行成功");
+      proxy.$modal.msgSuccess("执行成功");
    });
 }
 
 /** 恢复按钮操作 */
 function handlePauseTrigger(row){
    pauseTrigger(row.id).then(response => {
-      this.$modal.msgSuccess("执行成功");
+      proxy.$modal.msgSuccess("执行成功");
    });
 }
 

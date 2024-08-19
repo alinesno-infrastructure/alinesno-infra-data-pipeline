@@ -35,10 +35,10 @@
            <el-table v-loading="loading" :data="JobList" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="50" align="center" />
               
-              <el-table-column label="图标" align="center" width="60" key="icon" v-if="columns[5].visible">
+              <el-table-column label="图标" align="center" width="70" key="icon">
                  <template #scope>
                     <span style="font-size:25px;color:#3b5998">
-                       <i class="fa-solid fa-file-word" />
+                       <i class="fa-solid fa-file-word"></i>   
                     </span>
                  </template>
               </el-table-column>

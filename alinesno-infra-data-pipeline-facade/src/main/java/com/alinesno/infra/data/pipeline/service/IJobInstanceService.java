@@ -13,16 +13,20 @@ public interface IJobInstanceService extends IBaseService<JobInstanceEntity> {
 
     /**
      * 启动监控任务
+     *
      * @param jobId
+     * @param jobInstanceId
      */
-    void startMonitorJob(Long jobId);
+    void startMonitorJob(Long jobId, long jobInstanceId);
 
     /**
      * 结束监控任务
+     *
      * @param jobId
+     * @param jobInstanceId
      * @param message
      * @param eMessage
      */
-    void finishMonitorJob(Long jobId, String message, String eMessage);
+    void finishMonitorJob(Long jobId, long jobInstanceId, String message, String eMessage);
 
 }

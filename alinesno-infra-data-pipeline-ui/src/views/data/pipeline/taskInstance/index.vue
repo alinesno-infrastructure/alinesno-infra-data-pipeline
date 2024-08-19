@@ -45,44 +45,35 @@
 
 
               <!-- 业务字段-->
-              <el-table-column label="应用名称" align="left" width="250" key="projectName" prop="projectName" v-if="columns[0].visible">
+              <el-table-column label="所属项目" align="left" width="250" key="projectName" prop="projectName" v-if="columns[0].visible">
                  <template #default="scope">
-                     <el-button type="danger" bg text @click="handleJobInstanceSpace(scope.row.id)"> 
-                        <i class="fa-solid fa-link"></i>&nbsp;{{ scope.row.projectName }}
-                     </el-button>
+                     <i class="fa-solid fa-link"></i>&nbsp;{{ scope.row.projectId}} 示例工作流项目
                  </template>
               </el-table-column>
-              <el-table-column label="应用描述" align="left" key="projectDesc" prop="projectDesc" v-if="columns[1].visible" />
-              <el-table-column label="应用代码" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
+              <el-table-column label="任务名称" align="left" key="jobName" prop="jobName" v-if="columns[1].visible" />
+              <el-table-column label="运行状态" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
                  <template #default="scope">
                      <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.projectCode">
-                        {{ scope.row.projectCode}} <el-icon><CopyDocument /></el-icon>
+                        {{ scope.row.status}} <el-icon><CopyDocument /></el-icon>
                      </div>
                   </template>
               </el-table-column>
 
-              <el-table-column label="配置文档" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="开始时间" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
-                    <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> 
-                        <i class="fa-solid fa-link"></i>&nbsp;配置文档 
-                     </el-button>
+                    <span>{{ parseTime(scope.row.startTime) }}</span>
                  </template>
               </el-table-column>
 
-              <el-table-column label="开启" align="center" width="100" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="结束时间" align="center" width="200" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
-                    <el-switch
-                       v-model="scope.row.hasStatus"
-                       :active-value="0"
-                       :inactive-value="1"
-                       @change="handleChangStatusField('hasStatus' , scope.row.hasStatus, scope.row.id)"
-                    />
+                    <span>{{ parseTime(scope.row.endTime) }}</span>
                  </template>
               </el-table-column>
 
-              <el-table-column label="添加时间" align="center" prop="addTime" v-if="columns[6].visible" width="160">
+              <el-table-column label="任务耗时" align="center" prop="addTime" v-if="columns[6].visible" width="160">
                  <template #default="scope">
-                    <span>{{ parseTime(scope.row.addTime) }}</span>
+                    <span>{{ timeDifference(scope.row.startTime , scope.row.endTime) }}</span>
                  </template>
               </el-table-column>
 
@@ -420,6 +411,38 @@ const handleChangStatusField = async(field , value , id) => {
 /** 提交配置文档类型 */
 function submitDocumentTypeForm(){
   // TODO 待保存应用文档类型
+}
+
+/** 计算两个时间间隔 */
+function timeDifference(startTime, endTime) {
+    // 计算两个时间戳之间的毫秒数差值
+    const difference = endTime - startTime;
+
+    // 转换毫秒数到秒
+    const seconds = Math.floor(difference / 1000);
+    const milliseconds = difference % 1000;
+
+    // 转换秒数到分钟
+    const minutes = Math.floor(seconds / 60);
+    const secondsLeft = seconds % 60;
+
+    // 转换分钟到小时
+    const hours = Math.floor(minutes / 60);
+    const minutesLeft = minutes % 60;
+
+    // 构建输出字符串
+    let result = '';
+    if (hours > 0) {
+        result += `${hours}时`;
+    }
+    if (minutesLeft > 0) {
+        result += `${minutesLeft}分`;
+    }
+    if (secondsLeft > 0 || milliseconds > 0) {
+        result += `${secondsLeft}秒${milliseconds}`;
+    }
+
+    return result;
 }
 
 getList();

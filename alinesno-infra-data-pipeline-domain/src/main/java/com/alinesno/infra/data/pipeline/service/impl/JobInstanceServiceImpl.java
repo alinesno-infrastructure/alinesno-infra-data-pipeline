@@ -7,7 +7,6 @@ import com.alinesno.infra.data.pipeline.enums.JobStatusEnums;
 import com.alinesno.infra.data.pipeline.mapper.JobInstanceMapper;
 import com.alinesno.infra.data.pipeline.mapper.JobMapper;
 import com.alinesno.infra.data.pipeline.service.IJobInstanceService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,9 @@ public class JobInstanceServiceImpl extends IBaseServiceImpl<JobInstanceEntity, 
     private JobMapper jobMapper ;
 
     @Override
-    public void startMonitorJob(Long jobId) {
+    public void startMonitorJob(Long jobId, long jobInstanceId) {
 
-        log.info("开始监控任务:{}", jobId);
+        log.info("开始监控任务:{} , jobInstanceId:{}", jobId , jobInstanceId);
 
         JobEntity job = jobMapper.selectById(jobId) ;
 
@@ -40,20 +39,17 @@ public class JobInstanceServiceImpl extends IBaseServiceImpl<JobInstanceEntity, 
 
         e.setStartTime(System.currentTimeMillis()) ;
         e.setStatus(JobStatusEnums.PROCESSING.getStatus());
+        e.setId(jobInstanceId);
 
         this.save(e);
     }
 
     @Override
-    public void finishMonitorJob(Long jobId, String status , String eMessage) {
+    public void finishMonitorJob(Long jobId, long jobInstanceId, String status , String eMessage) {
 
-        log.debug("结束监控任务:{}", jobId);
+        log.debug("结束监控任务:{} , jobInstanceId:{}", jobId , jobInstanceId);
 
-        JobInstanceEntity jobInstance = this.getOne(
-                new LambdaQueryWrapper<JobInstanceEntity>()
-                        .eq(JobInstanceEntity::getJobId, jobId)
-                        .eq(JobInstanceEntity::getStatus, JobStatusEnums.PROCESSING.getStatus())
-        ) ;
+        JobInstanceEntity jobInstance = this.getById(jobInstanceId) ;
 
         if (jobInstance != null) {
             jobInstance.setEndTime(System.currentTimeMillis());

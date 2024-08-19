@@ -1,5 +1,6 @@
 package com.alinesno.infra.data.pipeline.scheduler.listener;
 
+import cn.hutool.core.util.IdUtil;
 import com.alinesno.infra.data.pipeline.enums.JobStatusEnums;
 import com.alinesno.infra.data.pipeline.service.IJobInstanceService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +40,11 @@ public class PipelineJobListener implements JobListener {
 	public void jobToBeExecuted(JobExecutionContext jobExecutionContext) {
 		log.debug("jobToBeExecuted:{} , jobId = {}" , jobExecutionContext.getJobDetail().getKey() , jobId);
 
+		long jobInstanceId = IdUtil.getSnowflakeNextId() ;
+		jobExecutionContext.getJobDetail().getJobDataMap().put("jobInstanceId" , jobInstanceId);
+
 		// 输出运行结果
-		jobInstanceService.startMonitorJob(jobId) ;
+		jobInstanceService.startMonitorJob(jobId , jobInstanceId) ;
 	}
 
 	/**
@@ -52,8 +56,9 @@ public class PipelineJobListener implements JobListener {
 	public void jobWasExecuted(JobExecutionContext jobExecutionContext, JobExecutionException e) {
 		log.debug("jobWasExecuted:{} , jobId = {}" , jobExecutionContext.getJobDetail().getKey() , jobId);
 
-		String status = JobStatusEnums.FAILED.getStatus();
+		String status = JobStatusEnums.COMPLETED.getStatus();
 		String message = null ;
+		long jobInstanceId = jobExecutionContext.getJobDetail().getJobDataMap().getLong("jobInstanceId");
 
 		if(e != null){
 			log.error("jobWasExecuted:{} , jobId = {} , error = {}" , jobExecutionContext.getJobDetail().getKey() , jobId , e.getMessage());
@@ -61,7 +66,7 @@ public class PipelineJobListener implements JobListener {
 			message = e.getMessage() ;
 		}
 
-		jobInstanceService.finishMonitorJob(jobId , status , message) ;
+		jobInstanceService.finishMonitorJob(jobId , jobInstanceId , status , message) ;
 	}
 
 	/**

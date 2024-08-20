@@ -86,57 +86,20 @@ export const constantRoutes = [
       },
 
       // ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//      {
-//        path: '/createGateway',
-//        name: 'createGateway',
-//        hidden: true,
-//        component: () => import('@/views/gateway/createGateway'),
-//        meta: { title: '创建网关服务', icon: 'dashboard', affix: true }
-//      },
-//      {
-//        path: '/gatewayTopology',
-//        name: 'gatewayTopology',
-//        hidden: true,
-//        component: () => import('@/views/gateway/gatewayTopology'),
-//        meta: { title: '网关路由拓扑结构', icon: 'dashboard', affix: true }
-//      },
-//      {
-//        path: '/createClient',
-//        name: 'createClient',
-//        hidden: true,
-//        component: () => import('@/views/gateway/createClient'),
-//        meta: { title: '创建客户端', icon: 'dashboard', affix: true }
-//      },
-//      {
-//        path: '/addGatewayClient',
-//        name: 'addGatewayClient',
-//        hidden: true,
-//        component: () => import('@/views/gateway/addGatewayClient'),
-//        meta: { title: '添加网关客户端', icon: 'dashboard', affix: true }
-//      },
-//      {
-//        path: '/addClientGateway',
-//        name: 'addClientGateway',
-//        hidden: true,
-//        component: () => import('@/views/gateway/addClientGateway'),
-//        meta: { title: '添加客户端网关', icon: 'dashboard', affix: true }
-//      },
-//      {
-//        path: '/addGroovyScript',
-//        name: 'addGroovyScript',
-//        hidden: true,
-//        component: () => import('@/views/gateway/addGroovyScript'),
-//        meta: { title: '添加规则组件', icon: 'dashboard', affix: true }
-//      },
-//      {
-//        path: '/createBalanced',
-//        name: 'createBalanced',
-//        hidden: true,
-//        component: () => import('@/views/gateway/createBalanced'),
-//        meta: { title: '创建负载均衡', icon: 'dashboard', affix: true }
-//      },
-
-
+      {
+        path: '/task/data/pipeline/task/create',
+        name: 'task/data/pipeline/task/create',
+        hidden: true,
+        component: () => import('@/views/data/pipeline/task/create'),
+        meta: { title: '创建抽取任务配置', icon: 'dashboard', affix: true }
+      },
+      {
+        path: '/task/data/pipeline/task/createDatasource',
+        name: 'task/data/pipeline/task/createDatasource',
+        hidden: true,
+        component: () => import('@/views/data/pipeline/task/createDatasource'),
+        meta: { title: '创建抽取任务配置', icon: 'dashboard', affix: true }
+      }
     ]
   },
   {

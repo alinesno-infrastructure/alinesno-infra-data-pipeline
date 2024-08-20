@@ -1,428 +1,204 @@
 <template>
-  <div class="app-container">
+   <div class="app-container">
+    <el-page-header @back="goBack" content="任务配置"></el-page-header>
+    <div class="label-title">
+      <div class="tip">创建数据采集任务</div>
+      <div class="sub-tip">根据业务场景需求创建数据采集任务，便于数据业务场景开发和分析</div>
+    </div>
+    <div class="form-container" >
+      <el-form :model="form" :rules="rules" ref="databaseRef" label-width="180px">
 
-     <el-row :gutter="20">
-        <!--应用数据-->
-        <el-col :span="24" :xs="24">
-         
-           <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
-              <el-form-item label="应用名称" prop="dbName">
-                 <el-input v-model="queryParams.dbName" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
-              </el-form-item>
-              <el-form-item label="应用名称" prop="dbName">
-                 <el-input v-model="queryParams['condition[dbName|like]']" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
-              </el-form-item>
-              <el-form-item>
-                 <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-                 <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-              </el-form-item>
-           </el-form>
+         <!-- 任务名称 -->
+         <el-form-item label="任务名称" prop="taskName">
+            <el-input v-model="form.taskName" placeholder="请输入任务名称"></el-input>
+         </el-form-item>
 
-           <el-row :gutter="10" class="mb8">
-
-              <el-col :span="1.5">
-                 <el-button type="primary" plain icon="Plus" @click="handleAdd">新增</el-button>
-              </el-col>
-              <el-col :span="1.5">
-                 <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate">修改</el-button>
-              </el-col>
-              <el-col :span="1.5">
-                 <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
-              </el-col>
-
-              <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
-           </el-row>
-
-           <el-table v-loading="loading" :data="ProjectList" @selection-change="handleSelectionChange">
-              <el-table-column type="selection" width="50" align="center" />
-              
-              <el-table-column label="图标" align="center" width="70" key="icon" v-if="columns[5].visible">
-                 <template #default="scope">
-                    <span style="font-size:25px;color:#3b5998">
-                       <i class="fa-solid fa-file-word" />
-                    </span>
-                 </template>
-              </el-table-column>
-
-
-              <!-- 业务字段-->
-              <el-table-column label="应用名称" align="left" width="250" key="projectName" prop="projectName" v-if="columns[0].visible">
-                 <template #default="scope">
-                     <el-button type="danger" bg text @click="handleProjectSpace(scope.row.id)"> 
-                        <i class="fa-solid fa-link"></i>&nbsp;{{ scope.row.projectName }}
-                     </el-button>
-                 </template>
-              </el-table-column>
-              <el-table-column label="应用描述" align="left" key="projectDesc" prop="projectDesc" v-if="columns[1].visible" />
-              <el-table-column label="应用代码" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
-                 <template #default="scope">
-                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.projectCode">
-                        {{ scope.row.projectCode}} <el-icon><CopyDocument /></el-icon>
+         <!-- 数据采集模板 -->
+         <el-form-item label="数据采集模板" prop="dataCollectionTemplate">
+            <el-row>
+               <el-col :span="7" v-for="(o, index) in loginStyleArr" :key="index" :offset="index > 0 ? 1 : 0">
+               <el-card :body-style="{ padding: '0px !important' }" :class="currentLoginStyle == o.id ? 'select-card' : ''" shadow="never">
+                  <img :src="o.icon" class="image">
+                  <div style="padding: 14px; line-height: 1.4rem; padding: 8px;">
+                     <span>{{ o.desc }}</span>
+                     <div class="bottom clearfix">
+                     <el-button @click="selectStyle(o)" type="text" class="button">选择</el-button>
                      </div>
-                  </template>
-              </el-table-column>
+                  </div>
+               </el-card>
+               </el-col>
+            </el-row>
+         </el-form-item>
 
-              <el-table-column label="配置文档" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
-                 <template #default="scope">
-                    <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> 
-                        <i class="fa-solid fa-link"></i>&nbsp;配置文档 
-                     </el-button>
-                 </template>
-              </el-table-column>
+         <!-- 数据质量 -->
+         <el-form-item label="数据质量" prop="dataQuality">
+            <el-switch v-model="form.dataQuality" :active-value="1" :inactive-value="0"></el-switch>
+         </el-form-item>
 
-              <el-table-column label="开启" align="center" width="100" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
-                 <template #default="scope">
-                    <el-switch
-                       v-model="scope.row.hasStatus"
-                       :active-value="0"
-                       :inactive-value="1"
-                       @change="handleChangStatusField('hasStatus' , scope.row.hasStatus, scope.row.id)"
-                    />
-                 </template>
-              </el-table-column>
+         <!-- 批数据抽取量 -->
+         <el-form-item label="批数据抽取量" prop="batchExtractionAmount">
+            <el-input-number :min="1" size="large" v-model="form.batchExtractionAmount">
+            </el-input-number>
+         </el-form-item>
 
-              <el-table-column label="添加时间" align="center" prop="addTime" v-if="columns[6].visible" width="160">
-                 <template #default="scope">
-                    <span>{{ parseTime(scope.row.addTime) }}</span>
-                 </template>
-              </el-table-column>
+         <!-- 批数写入量 -->
+         <el-form-item label="批数写入量" prop="batchWriteAmount">
+            <el-input-number :min="1" size="large" v-model="form.batchWriteAmount">
+            </el-input-number>
+         </el-form-item>
 
-              <!-- 操作字段  -->
-              <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
-                 <template #default="scope">
-                    <el-tooltip content="修改" placement="top" v-if="scope.row.ProjectId !== 1">
-                       <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                          v-hasPermi="['system:Project:edit']"></el-button>
-                    </el-tooltip>
-                    <el-tooltip content="删除" placement="top" v-if="scope.row.ProjectId !== 1">
-                       <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                          v-hasPermi="['system:Project:remove']"></el-button>
-                    </el-tooltip>
-                 </template>
-
-              </el-table-column>
-           </el-table>
-           <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
-        </el-col>
-     </el-row>
-
-     <!-- 添加或修改应用配置对话框 -->
-     <el-dialog :title="title" v-model="open" width="900px" append-to-body>
-        <el-form :model="form" :rules="rules" ref="databaseRef" label-width="100px">
-           <el-row>
-              <el-col :span="24">
-                 <el-form-item label="应用图标" prop="logo">
-                    <!-- <el-input v-model="form.logo" placeholder="请输入应用图标" maxlength="255" /> -->
-
-                    <el-upload action="#" list-type="picture-card" :auto-upload="false">
-                          <el-icon><Plus /></el-icon>
-
-                          <template #file="{ file }">
-                             <div>
-                             <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-                             <span class="el-upload-list__item-actions">
-                                <span
-                                   class="el-upload-list__item-preview"
-                                   @click="handlePictureCardPreview(file)"
-                                >
-                                   <el-icon><zoom-in /></el-icon>
-                                </span>
-                                <span
-                                   v-if="!disabled"
-                                   class="el-upload-list__item-delete"
-                                   @click="handleDownload(file)"
-                                >
-                                   <el-icon><Download /></el-icon>
-                                </span>
-                                <span
-                                   v-if="!disabled"
-                                   class="el-upload-list__item-delete"
-                                   @click="handleRemove(file)"
-                                >
-                                   <el-icon><Delete /></el-icon>
-                                </span>
-                             </span>
-                             </div>
-                          </template>
-                       </el-upload>
-
-                 </el-form-item>
-              </el-col>
-              <el-col :span="24">
-                 <el-form-item label="应用名称" prop="projectName">
-                    <el-input v-model="form.projectName" placeholder="请输入应用名称" maxlength="50" />
-                 </el-form-item>
-              </el-col>
-           </el-row>
-           <el-row>
-              <el-col :span="24">
-                 <el-form-item label="应用介绍" prop="intro">
-                    <el-input v-model="form.intro" type="textarea" placeholder="请输入应用介绍" maxlength="255" />
-                 </el-form-item>
-              </el-col>
-           </el-row>
-           <el-row>
-              <el-col :span="24">
-                 <el-form-item label="授权地址" prop="allowUrl">
-                    <el-input v-model="form.allowUrl" placeholder="请输入授权地址" maxlength="255" />
-                 </el-form-item>
-              </el-col>
-
-              <el-col :span="24">
-                 <el-form-item label="应用状态" prop="status">
-                    <el-radio-group v-model="form.status">
-                       <el-radio
-                          v-for="dict in sys_normal_disable"
-                          :key="dict.value"
-                          :label="dict.value"
-                       >{{ dict.label }}</el-radio>
-                    </el-radio-group>
-                 </el-form-item>
-              </el-col>
-
-              <el-col :span="24">
-                 <!-- <el-form-item label="是否公开" prop="isPublic">
-                    <el-input v-model="form.isPublic" placeholder="请输入是否公开" maxlength="1" />
-                 </el-form-item> -->
-
-                 <el-form-item label="是否公开" prop="isPublic">
-                    <el-radio-group v-model="form.isPublic">
-                       <el-radio
-                          v-for="dict in sys_normal_disable"
-                          :key="dict.value"
-                          :label="dict.value"
-                       >{{ dict.label }}</el-radio>
-                    </el-radio-group>
-                 </el-form-item>
-              </el-col>
-           </el-row>
-
-           <el-row>
-              <el-col :span="24">
-                 <el-form-item label="备注" prop="description">
-                    <el-input v-model="form.description"  placeholder="请输入应用备注"></el-input>
-                 </el-form-item>
-              </el-col>
-           </el-row>
-        </el-form>
-        <template #footer>
-           <div class="dialog-footer">
-              <el-button type="primary" @click="submitForm">确 定</el-button>
-              <el-button @click="cancel">取 消</el-button>
-           </div>
-        </template>
-     </el-dialog>
+         <!-- 是否告警 -->
+         <el-form-item label="任务时间">
+            <el-col :span="11">
+               <el-date-picker
+               v-model="form.date1"
+               type="date"
+               placeholder="选择日期"
+               style="width: 100%"
+               />
+            </el-col>
+            <el-col :span="2" class="text-center">
+               <span class="text-gray-500">-</span>
+            </el-col>
+            <el-col :span="11">
+               <el-time-picker
+               v-model="form.date2"
+               placeholder="选择时间"
+               style="width: 100%"
+               />
+            </el-col>
+         </el-form-item>
 
 
-     <!-- 文档列表 -->
-     <el-dialog :title="title" v-model="openDocumentTypeDialog" width="1024px" append-to-body>
+         <!-- 参与人监控邮箱 -->
+         <el-form-item label="参与人监控邮箱" prop="monitorEmail">
+            <el-input v-model="form.monitorEmail" placeholder="请输入参与人监控邮箱"></el-input>
+         </el-form-item>
 
-        <TypeList />
+        <br/>
 
-        <template #footer>
-           <div class="dialog-footer">
-              <el-button type="primary" @click="submitDocumentTypeForm">确 定</el-button>
-              <el-button @click="openDocumentTypeDialog = false">取 消</el-button>
-           </div>
-        </template>
-     </el-dialog>
-
+        <el-form-item>
+          <el-button icon="Right" type="primary" @click="createDatasource">
+            下一步
+          </el-button>
+          <el-button @click="resetForm">
+            重置
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
-<script setup name="Project">
-
-import {
-  listProject,
-  delProject,
-  getProject,
-  updateProject,
-  addProject,
-  changStatusField
-} from "@/api/data/pipeline/project";
-
-// import TypeList from './channelList.vue'
+<script setup name="createJob">
 
 const router = useRouter();
-const { proxy } = getCurrentInstance();
 
-// 定义变量
-const ProjectList = ref([]);
-const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
-const title = ref("");
-const dateRange = ref([]);
-
-// 是否打开配置文档
-const openDocumentTypeDialog = ref(false);
-
-// 列显隐信息
-const columns = ref([
-  { key: 0, label: `应用名称`, visible: true },
-  { key: 1, label: `应用描述`, visible: true },
-  { key: 2, label: `授权地址`, visible: true },
-  { key: 3, label: `类型`, visible: true },
-  { key: 4, label: `是否公开`, visible: true },
-  { key: 5, label: `状态`, visible: true },
-  { key: 6, label: `添加时间`, visible: true }
+const loginStyleArr = ref([
+   {id:'1' , icon:'http://data.linesno.com/icons/flow/style-04.png' , desc:'表数据采集抽取，针对单一数据表进行全量或增量数据的采集'} ,
+   {id:'2' , icon:'http://data.linesno.com/icons/flow/style-05.png' , desc:'文件型数据采集，从文件系统中读取文件数据进行解析和加载'} ,
+   {id:'3' , icon:'http://data.linesno.com/icons/flow/style-06.png' , desc:'消息数据采集，消息中间件中实时或定时地收集数据'} 
 ]);
+const currentLoginStyle = ref('1')
 
 const data = reactive({
-  form: {},
+  form: {
+      taskName: "", // 任务名称
+      dataCollectionTemplate: "", // 数据采集模板
+      dataQuality: "", // 数据质量
+      batchExtractionAmount: 5000, // 批数据抽取量
+      batchWriteAmount: 5000, // 批数写入量
+      isAlertEnabled: false, // 是否告警
+      monitorEmail: "" // 参与人监控邮箱
+  },
   queryParams: {
-     pageNum: 1,
-     pageSize: 10,
-     dbName: undefined,
-     dbDesc: undefined
+      pageNum: 1,
+      pageSize: 10,
+      jobName: undefined,
+      dbDesc: undefined
   },
   rules: {
-     dbName: [{ required: true, message: "名称不能为空", trigger: "blur" }] , 
-     jdbcUrl: [{ required: true, message: "连接不能为空", trigger: "blur" }],
-     dbType: [{ required: true, message: "类型不能为空", trigger: "blur" }] , 
-     dbUsername: [{ required: true , message: "用户名不能为空", trigger: "blur"}],
-     dbPasswd: [{ required: true, message: "密码不能为空", trigger: "blur" }] , 
-     dbDesc: [{ required: true, message: "备注不能为空", trigger: "blur" }] 
+     taskName: [
+         { required: true, message: "请输入任务名称", trigger: "blur" }
+      ],
+      dataCollectionTemplate: [
+         { required: true, message: "请输入数据采集模板", trigger: "blur" }
+      ],
+      dataQuality: [
+         { required: true, message: "请输入数据质量要求", trigger: "blur" }
+      ],
+      batchExtractionAmount: [
+         { required: true, message: "请输入批数据抽取量", trigger: "blur" }
+      ],
+      batchWriteAmount: [
+         { required: true, message: "请输入批数写入量", trigger: "blur" }
+      ],
+      isAlertEnabled: [
+         { required: true, message: "请选择是否启用告警", trigger: "change" }
+      ],
+      monitorEmail: [
+         { required: true, message: "请输入参与人监控邮箱", trigger: "blur" },
+         { type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"] }
+      ] 
   }
 });
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询应用列表 */
-function getList() {
-  loading.value = true;
-  listProject(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
-     loading.value = false;
-     ProjectList.value = res.rows;
-     total.value = res.total;
-  });
-};
-
-/** 搜索按钮操作 */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-};
-
-/** 重置按钮操作 */
-function resetQuery() {
-  dateRange.value = [];
-  proxy.resetForm("queryRef");
-  queryParams.value.deptId = undefined;
-  proxy.$refs.deptTreeRef.setCurrentKey(null);
-  handleQuery();
-};
-/** 删除按钮操作 */
-function handleDelete(row) {
-  const ProjectIds = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除应用编号为"' + ProjectIds + '"的数据项？').then(function () {
-     return delProject(ProjectIds);
-  }).then(() => {
-     getList();
-     proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => { });
-};
-
-/** 选择条数  */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-};
-
-/** 重置操作表单 */
-function reset() {
-  form.value = {
-     id: undefined,
-     deptId: undefined,
-     ProjectName: undefined,
-     nickName: undefined,
-     password: undefined,
-     phonenumber: undefined,
-     status: "0",
-     remark: undefined,
-  };
-  proxy.resetForm("databaseRef");
-};
-/** 取消按钮 */
-function cancel() {
-  open.value = false;
-  reset();
-};
-
-/** 新增按钮操作 */
-function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = "添加应用";
-};
-
-/** 修改按钮操作 */
-function handleUpdate(row) {
-  reset();
-  const ProjectId = row.id || ids.value;
-  getProject(ProjectId).then(response => {
-     form.value = response.data;
-     open.value = true;
-     title.value = "修改应用";
-  });
-};
-
-/** 查看项目告警空间 */
-function handleProjectSpace(id){
-  let path =  '/project/space/'
-  router.push({ path: path + id });
+/** 查询任务列表 */
+function selectStyle(item){
+   currentLoginStyle.value = item.id;
+   console.log('item = ' + item.id) ;
 }
 
-/** 提交按钮 */
-function submitForm() {
-  proxy.$refs["databaseRef"].validate(valid => {
-     if (valid) {
-        if (form.value.ProjectId != undefined) {
-           updateProject(form.value).then(response => {
-              proxy.$modal.msgSuccess("修改成功");
-              open.value = false;
-              getList();
-           });
-        } else {
-           addProject(form.value).then(response => {
-              proxy.$modal.msgSuccess("新增成功");
-              open.value = false;
-              getList();
-           });
-        }
-     }
-  });
-};
-
-/** 配置文档类型 */
-function handleConfigType(id , documentType){
-  openDocumentTypeDialog.value = true ; 
+/** 返回 */
+function goBack() {
+   router.push({path:'/task/data/pipeline/task/list',query:{}});
 }
 
-/** 修改状态 */
-const handleChangStatusField = async(field , value , id) => {
-   // 判断tags值 这样就不会进页面时调用了
-     const res = await changStatusField({
-        field: field,
-        value: value?1:0,
-        id: id
-     }).catch(() => { })
-     if (res && res.code == 200) {
-        // 刷新表格
-        getList()
-     }
+/** 创建数据源 */
+function createDatasource(){
+  let path = '/task/data/pipeline/task/createDatasource' ;
+  router.push({ path: path });
 }
-
-/** 提交配置文档类型 */
-function submitDocumentTypeForm(){
-  // TODO 待保存应用文档类型
-}
-
-getList();
 
 </script>
+
+
+<style scoped lang="scss">
+  .form-container {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+  }
+
+  .label-title {
+    text-align: center;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+
+    .tip {
+      padding-bottom: 10px;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .sub-tip {
+      font-size: 13px;
+      text-align: center;
+      padding: 10px;
+    }
+  }
+
+  .image{
+    width:100%;
+    height: 120px ;
+  }
+
+  .select-card {
+    border: 1px solid rgb(0, 91, 212) ;
+  }
+</style>

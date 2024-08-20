@@ -35,8 +35,8 @@
            <el-table v-loading="loading" :data="JobList" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="50" align="center" />
               
-              <el-table-column label="图标" align="center" width="70" key="icon">
-                 <template #scope>
+              <el-table-column label="图标" align="center" width="60" key="icon">
+                 <template #default="scope">
                     <span style="font-size:25px;color:#3b5998">
                        <i class="fa-solid fa-file-word"></i>   
                     </span>
@@ -385,8 +385,10 @@ function cancel() {
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
-  open.value = true;
-  title.value = "添加任务";
+//   open.value = true;
+//   title.value = "添加任务";
+  let path = '/task/data/pipeline/task/create' ;
+  router.push({ path: path });
 };
 
 /** 修改按钮操作 */

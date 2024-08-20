@@ -19,8 +19,7 @@ import com.github.kagkarlsson.scheduler.task.helper.RecurringTask;
 import com.github.kagkarlsson.scheduler.task.helper.Tasks;
 import com.github.kagkarlsson.scheduler.task.schedule.Schedule;
 import com.github.kagkarlsson.scheduler.task.schedule.Schedules;
-import java.time.Duration;
-import java.time.Instant;
+
 import javax.sql.DataSource;
 
 public class CronMain extends Example {
@@ -40,7 +39,7 @@ public class CronMain extends Example {
     });
 
     final Scheduler scheduler = Scheduler.create(dataSource, cronTask).build();
-    scheduler.schedule(cronTask.instance("1045" , new TaskInfoDto("1233")), Instant.now());
+    // scheduler.schedule(cronTask.instance("1045" , new TaskInfoDto("1233")), Instant.now());
 
 //    final Scheduler scheduler =
 //        Scheduler.create(dataSource)

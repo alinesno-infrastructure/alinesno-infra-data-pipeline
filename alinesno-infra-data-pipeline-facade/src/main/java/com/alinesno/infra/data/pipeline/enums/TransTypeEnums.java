@@ -1,8 +1,13 @@
 package com.alinesno.infra.data.pipeline.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum TransTypeEnums {
 
-    READER("reader") , PLUGIN("plugin") , WRITER("writer") ;
+    READER("reader") ,
+    PLUGIN("plugin") ,
+    WRITER("writer") ;
 
     public final String code ;
 
@@ -10,7 +15,4 @@ public enum TransTypeEnums {
         this.code = code ;
     }
 
-    public String getCode() {
-        return code;
-    }
 }

@@ -15,37 +15,50 @@
          <el-divider content-position="left">读取源设置</el-divider>
 
          <!-- 数据采集模板 -->
-         <el-form-item label="数据采集源" prop="dataCollectionTemplate">
-            <el-radio-group v-model="form.dataCollectionTemplate">
-               <el-radio v-for="item in readerSource" :value="item.dbType" size="large">
+         <el-form-item label="数据采集源" prop="readerSource">
+            <el-radio-group v-model="form.readerSource">
+               <el-radio v-for="item in readerSource" 
+                  class="database-type" 
+                  :key="item.dbType"
+                  :label="item.dbType"
+                  :value="item.dbType" 
+                  size="large" 
+                  border>
                  <i class="fa-solid fa-screwdriver-wrench"></i> {{ item.dbType }}
                </el-radio>
             </el-radio-group> 
          </el-form-item>
-         <el-form-item label="采集SQL语句">
-            <el-input v-model="form.name" placeholder="请输入SQL语句" />
+         <el-form-item label="采集SQL语句" prop="querySql">
+            <el-input v-model="form.querySql" placeholder="请输入SQL语句" />
          </el-form-item>
          <el-form-item label="存量数据读取">
             <el-switch v-model="form.delivery" />
          </el-form-item>
 
-
          <el-divider content-position="left">数据目的设置</el-divider>
 
-         <el-form-item label="即时配送">
-            <el-switch v-model="form.delivery" />
-         </el-form-item>
-         <el-form-item label="数据写入源" prop="dataCollectionTemplate">
-            <el-radio-group v-model="form.dataCollectionTemplate">
-               <el-radio v-for="item in sinkSource" :value="item.dbType" size="large">
+         <el-form-item label="数据写入源" prop="sinkSource">
+            <el-radio-group v-model="form.sinkSource">
+               <el-radio v-for="item in sinkSource" 
+                  class="database-type" 
+                  :key="item.dbType"
+                  :label="item.dbType"
+                  :value="item.dbType" 
+                  size="large" 
+                  border>
                  <i class="fa-solid fa-screwdriver-wrench"></i> {{ item.dbType }}
                </el-radio>
             </el-radio-group> 
          </el-form-item>
-         <el-form-item label="资源">
-            <el-radio-group v-model="form.resource">
-               <el-radio value="赞助商">赞助商</el-radio>
-               <el-radio value="场地">场地</el-radio>
+
+         <el-form-item label="异常处理">
+            <el-radio-group v-model="form.exception">
+               <el-radio v-for="item in exceptionHandle" 
+                  :key="item.method"
+                  :label="item.method"
+                  :value="item.method">
+                  {{ item.label }}
+                </el-radio>
             </el-radio-group>
          </el-form-item>
 
@@ -58,16 +71,14 @@
          </el-form-item>
 
          <el-form-item label="数据插件">
-            <el-checkbox-group v-model="form.type">
-               <el-checkbox value="在线活动" name="type">字段映射</el-checkbox> 
-               <el-checkbox value="线下活动" name="type">线下活动</el-checkbox> 
-               <el-checkbox value="在线活动" name="type">字段映射</el-checkbox> 
-               <el-checkbox value="线下活动" name="type">线下活动</el-checkbox> 
-               <el-checkbox value="品牌曝光" name="type">品牌曝光</el-checkbox> 
-               <el-checkbox value="在线活动" name="type">字段映射</el-checkbox> 
-               <el-checkbox value="线下活动" name="type">线下活动</el-checkbox> 
-               <el-checkbox value="品牌曝光" name="type">品牌曝光</el-checkbox> 
-               <el-checkbox value="品牌曝光" name="type">品牌曝光</el-checkbox> 
+            <el-checkbox-group v-model="form.plugins">
+                <el-checkbox v-for="item in plugins" 
+                  :value="item.pluginName" 
+                  :key="item.pluginName"
+                  :label="item.pluginName"
+                  name="type">
+                  <i :class="item.icon"></i>&nbsp;{{ item.pluginDesc }}
+                </el-checkbox> <br/>
             </el-checkbox-group>
          </el-form-item>
         
@@ -92,6 +103,59 @@ const loginStyleArr = ref([
    {id:'2' , icon:'http://data.linesno.com/icons/flow/style-05.png' , desc:'文件型数据采集，从文件系统中读取文件数据进行解析和加载'} ,
    {id:'3' , icon:'http://data.linesno.com/icons/flow/style-06.png' , desc:'消息数据采集，消息中间件中实时或定时地收集数据'} 
 ]);
+
+const plugins = ref([
+    {
+        pluginName: "ClearNull",
+        pluginDesc: "清理数据字段空值，随机添加一个数字",
+        icon: "fa-solid fa-user-shield"
+    },
+    {
+        pluginName: "ConvertCase",
+        pluginDesc: "将数据字段的文本转换为指定大小写",
+        icon: "fa-solid fa-text-height"
+    },
+    {
+        pluginName: "RemoveDuplicates",
+        pluginDesc: "去除数据字段中的重复项",
+        icon: "fa-solid fa-ban"
+    },
+    {
+        pluginName: "FormatDate",
+        pluginDesc: "将日期字段格式化为指定格式",
+        icon: "fa-solid fa-calendar-day"
+    },
+    {
+        pluginName: "TrimWhitespace",
+        pluginDesc: "去除数据字段中的前后空格",
+        icon: "fa-solid fa-space-shuttle"
+    },
+    {
+        pluginName: "SplitField",
+        pluginDesc: "将数据字段按指定分隔符拆分",
+        icon: "fa-solid fa-cut"
+    },
+    {
+        pluginName: "MergeFields",
+        pluginDesc: "将多个数据字段合并为一个",
+        icon: "fa-solid fa-plus"
+    },
+    {
+        pluginName: "ReplaceText",
+        pluginDesc: "替换数据字段中的指定文本",
+        icon: "fa-solid fa-exchange"
+    },
+    {
+        pluginName: "FillMissing",
+        pluginDesc: "用指定值填充缺失的数据",
+        icon: "fa-solid fa-fill"
+    },
+    {
+        pluginName: "NormalizeData",
+        pluginDesc: "将数据字段的数值归一化到指定范围",
+        icon: "fa-solid fa-chart-line"
+    }
+])
 
 const readerSource = ref([
   {
@@ -169,6 +233,12 @@ const sinkSource = ref([
     "icon": "fa-solid fa-file-json"
   },
   {
+    "driverName": "hbase",
+    "dbType": "HBase",
+    "dbDriver": "org.apache.hadoop.hbase.jdbc.HBaseDriver",
+    "icon": "fa-brands fa-hadoop"
+  },
+  {
     "driverName": "xml",
     "dbType": "XML",
     "dbDriver": "org.w3c.dom.jdbc.DomDriver",
@@ -218,8 +288,19 @@ const sinkSource = ref([
   }
 ]) ;
 
+const exceptionHandle = ref([
+  {method:'jump' , label:'跳过且记录'},
+  {method:'stop' , label:'停止采集'}
+])
+
 const data = reactive({
   form: {
+      sinkSource: '' ,
+      readerSource: '' ,
+      querySql: '',
+      plugins: [],
+      exception: '',
+
       name: '',
       region: '',
       date1: '',
@@ -281,7 +362,7 @@ function goBack() {
 
 <style scoped lang="scss">
   .form-container {
-    max-width: 960px;
+    max-width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
@@ -314,5 +395,11 @@ function goBack() {
 
   .select-card {
     border: 1px solid rgb(0, 91, 212) ;
+  }
+
+  .database-type {
+    width: calc(25% - 10px);
+    margin-bottom: 10px;
+    margin-right: 10px;
   }
 </style>

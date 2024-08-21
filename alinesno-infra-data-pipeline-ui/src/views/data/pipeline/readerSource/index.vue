@@ -36,12 +36,7 @@
                <el-table-column label="描述" align="left" width="50" key="status" v-if="columns[5].visible">
                   <template #default="scope">
                      <div>
-                        <img v-if="scope.row.readerType === 'MySQL'" 
-                           style="width:35px; height:35px" 
-                           src="http://data.linesno.com/icons/mysql.png" />
-                        <img v-else 
-                           style="width:35px;height:35px" 
-                           src="http://data.linesno.com/icons/mysql.png" />
+                        <img style="width:35px; height:35px" :src="'http://data.linesno.com/icons/database/' + scope.row.readerType + '.png'" />
                      </div>
                   </template>
                </el-table-column>
@@ -57,8 +52,19 @@
                      </div>
                   </template>
                </el-table-column>
-               <el-table-column label="源类型" align="left" width="150" prop="sourceType" :show-overflow-tooltip="true" />
 
+               <el-table-column label="源类型" align="left" width="150" prop="sourceType" :show-overflow-tooltip="true">
+                 <template #default="scope">
+                    <el-button v-if="scope.row.sourceType == 'source'" type="primary" bg text> 
+                        <i class="fa-solid fa-truck"></i>&nbsp;读取 
+                     </el-button>
+                    <el-button v-if="scope.row.sourceType == 'sink'" type="danger" bg text> 
+                        <i class="fa-solid fa-feather"></i>&nbsp;写入
+                     </el-button>
+                 </template>
+               </el-table-column>
+
+               <el-table-column label="作者" align="center" width="150" prop="author" :show-overflow-tooltip="true" />
                <el-table-column label="类型" align="left" width="150" prop="readerType" :show-overflow-tooltip="true" />
 
                <el-table-column label="状态" align="center" width="120" prop="hasStatus">

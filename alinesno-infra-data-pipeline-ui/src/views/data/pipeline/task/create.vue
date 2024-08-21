@@ -47,8 +47,13 @@
             </el-input-number>
          </el-form-item>
 
+         <!-- CRON表达式 -->
+         <el-form-item label="CRON表达式" prop="cronExpression">
+            <el-input v-model="form.cronExpression" placeholder="请输入CRON表达式"></el-input>
+         </el-form-item>
+
          <!-- 是否告警 -->
-         <el-form-item label="任务时间">
+         <el-form-item label="起止时间">
             <el-col :span="11">
                <el-date-picker
                v-model="form.date1"
@@ -68,7 +73,6 @@
                />
             </el-col>
          </el-form-item>
-
 
          <!-- 参与人监控邮箱 -->
          <el-form-item label="参与人监控邮箱" prop="monitorEmail">

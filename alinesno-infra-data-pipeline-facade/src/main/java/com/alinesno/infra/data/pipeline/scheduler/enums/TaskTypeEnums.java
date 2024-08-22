@@ -1,9 +1,13 @@
 package com.alinesno.infra.data.pipeline.scheduler.enums;
 
+import lombok.Getter;
+import org.springframework.web.bind.annotation.GetMapping;
+
 /**
  * 任务类型枚举类
  * 用于表示不同的任务类型
  */
+@Getter
 public enum TaskTypeEnums {
 
     RECURRING_TASK("recurring_task"), // 循环任务

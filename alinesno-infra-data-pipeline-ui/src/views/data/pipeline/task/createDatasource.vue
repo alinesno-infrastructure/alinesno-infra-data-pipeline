@@ -19,20 +19,48 @@
             <el-radio-group v-model="form.readerSource">
                <el-radio v-for="item in readerSource" 
                   class="database-type" 
-                  :key="item.dbType"
-                  :label="item.dbType"
-                  :value="item.dbType" 
-                  size="large" 
-                  border>
-                 <i class="fa-solid fa-screwdriver-wrench"></i> {{ item.dbType }}
+                  :key="item.id"
+                  :label="item.id"
+                  :value="item.id" 
+                  size="large">
+                    <div style="float: left;">
+                      <img style="width:30px; height:30px" :src="'http://data.linesno.com/icons/database/' + item.readerType + '.png'" /> 
+                    </div>
+                    <div style="float: left;margin-left: 10px;line-height: 1.2rem;">
+                        {{ item.readerName }}
+                        <div style="font-size: 11px;">
+                          {{ item.readerDesc }} 
+                      </div>
+                    </div>
                </el-radio>
             </el-radio-group> 
+
          </el-form-item>
-         <el-form-item label="采集SQL语句" prop="querySql">
-            <el-input v-model="form.querySql" placeholder="请输入SQL语句" />
+
+         <el-form-item label="配置源">
+            <el-button type="primary" bg text @click="sourceDrawer = true"> 
+               <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置读取源参数
+            </el-button>
          </el-form-item>
-         <el-form-item label="存量数据读取">
-            <el-switch v-model="form.delivery" />
+
+         <el-divider content-position="left">数据插件选择</el-divider>
+
+         <el-form-item label="数据插件">
+            <el-checkbox-group v-model="form.plugins">
+                <el-checkbox v-for="item in plugins" 
+                  :value="item.name" 
+                  :key="item.name"
+                  :label="item.name"
+                  name="type">
+                  <i :class="item.icon"></i>&nbsp;{{ item.desc }}
+                </el-checkbox> 
+            </el-checkbox-group>
+         </el-form-item>
+
+         <el-form-item label="配置源">
+            <el-button type="primary" bg text @click="pluginDrawer = true"> 
+               <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置插件参数
+            </el-button>
          </el-form-item>
 
          <el-divider content-position="left">数据目的设置</el-divider>
@@ -41,14 +69,28 @@
             <el-radio-group v-model="form.sinkSource">
                <el-radio v-for="item in sinkSource" 
                   class="database-type" 
-                  :key="item.dbType"
-                  :label="item.dbType"
-                  :value="item.dbType" 
-                  size="large" 
-                  border>
-                 <i class="fa-solid fa-screwdriver-wrench"></i> {{ item.dbType }}
+                  :key="item.id"
+                  :label="item.id"
+                  :value="item.id" 
+                  size="large">
+                    <div style="float: left;">
+                      <img style="width:30px; height:30px" :src="'http://data.linesno.com/icons/database/' + item.readerType + '.png'" /> 
+                    </div>
+                    <div style="float: left;margin-left: 10px;line-height: 1.2rem;">
+                        {{ item.readerName }}
+                        <div style="font-size: 11px;">
+                          {{ item.readerDesc }} 
+                      </div>
+                    </div>
                </el-radio>
             </el-radio-group> 
+
+         </el-form-item>
+
+         <el-form-item label="配置源">
+            <el-button type="primary" bg text @click="sinkDrawer = true"> 
+               <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置写入取源参数
+            </el-button>
          </el-form-item>
 
          <el-form-item label="异常处理">
@@ -62,24 +104,10 @@
             </el-radio-group>
          </el-form-item>
 
-         <el-divider content-position="left">数据插件选择</el-divider>
-
          <el-form-item label="字段映射">
-            <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> 
-               <i class="fa-solid fa-link"></i>&nbsp;配置映射关系
+            <el-button type="primary" bg text @click="centerDialogVisible = true">
+               <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置映射关系
             </el-button>
-         </el-form-item>
-
-         <el-form-item label="数据插件">
-            <el-checkbox-group v-model="form.plugins">
-                <el-checkbox v-for="item in plugins" 
-                  :value="item.pluginName" 
-                  :key="item.pluginName"
-                  :label="item.pluginName"
-                  name="type">
-                  <i :class="item.icon"></i>&nbsp;{{ item.pluginDesc }}
-                </el-checkbox> <br/>
-            </el-checkbox-group>
          </el-form-item>
         
          <br/>
@@ -90,10 +118,51 @@
          </el-form-item>
       </el-form>
     </div>
+
+    <!-- 参数 Drawer配置-->
+    <el-drawer v-model="sourceDrawer" title="数据源参数配置" :direction="direction">
+      <!-- 写入插件配置参数 -->
+      <SourceParam :readerSource="getSinkSource(form.readerSource , 'source')"/>
+    </el-drawer>
+
+    <el-drawer v-model="sinkDrawer" title="写入源参数配置" :direction="direction">
+      <!-- 写入插件配置参数 -->
+      <SinkParam :sinkSource="getSinkSource(form.sinkSource , 'sink')"/>
+    </el-drawer>
+
+    <el-drawer v-model="pluginDrawer" title="插件源参数配置" :direction="direction">
+      <!-- 写入插件配置参数 -->
+      <PluginParam :pluginSource="getPluginItem(form.plugins)"/>
+    </el-drawer>
+
+    <el-dialog v-model="centerDialogVisible" title="字段映射关系" width="780" center>
+      <span>
+        <FieldMapping />
+      </span>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="centerDialogVisible = false">
+            确认 
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
   </div>
 </template>
 
 <script setup name="createDatasourceJob">
+
+import {
+  getAllSourceReader,
+  getAllPlugin,
+} from "@/api/data/pipeline/jobBuilder";
+
+import SinkParam from "./params/sinkParam.vue";
+import SourceParam from "./params/sourceParam.vue";
+import PluginParam from "./params/pluginParam.vue";
+import FieldMapping from "./params/fieldMapping.vue";
 
 const router = useRouter();
 
@@ -104,189 +173,14 @@ const loginStyleArr = ref([
    {id:'3' , icon:'http://data.linesno.com/icons/flow/style-06.png' , desc:'消息数据采集，消息中间件中实时或定时地收集数据'} 
 ]);
 
-const plugins = ref([
-    {
-        pluginName: "ClearNull",
-        pluginDesc: "清理数据字段空值，随机添加一个数字",
-        icon: "fa-solid fa-user-shield"
-    },
-    {
-        pluginName: "ConvertCase",
-        pluginDesc: "将数据字段的文本转换为指定大小写",
-        icon: "fa-solid fa-text-height"
-    },
-    {
-        pluginName: "RemoveDuplicates",
-        pluginDesc: "去除数据字段中的重复项",
-        icon: "fa-solid fa-ban"
-    },
-    {
-        pluginName: "FormatDate",
-        pluginDesc: "将日期字段格式化为指定格式",
-        icon: "fa-solid fa-calendar-day"
-    },
-    {
-        pluginName: "TrimWhitespace",
-        pluginDesc: "去除数据字段中的前后空格",
-        icon: "fa-solid fa-space-shuttle"
-    },
-    {
-        pluginName: "SplitField",
-        pluginDesc: "将数据字段按指定分隔符拆分",
-        icon: "fa-solid fa-cut"
-    },
-    {
-        pluginName: "MergeFields",
-        pluginDesc: "将多个数据字段合并为一个",
-        icon: "fa-solid fa-plus"
-    },
-    {
-        pluginName: "ReplaceText",
-        pluginDesc: "替换数据字段中的指定文本",
-        icon: "fa-solid fa-exchange"
-    },
-    {
-        pluginName: "FillMissing",
-        pluginDesc: "用指定值填充缺失的数据",
-        icon: "fa-solid fa-fill"
-    },
-    {
-        pluginName: "NormalizeData",
-        pluginDesc: "将数据字段的数值归一化到指定范围",
-        icon: "fa-solid fa-chart-line"
-    }
-])
+const plugins = ref([])  // 数据插件
+const readerSource = ref([])  // 读取源
+const sinkSource = ref([])  // 数据目的
 
-const readerSource = ref([
-  {
-    "driverName": "mysql",
-    "dbType": "MySQL",
-    "dbDriver": "com.mysql.cj.jdbc.Driver",
-    "icon": "fa-brands fa-mysql"
-  },
-  {
-    "driverName": "oracle",
-    "dbType": "Oracle",
-    "dbDriver": "oracle.jdbc.driver.OracleDriver",
-    "icon": "fa-brands fa-oracle"
-  },
-  {
-    "driverName": "sqlserver",
-    "dbType": "SQLServer",
-    "dbDriver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-    "icon": "fa-brands fa-microsoft"
-  },
-  {
-    "driverName": "postgresql",
-    "dbType": "PostgreSQL",
-    "dbDriver": "org.postgresql.Driver",
-    "icon": "fa-brands fa-postgresql"
-  },
-  {
-    "driverName": "db2",
-    "dbType": "DB2",
-    "dbDriver": "com.ibm.db2.jcc.DB2Driver",
-    "icon": "fa-brands fa-ibm"
-  },
-  {
-    "driverName": "mongodb",
-    "dbType": "MongoDB",
-    "dbDriver": "com.mongodb.jdbc.MongoDriver",
-    "icon": "fa-brands fa-mongodb"
-  },
-  {
-    "driverName": "cassandra",
-    "dbType": "Cassandra",
-    "dbDriver": "com.datastax.oss.driver.internal.core.cql.CqlRequestHandler",
-    "icon": "fa-brands fa-cassandra"
-  },
-  {
-    "driverName": "elasticsearch",
-    "dbType": "Elasticsearch",
-    "dbDriver": "org.elasticsearch.client.jdbc.ElasticsearchDriver",
-    "icon": "fa-brands fa-elastic"
-  },
-  {
-    "driverName": "hbase",
-    "dbType": "HBase",
-    "dbDriver": "org.apache.hadoop.hbase.jdbc.HBaseDriver",
-    "icon": "fa-brands fa-hadoop"
-  },
-  {
-    "driverName": "hive",
-    "dbType": "Hive",
-    "dbDriver": "org.apache.hive.jdbc.HiveDriver",
-    "icon": "fa-brands fa-hive"
-  },
-  {
-    "driverName": "jdbc",
-    "dbType": "JDBC",
-    "dbDriver": "org.apache.derby.jdbc.EmbeddedDriver",
-    "icon": "fa-brands fa-java"
-  }]) 
-
-const sinkSource = ref([
-   {
-    "driverName": "json",
-    "dbType": "JSON",
-    "dbDriver": "org.json.JSONDriver",
-    "icon": "fa-solid fa-file-json"
-  },
-  {
-    "driverName": "hbase",
-    "dbType": "HBase",
-    "dbDriver": "org.apache.hadoop.hbase.jdbc.HBaseDriver",
-    "icon": "fa-brands fa-hadoop"
-  },
-  {
-    "driverName": "xml",
-    "dbType": "XML",
-    "dbDriver": "org.w3c.dom.jdbc.DomDriver",
-    "icon": "fa-solid fa-file-xml"
-  },
-  {
-    "driverName": "csv",
-    "dbType": "CSV",
-    "dbDriver": "org.apache.commons.csv.CsvDriver",
-    "icon": "fa-solid fa-file-csv"
-  },
-  {
-    "driverName": "fixed",
-    "dbType": "Fixed",
-    "dbDriver": "org.apache.commons.fixed.FixedDriver",
-    "icon": "fa-solid fa-file"
-  },
-  {
-    "driverName": "avro",
-    "dbType": "Avro",
-    "dbDriver": "org.apache.avro.jdbc.AvroDriver",
-    "icon": "fa-solid fa-file"
-  },
-  {
-    "driverName": "parquet",
-    "dbType": "Parquet",
-    "dbDriver": "org.apache.parquet.jdbc.ParquetDriver",
-    "icon": "fa-solid fa-file"
-  },
-  {
-    "driverName": "orc",
-    "dbType": "ORC",
-    "dbDriver": "org.apache.orc.jdbc.OrcDriver",
-    "icon": "fa-solid fa-file"
-  },
-  {
-    "driverName": "excel",
-    "dbType": "Excel",
-    "dbDriver": "org.apache.poi.jdbc.ExcelDriver",
-    "icon": "fa-solid fa-file-excel"
-  },
-  {
-    "driverName": "lucene",
-    "dbType": "Lucene",
-    "dbDriver": "org.apache.lucene.jdbc.LuceneDriver",
-    "icon": "fa-solid fa-search"
-  }
-]) ;
+const pluginDrawer = ref(false)
+const sourceDrawer = ref(false)
+const sinkDrawer = ref(false)
+const centerDialogVisible = ref(false)
 
 const exceptionHandle = ref([
   {method:'jump' , label:'跳过且记录'},
@@ -356,6 +250,44 @@ function goBack() {
    router.push({path:'/task/data/pipeline/task/create',query:{}});
 }
 
+/** 获取到所有数据插件 */
+function handleGetAllPlugin() {
+  getAllPlugin().then(response => {
+    plugins.value = response.data;
+  });
+}
+
+/** 获取到所有数据源 */
+function handleGetAllSourceReader() {
+  getAllSourceReader().then(response => {
+    const data = response.data;
+
+    readerSource.value = data.filter(item => item.sourceType === 'sink');
+    sinkSource.value = data.filter(item => item.sourceType === 'source');
+
+    readerSource.value = data ; 
+    sinkSource.value = data ; 
+  });
+}
+
+/** 获取到所有数据源 */
+function getSinkSource(id , type) {
+  if(type === 'sink'){
+    return sinkSource.value.filter(item => item.id=== id)[0];
+  }else{
+    return readerSource.value.filter(item => item.id=== id)[0];
+  }
+}
+
+/** 根据获取到plugins数组返回对应的插件对象 */
+function getPluginItem(pluginArr) {
+  // 使用数组的 filter 方法结合 some 方法来找出所有匹配的插件
+  // some 方法会检查每个元素是否存在于 pluginArr 中
+  return plugins.value.filter(item => pluginArr.some(name => name === item.name));
+}
+
+handleGetAllPlugin();
+handleGetAllSourceReader();
 
 </script>
 
@@ -398,8 +330,6 @@ function goBack() {
   }
 
   .database-type {
-    width: calc(25% - 10px);
-    margin-bottom: 10px;
-    margin-right: 10px;
+    margin: 10px;
   }
 </style>

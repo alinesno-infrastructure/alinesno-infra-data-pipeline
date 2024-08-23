@@ -9,16 +9,14 @@ import com.alinesno.infra.common.web.log.utils.SpringUtils;
 import com.alinesno.infra.data.pipeline.api.CheckDbConnectResult;
 import com.alinesno.infra.data.pipeline.api.FetchDataDto;
 import com.alinesno.infra.data.pipeline.api.dto.DatasourceDto;
-import com.alinesno.infra.data.pipeline.api.utils.DbParserUtils;
 import com.alinesno.infra.data.pipeline.api.utils.ReaderSourceMapping;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.IDataSourceReader;
 import com.alinesno.infra.data.pipeline.entity.ReaderSourceEntity;
-import com.alinesno.infra.data.pipeline.enums.DbDriverEnums;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
+import com.alinesno.infra.data.pipeline.scheduler.enums.SinkReaderEnums;
+import com.alinesno.infra.data.pipeline.scheduler.enums.SourceReaderEnums;
 import com.alinesno.infra.data.pipeline.service.IReaderSourceService;
-import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
-import com.alinesno.infra.data.pipeline.transfer.bean.ReaderSourceBean;
 import com.alinesno.infra.data.pipeline.transfer.bean.TableMetaBean;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +29,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.lang.exception.RpcServiceRuntimeException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +70,7 @@ public class ReaderSourceController extends BaseController<ReaderSourceEntity, I
         ReaderSourceEntity dbListEntity = new ReaderSourceEntity() ;
         BeanUtils.copyProperties(dto, dbListEntity) ;
 
-        DbParserUtils.parserJdbcUrl(dbListEntity , dto.getJdbcUrl()) ;
+//        DbParserUtils.parserJdbcUrl(dbListEntity , dto.getJdbcUrl()) ;
 
         CheckDbConnectResult result = service.checkDbConnect(dbListEntity);
         if (result.isAccepted()) {
@@ -84,9 +84,11 @@ public class ReaderSourceController extends BaseController<ReaderSourceEntity, I
     public AjaxResult modifyDb(@Validated @RequestBody DatasourceDto dto ) {
 
         ReaderSourceEntity dbEntity = new ReaderSourceEntity() ;
-
         BeanUtils.copyProperties(dto, dbEntity) ;
-        DbParserUtils.parserJdbcUrl(dbEntity , dto.getJdbcUrl()) ;
+
+        dbEntity.setReaderName(dto.getReaderType().toUpperCase());
+
+//        DbParserUtils.parserJdbcUrl(dbEntity , dto.getJdbcUrl()) ;
 
         try {
             return super.update(null, dbEntity) ;
@@ -104,16 +106,54 @@ public class ReaderSourceController extends BaseController<ReaderSourceEntity, I
         return AjaxResult.success(service.list()) ;
     }
 
+    /**
+     * 获取到所有数据库源
+     * @return
+     */
+    @GetMapping("/allReaderSource")
+    public AjaxResult allReaderSource(){
+
+        SinkReaderEnums[] sinkArr = SinkReaderEnums.values() ;
+        SourceReaderEnums[] sourceArr = SourceReaderEnums.values() ;
+
+        List<Map<String, Object>> map = new ArrayList<>() ;
+        for(SinkReaderEnums sink : sinkArr){
+            Map<String, Object> mapItem = new HashMap<>() ;
+
+            mapItem.put("code", sink.getCode()) ;
+            mapItem.put("icon", sink.getIcon()) ;
+            mapItem.put("readerDesc",sink.getDesc()) ;
+            mapItem.put("sourceType", "sink") ;
+
+            map.add(mapItem) ;
+        }
+
+        for(SourceReaderEnums source : sourceArr){
+            Map<String, Object> mapItem = new HashMap<>() ;
+
+            mapItem.put("code", source.getCode()) ;
+            mapItem.put("icon", source.getIcon()) ;
+            mapItem.put("readerDesc",source.getDesc()) ;
+            mapItem.put("sourceType", "source") ;
+
+            map.add(mapItem) ;
+        }
+
+        return AjaxResult.success(map) ;
+    }
+
     @PostMapping("/saveDb")
     public AjaxResult saveDb(@Validated @RequestBody DatasourceDto dto ) {
 
-        ReaderSourceEntity dbListEntity = new ReaderSourceEntity() ;
+        ReaderSourceEntity dbEntity = new ReaderSourceEntity() ;
 
-        BeanUtils.copyProperties(dto, dbListEntity) ;
-        DbParserUtils.parserJdbcUrl(dbListEntity , dto.getJdbcUrl()) ;
+        BeanUtils.copyProperties(dto, dbEntity) ;
+        dbEntity.setReaderName(dto.getReaderType().toUpperCase());
+
+//        DbParserUtils.parserJdbcUrl(dbListEntity , dto.get()) ;
 
         try {
-            return super.save(null, dbListEntity) ;
+            return super.save(null, dbEntity) ;
         } catch (Exception e) {
             throw new RpcServiceRuntimeException(e.getMessage()) ;
         }
@@ -143,7 +183,7 @@ public class ReaderSourceController extends BaseController<ReaderSourceEntity, I
 
     /**
      * 获取到数据库源ID的表结构
-     * @param dto
+     * @param sourceId
      * @return
      */
     @GetMapping("/fetchTableData")
@@ -159,6 +199,39 @@ public class ReaderSourceController extends BaseController<ReaderSourceEntity, I
 
         return AjaxResult.success(rows);
     }
+
+    /**
+     * 检查数据库连接
+     * @return
+     */
+    @GetMapping("/checkConnection")
+    public AjaxResult checkConnection(String sourceId){
+        ReaderSourceEntity resourceSource = service.getById(sourceId) ;
+        String readerType = resourceSource.getReaderType() ;
+        IDataSourceReader dataSourceReader = SpringUtils.getBean(readerType.toLowerCase() + PipeConstants.READER_SUFFIX) ;
+
+        SourceReader reader = ReaderSourceMapping.getReaderSource(resourceSource , null) ;
+        dataSourceReader.checkConnection(reader) ;
+
+        return AjaxResult.success();
+    }
+
+    /**
+     * 检查数据库连接
+     * @return
+     */
+    @PostMapping("/checkConnectionByObj")
+    public AjaxResult checkConnectionByObj(@Validated @RequestBody DatasourceDto dto){
+
+        String readerType = dto.getReaderType() ;
+        IDataSourceReader dataSourceReader = SpringUtils.getBean(readerType.toLowerCase() + PipeConstants.READER_SUFFIX) ;
+
+        SourceReader reader = ReaderSourceMapping.getReaderSourceByDto(dto) ;
+        dataSourceReader.checkConnection(reader) ;
+
+        return AjaxResult.success();
+    }
+
 
     @Override
     public IReaderSourceService getFeign() {

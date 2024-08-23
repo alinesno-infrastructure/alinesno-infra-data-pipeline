@@ -1,11 +1,14 @@
 package com.alinesno.infra.data.pipeline.datasource;
 
 import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
+import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
+import com.alinesno.infra.data.pipeline.transfer.bean.ReaderSourceBean;
 import com.google.common.base.CharMatcher;
 import org.springframework.jdbc.support.JdbcUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public abstract class ComponentSourceReader extends AbstractTemplates implements IDataSourceReader {
 
@@ -29,5 +32,9 @@ public abstract class ComponentSourceReader extends AbstractTemplates implements
         sb.deleteCharAt(sb.length() - 1).append("\n");
     }
 
+    @Override
+    public List<FieldMetaBean> analyseSourceField(ReaderSourceBean source) {
+        return null;
+    }
 
 }

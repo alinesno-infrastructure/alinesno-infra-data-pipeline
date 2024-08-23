@@ -12,6 +12,8 @@
     <div class="form-container" >
       <el-form :model="form" :rules="rules" ref="ruleFormRef" label-width="180px">
 
+         <!--------------------------------------------------------- 任务配置开始 ---------------------------->
+
          <el-divider content-position="left">读取源设置</el-divider>
 
          <!-- 数据采集模板 -->
@@ -41,6 +43,12 @@
             <el-button type="primary" bg text @click="sourceDrawer = true"> 
                <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置读取源参数
             </el-button>
+         </el-form-item>
+
+         <!-- 批数据抽取量 -->
+         <el-form-item label="批数据抽取量" prop="batchExtractionAmount">
+            <el-input-number :min="1" v-model="form.batchExtractionAmount">
+            </el-input-number>
          </el-form-item>
 
          <el-divider content-position="left">数据插件选择</el-divider>
@@ -93,6 +101,12 @@
             </el-button>
          </el-form-item>
 
+         <!-- 批数写入量 -->
+         <el-form-item label="批数写入量" prop="batchWriteAmount">
+            <el-input-number :min="1" v-model="form.batchWriteAmount">
+            </el-input-number>
+         </el-form-item>
+
          <el-form-item label="异常处理">
             <el-radio-group v-model="form.exception">
                <el-radio v-for="item in exceptionHandle" 
@@ -109,7 +123,9 @@
                <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置映射关系
             </el-button>
          </el-form-item>
-        
+      
+         <!--------------------------------------------------------- 任务配置结束 ---------------------------->
+
          <br/>
 
          <el-form-item>
@@ -122,32 +138,54 @@
     <!-- 参数 Drawer配置-->
     <el-drawer v-model="sourceDrawer" title="数据源参数配置" :direction="direction">
       <!-- 写入插件配置参数 -->
-      <SourceParam :readerSource="getSinkSource(form.readerSource , 'source')"/>
-    </el-drawer>
-
-    <el-drawer v-model="sinkDrawer" title="写入源参数配置" :direction="direction">
-      <!-- 写入插件配置参数 -->
-      <SinkParam :sinkSource="getSinkSource(form.sinkSource , 'sink')"/>
-    </el-drawer>
-
-    <el-drawer v-model="pluginDrawer" title="插件源参数配置" :direction="direction">
-      <!-- 写入插件配置参数 -->
-      <PluginParam :pluginSource="getPluginItem(form.plugins)"/>
-    </el-drawer>
-
-    <el-dialog v-model="centerDialogVisible" title="字段映射关系" width="780" center>
-      <span>
-        <FieldMapping />
-      </span>
+      <SourceParam ref="sourceParamRef" :readerSource="getSinkSource(form.readerSource , 'source')"/>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false">
+          <el-button @click="sourceDrawer = false">取消</el-button>
+          <el-button type="primary" @click="callSourceDrawerParams()">
             确认 
           </el-button>
         </div>
       </template>
-    </el-dialog>
+    </el-drawer>
+
+    <el-drawer v-model="sinkDrawer" title="写入源参数配置" :direction="direction">
+      <!-- 写入插件配置参数 -->
+      <SinkParam ref="sinkParamRef" :sinkSource="getSinkSource(form.sinkSource , 'sink')"/>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="sinkDrawer = false">取消</el-button>
+          <el-button type="primary" @click="callSinkParams()">
+            确认 
+          </el-button>
+        </div>
+      </template>
+    </el-drawer>
+
+    <el-drawer v-model="pluginDrawer" title="插件源参数配置" :direction="direction">
+      <!-- 写入插件配置参数 -->
+      <PluginParam ref="pluginParamRef" :pluginSource="getPluginItem(form.plugins)"/>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="pluginDrawer = false">取消</el-button>
+          <el-button type="primary" @click="callPluginsParams()">
+            确认 
+          </el-button>
+        </div>
+      </template>
+    </el-drawer>
+
+    <el-drawer v-model="centerDialogVisible" title="字段映射关系" :direction="direction">
+      <FieldMapping ref="fieldMappingRef" />
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="callFieldMappingRef()">
+            确认 
+          </el-button>
+        </div>
+      </template>
+    </el-drawer>
 
   </div>
 </template>
@@ -165,6 +203,11 @@ import PluginParam from "./params/pluginParam.vue";
 import FieldMapping from "./params/fieldMapping.vue";
 
 const router = useRouter();
+
+const sourceParamRef = ref()
+const sinkParamRef = ref()
+const pluginParamRef = ref()
+const fieldMappingRef = ref()  // 映射关系组件
 
 const currentLoginStyle = ref('1')
 const loginStyleArr = ref([
@@ -194,6 +237,9 @@ const data = reactive({
       querySql: '',
       plugins: [],
       exception: '',
+
+      batchExtractionAmount: 5000, // 批数据抽取量
+      batchWriteAmount: 5000, // 批数写入量
 
       name: '',
       region: '',
@@ -284,6 +330,30 @@ function getPluginItem(pluginArr) {
   // 使用数组的 filter 方法结合 some 方法来找出所有匹配的插件
   // some 方法会检查每个元素是否存在于 pluginArr 中
   return plugins.value.filter(item => pluginArr.some(name => name === item.name));
+}
+
+/** 提交字段映射关系 */
+const callFieldMappingRef= () => {
+  let mappings = fieldMappingRef.value.submitMapping()
+  console.log(JSON.stringify(mappings, null, 2));
+}
+
+/** 提交源参数配置 */
+const callSourceDrawerParams= () => {
+  let sourceParam = sourceParamRef.value.submitSourceParam()
+  console.log(JSON.stringify(sourceParam, null, 2));
+}
+
+/** 提交目标参数配置 */
+const callSinkParams = () => {
+  let sinkParam = sinkParamRef.value.submitSinkParam()
+  console.log(JSON.stringify(sinkParam, null, 2));
+}
+
+/** 获取插件参数配置 */
+const callPluginsParams = () => {
+  let plginParam = pluginParamRef.value.submitPluginParam()
+  console.log(JSON.stringify(plginParam , null, 2));
 }
 
 handleGetAllPlugin();

@@ -36,33 +36,51 @@
               <el-table-column type="selection" width="50" align="center" />
               
               <el-table-column label="图标" align="center" width="60" key="icon">
-                 <template #default="scope">
+                 <!-- <template #default="scope">
                     <span style="font-size:25px;color:#3b5998">
                        <i class="fa-solid fa-file-word"></i>   
                     </span>
-                 </template>
+                 </template> -->
+                  <template #default="scope">
+                     <div>
+                        <img style="width:40px; height:40px" :src="'http://data.linesno.com/icons/database/' + (scope.row.targetDbType).toLowerCase() + '.png'" />
+                     </div>
+                  </template>
               </el-table-column>
 
 
               <!-- 业务字段-->
-              <el-table-column label="任务名称" align="left" width="200" key="jobName" prop="jobName" v-if="columns[0].visible">
+              <el-table-column label="任务名称" align="left" key="jobName" prop="jobName" v-if="columns[0].visible">
                  <template #default="scope">
                      <div>
                         {{ scope.row.jobName }}
                      </div>
                      <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
-                        成功: 6434 失败: 34
+                        {{ scope.row.jobDesc }}
                      </div>
                   </template>
               </el-table-column>
-              <el-table-column label="任务描述" align="left" key="jobDesc" prop="jobDesc" v-if="columns[1].visible" />
-              <el-table-column label="迁移目标" align="left" width="300" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
+              <el-table-column label="迁移数据量" align="left" key="jobDesc" prop="jobDesc" v-if="columns[1].visible">
                  <template #default="scope">
-                     <div style="margin-bottom: 10px;">
-                        <!-- <el-icon loading><Loading /></el-icon> -->
-                        <el-button type="primary" bg text> <i class="fa-solid fa-credit-card"></i> &nbsp; {{ scope.row.sourceDbType }}</el-button>
-                        <i class="fa-solid fa-arrow-right" style="margin-right:5px;margin-left:5px;"></i> 
-                        <el-button type="danger" bg text> <i class="fa-solid fa-lemon"></i> &nbsp; {{ scope.row.targetDbType}}</el-button>
+                     <div style="margin-top: 5px;">
+                        <el-button type="primary" text> <i class="fa-solid fa-truck-fast"></i> 读: 74299422 条 </el-button>
+                     </div>
+                     <div style="margin-top: 5px;">
+                        <el-button type="danger" text> <i class="fa-solid fa-feather"></i> 写: 8742355 条</el-button>
+                     </div>
+                  </template>
+              </el-table-column>
+              <el-table-column label="迁移目标" align="left" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
+                 <template #default="scope">
+                     <div style="margin-top: 5px;">
+                        <el-button type="primary" text>
+                           <img style="margin-right:5px;width:20px; height:20px" :src="'http://data.linesno.com/icons/database/' + (scope.row.sourceDbType).toLowerCase() + '.png'" />  源库: {{ scope.row.sourceDbType }}
+                        </el-button>
+                     </div>
+                     <div style="margin-top: 5px;">
+                        <el-button type="primary" text>
+                           <img style="margin-right:5px;width:20px; height:20px" :src="'http://data.linesno.com/icons/database/' + (scope.row.targetDbType).toLowerCase() + '.png'" />  目标: {{ scope.row.targetDbType }}
+                        </el-button>
                      </div>
                   </template>
               </el-table-column>
@@ -88,9 +106,10 @@
 
               <el-table-column label="执行周期" align="left" prop="addTime" v-if="columns[6].visible" width="200">
                  <template #default="scope">
-                    <!-- <span>{{ parseTime(scope.row.addTime) }}</span> -->
                      <div>
-                        每天下午4点半
+                        <el-tooltip :content="parseCronExpression(scope.row.jobCron)" placement="top" v-if="scope.row.JobId !== 1">
+                         CRON:  {{ scope.row.jobCron }}
+                        </el-tooltip>
                      </div>
                      <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
                         上次: {{ parseTime(scope.row.addTime) }}
@@ -463,6 +482,62 @@ function handleRunOneTime(row) {
       proxy.$modal.msgSuccess("执行成功");
    });
 } 
+
+/** CRON表达式解析 */
+function parseCronExpression(cronExpression) {
+  const parts = cronExpression.split(' ');
+  const [second, minute, hour, dayOfMonth, month, dayOfWeek] = parts;
+
+  let description = '';
+
+  // 解析秒
+  if (second !== '*' && parseInt(second) === 0) {
+    description += '每分钟开始';
+  }
+
+  // 解析分钟
+  if (minute !== '*') {
+    if (parseInt(minute) === 0) {
+      description += '每小时开始';
+    } else {
+      description += `每小时的第${minute}分钟`;
+    }
+  }
+
+  // 解析小时
+  if (hour !== '*') {
+    const hours = [
+      '午夜', '凌晨1点', '凌晨2点', '凌晨3点', '凌晨4点', '凌晨5点', '凌晨6点', '凌晨7点', '凌晨8点', '凌晨9点', '凌晨10点',
+      '凌晨11点', '中午', '下午1点', '下午2点', '下午3点', '下午4点', '下午5点', '下午6点', '下午7点', '下午8点',
+      '下午9点', '下午10点', '下午11点'
+    ];
+    description += hours[parseInt(hour)] || `下午${parseInt(hour)}点`;
+  }
+
+  // 解析每月的哪一天
+  if (dayOfMonth !== '*') {
+    description += `每月的第${dayOfMonth}天`;
+  }
+
+  // 解析月份
+  if (month !== '*') {
+    const months = [
+      '1月', '2月', '3月', '4月', '5月', '6月',
+      '7月', '8月', '9月', '10月', '11月', '12月'
+    ];
+    description += months[parseInt(month) - 1] || `第${parseInt(month)}个月`;
+  }
+
+  // 解析每周的哪一天
+  if (dayOfWeek !== '?' && dayOfWeek !== '*') {
+    const daysOfWeek = [
+      '星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'
+    ];
+    description += `在${daysOfWeek[parseInt(dayOfWeek)]}`;
+  }
+
+  return description;
+}
 
 /** 任务详细信息 */
 function handleView(row) {

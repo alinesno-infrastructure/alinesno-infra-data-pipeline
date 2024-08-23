@@ -6,9 +6,34 @@ import com.alinesno.infra.data.pipeline.enums.DbDriverEnums;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DataInitializer {
+
+    /**
+     * 随机生成20个CORN表达式
+      */
+    public static List<String> generateRandomCronExpressions(int count) {
+        List<String> cronExpressions = new ArrayList<>();
+        Random random = new Random();
+
+        for (int i = 0; i < count; i++) {
+            int second = random.nextInt(60); // 0 - 59
+            int minute = random.nextInt(60); // 0 - 59
+            int hour = random.nextInt(24);   // 0 - 23
+            int dayOfMonth = random.nextInt(31) + 1; // 1 - 31
+            int month = random.nextInt(12) + 1; // 1 - 12
+            int dayOfWeek = random.nextInt(7); // 0 - 6
+
+            String cronExpression = String.format("%d %d %d %d %d %d",
+                    second, minute, hour,
+                    dayOfMonth, month, dayOfWeek);
+            cronExpressions.add(cronExpression);
+        }
+
+        return cronExpressions;
+    }
 
     public static List<JobEntity> initializeJobs() {
         JobEntity[] jobs = new JobEntity[]{
@@ -26,6 +51,10 @@ public class DataInitializer {
         AtomicLong id = new AtomicLong(1L);
         Arrays.stream(jobs).forEach(job -> {
            job.setId(id.getAndIncrement());
+           job.setJobCron(generateRandomCronExpressions(1).get(0));
+           if(id.get() % 2 == 0){
+               job.setJobCron("*/5 * * * * ?");
+           }
         }) ;
 
         return new ArrayList<>(Arrays.asList(jobs));

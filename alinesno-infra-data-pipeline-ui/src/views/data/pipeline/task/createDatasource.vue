@@ -136,7 +136,7 @@
     </div>
 
     <!-- 参数 Drawer配置-->
-    <el-drawer v-model="sourceDrawer" title="数据源参数配置" :direction="direction">
+    <el-drawer v-model="sourceDrawer" title="数据源参数配置" :direction="direction" size="50%">
       <!-- 写入插件配置参数 -->
       <SourceParam ref="sourceParamRef" :readerSource="getSinkSource(form.readerSource , 'source')"/>
       <template #footer>
@@ -149,7 +149,7 @@
       </template>
     </el-drawer>
 
-    <el-drawer v-model="sinkDrawer" title="写入源参数配置" :direction="direction">
+    <el-drawer v-model="sinkDrawer" title="写入源参数配置" :direction="direction" size="50%">
       <!-- 写入插件配置参数 -->
       <SinkParam ref="sinkParamRef" :sinkSource="getSinkSource(form.sinkSource , 'sink')"/>
       <template #footer>
@@ -162,9 +162,9 @@
       </template>
     </el-drawer>
 
-    <el-drawer v-model="pluginDrawer" title="插件源参数配置" :direction="direction">
+    <el-drawer v-model="pluginDrawer" title="插件源参数配置" :direction="direction" size="50%">
       <!-- 写入插件配置参数 -->
-      <PluginParam ref="pluginParamRef" :pluginSource="getPluginItem(form.plugins)"/>
+      <PluginParam ref="pluginParamRef" :pluginSource="getPluginItem(form.plugins)" :readerFieldMate="readerFieldMate"/>
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="pluginDrawer = false">取消</el-button>
@@ -175,8 +175,8 @@
       </template>
     </el-drawer>
 
-    <el-drawer v-model="centerDialogVisible" title="字段映射关系" :direction="direction">
-      <FieldMapping ref="fieldMappingRef" />
+    <el-drawer v-model="centerDialogVisible" title="字段映射关系" :direction="direction" size="50%">
+      <FieldMapping ref="fieldMappingRef"  :originalFields="readerFieldMate" :targetFields="sinkFieldMate" />
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -201,20 +201,15 @@ import SinkParam from "./params/sinkParam.vue";
 import SourceParam from "./params/sourceParam.vue";
 import PluginParam from "./params/pluginParam.vue";
 import FieldMapping from "./params/fieldMapping.vue";
+import { AUTO_ALIGNMENT } from "element-plus/es/components/virtual-list/src/defaults";
 
 const router = useRouter();
+const { proxy } = getCurrentInstance();
 
 const sourceParamRef = ref()
 const sinkParamRef = ref()
 const pluginParamRef = ref()
 const fieldMappingRef = ref()  // 映射关系组件
-
-const currentLoginStyle = ref('1')
-const loginStyleArr = ref([
-   {id:'1' , icon:'http://data.linesno.com/icons/flow/style-04.png' , desc:'表数据采集抽取，针对单一数据表进行全量或增量数据的采集'} ,
-   {id:'2' , icon:'http://data.linesno.com/icons/flow/style-05.png' , desc:'文件型数据采集，从文件系统中读取文件数据进行解析和加载'} ,
-   {id:'3' , icon:'http://data.linesno.com/icons/flow/style-06.png' , desc:'消息数据采集，消息中间件中实时或定时地收集数据'} 
-]);
 
 const plugins = ref([])  // 数据插件
 const readerSource = ref([])  // 读取源
@@ -225,6 +220,9 @@ const sourceDrawer = ref(false)
 const sinkDrawer = ref(false)
 const centerDialogVisible = ref(false)
 
+const readerFieldMate = ref([]) // 读取源字段
+const sinkFieldMate = ref([]) // 写入源字段
+
 const exceptionHandle = ref([
   {method:'jump' , label:'跳过且记录'},
   {method:'stop' , label:'停止采集'}
@@ -232,24 +230,29 @@ const exceptionHandle = ref([
 
 const data = reactive({
   form: {
-      sinkSource: '' ,
       readerSource: '' ,
-      querySql: '',
+      readerSourceProps: {} ,
+
+      sinkSource: '' ,
+      sinkSourceProps: '' ,
+
       plugins: [],
+      pluginsProps: [],
+
       exception: '',
 
       batchExtractionAmount: 5000, // 批数据抽取量
       batchWriteAmount: 5000, // 批数写入量
 
-      name: '',
-      region: '',
-      date1: '',
-      dataCollectionTemplate: 'mysql' ,
-      date2: '',
-      delivery: false,
-      type: [],
-      resource: 'project',
-      desc: '', 
+      // name: '',
+      // region: '',
+      // date1: '',
+      // dataCollectionTemplate: 'mysql' ,
+      // date2: '',
+      // delivery: false,
+      // type: [],
+      // resource: 'project',
+      // desc: '', 
   },
   queryParams: {
       pageNum: 1,
@@ -302,7 +305,6 @@ function handleGetAllPlugin() {
     plugins.value = response.data;
   });
 }
-
 /** 获取到所有数据源 */
 function handleGetAllSourceReader() {
   getAllSourceReader().then(response => {
@@ -315,6 +317,17 @@ function handleGetAllSourceReader() {
     sinkSource.value = data ; 
   });
 }
+
+/** 提交按钮 */
+function submitForm() {
+  proxy.$refs["ruleFormRef"].validate(valid => {
+     if (valid) {
+       console.log(JSON.stringify(form.value, null, 2));
+       proxy.$modal.msgSuccess("提交成功");
+     }
+  });
+};
+
 
 /** 获取到所有数据源 */
 function getSinkSource(id , type) {
@@ -336,24 +349,40 @@ function getPluginItem(pluginArr) {
 const callFieldMappingRef= () => {
   let mappings = fieldMappingRef.value.submitMapping()
   console.log(JSON.stringify(mappings, null, 2));
+
+  sinkDrawer.value = false
 }
 
 /** 提交源参数配置 */
 const callSourceDrawerParams= () => {
   let sourceParam = sourceParamRef.value.submitSourceParam()
   console.log(JSON.stringify(sourceParam, null, 2));
+
+  form.value.readerSourceProps = sourceParam ;
+  readerFieldMate.value = sourceParam.readerFieldMate;
+
+  sourceDrawer.value = false
 }
 
 /** 提交目标参数配置 */
 const callSinkParams = () => {
   let sinkParam = sinkParamRef.value.submitSinkParam()
   console.log(JSON.stringify(sinkParam, null, 2));
+
+  form.value.sinkSourceProps = sinkParam;
+  sinkFieldMate.value = sinkParam.sinkFieldMate;
+
+  sinkDrawer.value = false
 }
 
 /** 获取插件参数配置 */
 const callPluginsParams = () => {
   let plginParam = pluginParamRef.value.submitPluginParam()
-  console.log(JSON.stringify(plginParam , null, 2));
+  console.log(JSON.stringify(plginParam , null, 2))
+
+  form.value.pluginsProps = plginParam 
+
+  pluginDrawer.value = false
 }
 
 handleGetAllPlugin();
@@ -399,7 +428,4 @@ handleGetAllSourceReader();
     border: 1px solid rgb(0, 91, 212) ;
   }
 
-  .database-type {
-    margin: 10px;
-  }
 </style>

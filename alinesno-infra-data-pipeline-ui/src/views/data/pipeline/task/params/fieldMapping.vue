@@ -9,10 +9,10 @@
             <el-option
               v-for="item in originalFields"
               :key="item.name"
-              :label="item.name + ' - ' + item.description"
+              :label="item.name"
               :value="item.name"
             >
-              {{ item.name }} - {{ item.description }}
+              {{ item.name }}
             </el-option>
           </el-select>
         </template>
@@ -24,10 +24,10 @@
             <el-option
               v-for="item in targetFields"
               :key="item.name"
-              :label="item.name + ' - ' + item.description"
+              :label="item.name"
               :value="item.name"
             >
-              {{ item.name }} - {{ item.description }}
+              {{ item.name }} 
             </el-option>
           </el-select>
         </template>
@@ -40,47 +40,45 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 
-const originalFields = ref([
-  { name: 'id', type: 'int', originalField: 'id', targetField: 'id', description: '主键ID' },
-  { name: 'name', type: 'varchar', originalField: 'name', targetField: 'name', description: '名称' },
-  { name: 'age', type: 'int', originalField: 'age', targetField: 'age', description: '年龄' },
-  { name: 'gender', type: 'varchar', originalField: 'gender', targetField: 'gender', description: '性别' },
-  { name: 'birthdate', type: 'date', originalField: 'birthdate', targetField: 'birthdate', description: '出生日期' },
-  { name: 'address', type: 'varchar', originalField: 'address', targetField: 'address', description: '地址' },
-  { name: 'email', type: 'varchar', originalField: 'email', targetField: 'email', description: '电子邮件' },
-  { name: 'phone', type: 'varchar', originalField: 'phone', targetField: 'phone', description: '电话号码' },
-  { name: 'maritalStatus', type: 'varchar', originalField: 'maritalStatus', targetField: 'maritalStatus', description: '婚姻状况' },
-  { name: 'height', type: 'decimal', originalField: 'height', targetField: 'height', description: '身高' },
-  { name: 'weight', type: 'decimal', originalField: 'weight', targetField: 'weight', description: '体重' }
-]);
-
-const targetFields = ref([
-  { name: 'id', type: 'int', targetField: 'id', description: '主键ID' },
-  { name: 'name', type: 'varchar', targetField: 'name', description: '名称' },
-  { name: 'age', type: 'int', targetField: 'age', description: '年龄' },
-  { name: 'gender', type: 'varchar', targetField: 'gender', description: '性别' },
-  { name: 'birthdate', type: 'date', targetField: 'birthdate', description: '出生日期' },
-  { name: 'address', type: 'varchar', targetField: 'address', description: '地址' },
-  { name: 'email', type: 'varchar', targetField: 'email', description: '电子邮件' },
-  { name: 'phone', type: 'varchar', targetField: 'phone', description: '电话号码' },
-  { name: 'maritalStatus', type: 'varchar', targetField: 'maritalStatus', description: '婚姻状况' },
-  { name: 'height', type: 'decimal', targetField: 'height', description: '身高' },
-  { name: 'weight', type: 'decimal', targetField: 'weight', description: '体重' }
-]);
-
-
-nextTick(() => {
-  // 设置默认值
-  originalFields.value.forEach((field, index) => {
-    field.originalField = field.name;
-  });
-
-  targetFields.value.forEach((field, index) => {
-    field.targetField = field.name;
-  });
+const props = defineProps({
+  originalFields: {
+    type: Array,
+  },
+  targetFields: {
+    type: Array,
+  },
 });
+
+// 在Vue 3中，你可以直接使用ref来管理响应式状态
+const originalFields = ref(props.originalFields);
+const targetFields = ref(props.targetFields);
+
+onMounted(() => {
+  console.log(`the component is now mounted.`)
+
+  // 设置默认值
+  originalFields.value.forEach((field) => {
+    field.originalField = field.name;
+    field.targetField = field.name; 
+  });
+
+  targetFields.value.forEach((field) => {
+    field.targetField = field.name; 
+  });
+
+  nextTick(() => {
+    // 设置默认值
+    originalFields.value.forEach((field, index) => {
+      field.originalField = field.name;
+    });
+
+    targetFields.value.forEach((field, index) => {
+      field.targetField = field.name;
+    });
+  });
+
+})
 
 // 提交映射关系
 function submitMapping() {

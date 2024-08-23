@@ -30,47 +30,46 @@
             </el-row>
          </el-form-item>
 
+         <el-form-item label="变量">
+            <el-button type="primary" bg text @click="centerDialogVisible = true">
+               <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置全局变量
+            </el-button>
+         </el-form-item>
+
          <!-- 数据质量 -->
          <el-form-item label="数据质量" prop="dataQuality">
             <el-switch v-model="form.dataQuality" :active-value="1" :inactive-value="0"></el-switch>
          </el-form-item>
 
-         <!-- 批数据抽取量 -->
-         <el-form-item label="批数据抽取量" prop="batchExtractionAmount">
-            <el-input-number :min="1" size="large" v-model="form.batchExtractionAmount">
-            </el-input-number>
-         </el-form-item>
-
-         <!-- 批数写入量 -->
-         <el-form-item label="批数写入量" prop="batchWriteAmount">
-            <el-input-number :min="1" size="large" v-model="form.batchWriteAmount">
-            </el-input-number>
-         </el-form-item>
-
          <!-- CRON表达式 -->
          <el-form-item label="CRON表达式" prop="cronExpression">
-            <el-input v-model="form.cronExpression" placeholder="请输入CRON表达式"></el-input>
+            <el-input v-model="form.cronExpression" placeholder="请输入CRON表达式">
+               <template #append>
+                  <el-button :icon="Search" @click="handleShowCron">生成CRON表达式</el-button> 
+               </template>
+            </el-input>
          </el-form-item>
 
          <!-- 是否告警 -->
-         <el-form-item label="起止时间">
+         <el-form-item label="起止时间" prop="startTime">
             <el-col :span="11">
                <el-date-picker
-               v-model="form.date1"
-               type="date"
-               placeholder="选择日期"
-               style="width: 100%"
-               />
+                  v-model="form.startTime"
+                  type="date"
+                  placeholder="开始日期"
+                  style="width: 100%"
+                  />
             </el-col>
             <el-col :span="2" class="text-center">
                <span class="text-gray-500">-</span>
             </el-col>
             <el-col :span="11">
-               <el-time-picker
-               v-model="form.date2"
-               placeholder="选择时间"
-               style="width: 100%"
-               />
+               <el-date-picker
+                  type="date"
+                  v-model="form.endTime"
+                  placeholder="结束时间"
+                  style="width: 100%"
+                  />
             </el-col>
          </el-form-item>
 
@@ -91,11 +90,33 @@
         </el-form-item>
       </el-form>
     </div>
+
+   <el-dialog title="Cron表达式生成器" v-model="openCron" append-to-body destroy-on-close class="scrollbar">
+      <crontab @hide="openCron=false" @fill="crontabFill" :expression="expression"></crontab>
+    </el-dialog>
+
+   <el-dialog title="全局环境变量" v-model="centerDialogVisible" append-to-body destroy-on-close class="scrollbar">
+      <ContextParam ref="contextParamRef" />
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="callContextParamRef()">
+            确认 
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
   </div>
 </template>
 
 <script setup name="createJob">
 
+import ContextParam from "./params/contextParam.vue";
+
+import Crontab from '@/components/Crontab'
+
+const { proxy } = getCurrentInstance();
 const router = useRouter();
 
 const loginStyleArr = ref([
@@ -103,17 +124,30 @@ const loginStyleArr = ref([
    {id:'2' , icon:'http://data.linesno.com/icons/flow/style-05.png' , desc:'文件型数据采集，从文件系统中读取文件数据进行解析和加载'} ,
    {id:'3' , icon:'http://data.linesno.com/icons/flow/style-06.png' , desc:'消息数据采集，消息中间件中实时或定时地收集数据'} 
 ]);
-const currentLoginStyle = ref('1')
+const currentLoginStyle = ref('0')
+
+const contextParamRef = ref(null)
+
+// 是否显示Cron表达式弹出层
+const openCron = ref(false) 
+
+// 是否显示弹窗
+const centerDialogVisible = ref(false)
+
+// 传入的表达式
+const expression = ref("")
 
 const data = reactive({
   form: {
       taskName: "", // 任务名称
+      context: "" , // 上下文内容
       dataCollectionTemplate: "", // 数据采集模板
       dataQuality: "", // 数据质量
-      batchExtractionAmount: 5000, // 批数据抽取量
-      batchWriteAmount: 5000, // 批数写入量
       isAlertEnabled: false, // 是否告警
-      monitorEmail: "" // 参与人监控邮箱
+      monitorEmail: "" ,  // 参与人监控邮箱
+      cronExpression: "" , // cron表达式
+      startTime: "", // 开始时间
+      endTime: "", // 结束时间
   },
   queryParams: {
       pageNum: 1,
@@ -131,27 +165,27 @@ const data = reactive({
       dataQuality: [
          { required: true, message: "请输入数据质量要求", trigger: "blur" }
       ],
-      batchExtractionAmount: [
-         { required: true, message: "请输入批数据抽取量", trigger: "blur" }
-      ],
-      batchWriteAmount: [
-         { required: true, message: "请输入批数写入量", trigger: "blur" }
-      ],
-      isAlertEnabled: [
-         { required: true, message: "请选择是否启用告警", trigger: "change" }
-      ],
       monitorEmail: [
          { required: true, message: "请输入参与人监控邮箱", trigger: "blur" },
          { type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"] }
-      ] 
+      ],
+      cronExpression: [
+         { required: true, message: "请输入CRON时间表态式", trigger: "blur" }
+      ],
+      startTime: [
+         { required: true, message: "请输入任务开始时间", trigger: "blur" }
+      ],
+      endTime: [
+         { required: true, message: "请输入任务结束时间", trigger: "blur" }
+      ]
   }
 });
-
 const { queryParams, form, rules } = toRefs(data);
 
 /** 查询任务列表 */
 function selectStyle(item){
    currentLoginStyle.value = item.id;
+   form.value.dataCollectionTemplate = item.id;
    console.log('item = ' + item.id) ;
 }
 
@@ -162,8 +196,35 @@ function goBack() {
 
 /** 创建数据源 */
 function createDatasource(){
-  let path = '/task/data/pipeline/task/createDatasource' ;
-  router.push({ path: path });
+
+  proxy.$refs["databaseRef"].validate(valid => {
+     if (valid) {
+         let path = '/task/data/pipeline/task/createDatasource' ;
+         router.push({ path: path });
+     }
+  });
+   
+}
+
+ /** cron表达式按钮操作 */
+function handleShowCron() {
+   console.log('cron expression = ' + form.value.cronExpression) ;
+   expression.value = form.value.cronExpression ;
+   openCron.value = true;
+}
+
+/** 获取到环境变量值  */
+function callContextParamRef(){
+  let contextParam = contextParamRef.value.getEnvVarsAsJson() ; 
+  form.value.context = contextParam ;
+  centerDialogVisible.value = false ;
+
+  console.log(JSON.stringify(contextParam, null, 2));
+}
+
+/** 确定后回传值 */
+function crontabFill(value) {
+   form.value.cronExpression = value;
 }
 
 </script>

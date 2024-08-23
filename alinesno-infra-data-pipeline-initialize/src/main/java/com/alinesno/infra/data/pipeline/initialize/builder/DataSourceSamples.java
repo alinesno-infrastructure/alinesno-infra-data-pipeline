@@ -1,7 +1,6 @@
 package com.alinesno.infra.data.pipeline.initialize.builder;
 
 import com.alinesno.infra.data.pipeline.entity.ReaderSourceEntity;
-import com.alinesno.infra.data.pipeline.enums.DbDriverEnums;
 import com.alinesno.infra.data.pipeline.enums.TransTypeEnums;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SinkReaderEnums;
 

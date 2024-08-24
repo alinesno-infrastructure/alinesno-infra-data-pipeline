@@ -53,12 +53,12 @@
                   </template>
                </el-table-column>
 
-               <el-table-column label="源类型" align="left" width="150" prop="sourceType" :show-overflow-tooltip="true">
+               <el-table-column label="源类型" align="left" width="150" prop="operationType" :show-overflow-tooltip="true">
                  <template #default="scope">
-                    <el-button v-if="scope.row.sourceType == 'source'" type="primary" bg text> 
+                    <el-button v-if="scope.row.operationType == 'source'" type="primary" bg text> 
                         <i class="fa-solid fa-truck"></i>&nbsp;读取 
                      </el-button>
-                    <el-button v-if="scope.row.sourceType == 'sink'" type="danger" bg text> 
+                    <el-button v-if="scope.row.operationType == 'sink'" type="danger" bg text> 
                         <i class="fa-solid fa-feather"></i>&nbsp;写入
                      </el-button>
                  </template>
@@ -75,21 +75,6 @@
                      </div>
                   </template>
                </el-table-column>
-
-               <!-- 
-               <el-table-column label="应用名称" align="center" key="readerName" prop="readerName" v-if="columns[0].visible" />
-               <el-table-column label="应用描述" align="center" key="readerDesc" prop="readerDesc" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-               <el-table-column label="表数据量" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-               <el-table-column label="类型" align="center" key="readerType" prop="readerType" v-if="columns[3].visible" :show-overflow-tooltip="true" />
-               <el-table-column label="应用地址" align="center" key="jreadercUrl" prop="jreadercUrl" v-if="columns[4].visible" width="120" />
-               <el-table-column label="状态" align="center" key="hasStatus" v-if="columns[5].visible" />
-
-               <el-table-column label="添加时间" align="center" prop="addTime" v-if="columns[6].visible" width="160">
-                  <template #default="scope">
-                     <span>{{ parseTime(scope.row.addTime) }}</span>
-                  </template>
-               </el-table-column> 
-               -->
 
                <!-- 操作字段  -->
                <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
@@ -111,73 +96,77 @@
       </el-row>
 
       <!-- 添加或修改应用配置对话框 -->
-      <el-dialog :title="title" v-model="open" width="900px" append-to-body>
-         <!-- <el-form :model="form" :rules="rules" ref="databaseRef" label-width="100px">
-            <el-row>
-               <el-col :span="24">
-                  <el-form-item label="名称" prop="readerName">
-                     <el-input v-model="form.readerName" placeholder="请输入应用名称" maxlength="50" />
-                  </el-form-item>
-               </el-col>
-            </el-row>
-            <el-row>
-               <el-col :span="24">
-                  <el-form-item label="连接" prop="jreadercUrl">
-                     <el-input v-model="form.jreadercUrl" placeholder="请输入jreadercUrl连接地址" maxlength="128" />
-                  </el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="类型" prop="readerType">
-                     <el-input v-model="form.readerType" placeholder="请输入类型" maxlength="50" />
-                  </el-form-item>
-               </el-col>
-            </el-row>
-            <el-row>
-               <el-col :span="24">
-                  <el-form-item label="用户名" prop="readerUsername">
-                     <el-input v-model="form.readerUsername" placeholder="请输入连接用户名" maxlength="30" />
-                  </el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="密码" prop="readerPasswd">
-                     <el-input v-model="form.readerPasswd" placeholder="请输入应用密码" type="password" maxlength="30" show-password />
-                  </el-form-item>
-               </el-col>
-            </el-row>
-
-            <el-row>
-               <el-col :span="24">
-                  <el-form-item label="备注" prop="readerDesc">
-                     <el-input v-model="form.readerDesc" placeholder="请输入应用备注"></el-input>
-                  </el-form-item>
-               </el-col>
-            </el-row>
-         </el-form> -->
+      <el-dialog :title="title" v-model="open" width="980px" append-to-body>
 
          <el-form ref="databaseRef" :model="form" :rules="rules" label-width="100px">
 
+            <el-form-item label="源类型" prop="readerType">
+               <el-radio-group v-model="form.readerType">
+                  <el-radio key="reader" label="reader" value="reader"  size="large">读取(reader)</el-radio>
+                  <el-radio key="sink" label="sink" value="sink"  size="large">写入(sink)</el-radio>
+               </el-radio-group> 
+            </el-form-item>
+
+            <!-- 数据采集模板 -->
+            <el-form-item label="数据采集源" prop="readerSource" v-if="form.readerType == 'reader'">
+               <el-radio-group v-model="form.readerSource">
+                  <el-radio v-for="item in readerSource" 
+                     class="database-type" 
+                     :key="item.id"
+                     :label="item.id"
+                     :value="item.id" 
+                     size="large">
+                     <div style="float: left;">
+                        <img style="width:30px; height:30px" :src="'http://data.linesno.com/icons/database/' + item.readerType + '.png'" /> 
+                     </div>
+                     <div style="float: left;margin-left: 10px;line-height: 1.2rem;">
+                           {{ item.readerName }}
+                           <div style="font-size: 11px;">
+                           {{ item.readerDesc }} 
+                        </div>
+                     </div>
+                  </el-radio>
+               </el-radio-group> 
+
+            </el-form-item>
+
+            <el-form-item label="数据写入源" prop="sinkSource" v-if="form.readerType == 'sink'">
+               <el-radio-group v-model="form.sinkSource">
+                  <el-radio v-for="item in sinkSource" 
+                     class="database-type" 
+                     :key="item.id"
+                     :label="item.id"
+                     :value="item.id" 
+                     size="large">
+                     <div style="float: left;">
+                        <img style="width:30px; height:30px" :src="'http://data.linesno.com/icons/database/' + item.readerType + '.png'" /> 
+                     </div>
+                     <div style="float: left;margin-left: 10px;line-height: 1.2rem;">
+                           {{ item.readerName }}
+                           <div style="font-size: 11px;">
+                           {{ item.readerDesc }} 
+                        </div>
+                     </div>
+                  </el-radio>
+               </el-radio-group> 
+
+            </el-form-item>
+
+
             <el-form-item label="描述" prop="readerDesc">
-            <el-input v-model="form.readerDesc" placeholder="读取源描述"/>
+               <el-input v-model="form.readerDesc" placeholder="读取源描述"/>
             </el-form-item>
 
-            <el-form-item label="类型" prop="readerType">
-            <el-select v-model="form.readerType" placeholder="请选择读取源类型">
-               <!-- <el-option label="MySQL" :value="form.readerType" /> -->
-               <el-option label="MySQL" value="MySQL" />
-               <el-option label="DaMeng" value="DaMeng" />
-               <el-option label="Oracle" value="Oracle" />
-            </el-select>
-            </el-form-item>
-
-            <el-form-item label="连接" prop="jreadercUrl">
-            <el-input v-model="form.jreadercUrl" placeholder="jreaderc:mysql://localhost:3306/readerName?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=GMT"/>
+            <el-form-item label="连接" prop="readerUrl">
+               <el-input v-model="form.readerUrl" placeholder="jdbc:mysql://localhost:3306/readerName?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=GMT"/>
             </el-form-item>
 
             <el-form-item label="用户名" prop="readerUsername">
-            <el-input v-model="form.readerUsername" auto-complete="new-password" placeholder="读取源用户名"/>
+               <el-input v-model="form.readerUsername" auto-complete="new-password" placeholder="读取源用户名"/>
             </el-form-item>
+
             <el-form-item label="密码" prop="readerPasswd">
-            <el-input type="password" auto-complete="new-password" v-model="form.readerPasswd" placeholder="读取源密码"/>
+               <el-input type="password" auto-complete="new-password" v-model="form.readerPasswd" placeholder="读取源密码"/>
             </el-form-item>
 
             </el-form>
@@ -206,6 +195,10 @@ import {
    addReaderSource
 } from "@/api/data/pipeline/readerSource";
 
+import {
+  getAllSourceReader,
+} from "@/api/data/pipeline/jobBuilder";
+
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
@@ -221,7 +214,11 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
-const btnChangeEnable = ref(false)
+const btnChangeEnable = ref(true)
+
+const readerSource = ref([])  // 读取源
+const sinkSource = ref([])  // 数据目的
+
 const postOptions = ref([]);
 const roleOptions = ref([]);
 
@@ -246,7 +243,7 @@ const data = reactive({
    },
    rules: {
       readerName: [{ required: true, message: "名称不能为空", trigger: "blur" }] , 
-      jreadercUrl: [{ required: true, message: "连接不能为空", trigger: "blur" }],
+      readerUrl: [{ required: true, message: "连接不能为空", trigger: "blur" }],
       readerType: [{ required: true, message: "类型不能为空", trigger: "blur" }] , 
       readerUsername: [{ required: true , message: "用户名不能为空", trigger: "blur"}],
       readerPasswd: [{ required: true, message: "密码不能为空", trigger: "blur" }] , 
@@ -265,6 +262,21 @@ function getList() {
       total.value = res.total;
    });
 };
+
+/** 获取到所有数据源 */
+function handleGetAllSourceReader() {
+  getAllSourceReader().then(response => {
+    const data = response.data;
+
+    readerSource.value = data.filter(item => item.sourceType === 'sink');
+    sinkSource.value = data.filter(item => item.sourceType === 'source');
+
+    readerSource.value = data ; 
+    sinkSource.value = data ; 
+
+    console.log('sinkSource = ' + sinkSource.value)
+  });
+}
 
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -323,8 +335,10 @@ function cancel() {
 /** 新增按钮操作 */
 function handleAdd() {
    reset();
-   open.value = true;
-   title.value = "添加数据源";
+   // open.value = true;
+   // title.value = "添加数据源";
+  let path = '/task/data/pipeline/readerSource/addSource' ;
+  router.push({ path: path });
 };
 
 /** 修改按钮操作 */
@@ -381,5 +395,6 @@ function submitForm() {
 };
 
 getList();
+handleGetAllSourceReader();
 
 </script>

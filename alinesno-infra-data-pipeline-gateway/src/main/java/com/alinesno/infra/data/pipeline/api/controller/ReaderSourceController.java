@@ -5,11 +5,21 @@ import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
+import com.alinesno.infra.common.web.log.utils.SpringUtils;
 import com.alinesno.infra.data.pipeline.api.CheckDbConnectResult;
+import com.alinesno.infra.data.pipeline.api.FetchDataDto;
 import com.alinesno.infra.data.pipeline.api.dto.DatasourceDto;
 import com.alinesno.infra.data.pipeline.api.utils.DbParserUtils;
+import com.alinesno.infra.data.pipeline.api.utils.ReaderSourceMapping;
+import com.alinesno.infra.data.pipeline.constants.PipeConstants;
+import com.alinesno.infra.data.pipeline.datasource.IDataSourceReader;
 import com.alinesno.infra.data.pipeline.entity.ReaderSourceEntity;
+import com.alinesno.infra.data.pipeline.enums.DbDriverEnums;
+import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
 import com.alinesno.infra.data.pipeline.service.IReaderSourceService;
+import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
+import com.alinesno.infra.data.pipeline.transfer.bean.ReaderSourceBean;
+import com.alinesno.infra.data.pipeline.transfer.bean.TableMetaBean;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -21,6 +31,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.lang.exception.RpcServiceRuntimeException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理与BusinessLogEntity相关的请求的Controller。
@@ -105,6 +117,47 @@ public class ReaderSourceController extends BaseController<ReaderSourceEntity, I
         } catch (Exception e) {
             throw new RpcServiceRuntimeException(e.getMessage()) ;
         }
+    }
+
+    /**
+     * 获取到数据库源ID
+     * @param dto
+     * @return
+     */
+    @PostMapping("/fetchData")
+    public AjaxResult fetchData(@Validated @RequestBody FetchDataDto dto) {
+        log.debug("dto = {}", dto) ;
+
+        ReaderSourceEntity resourceSource = service.getById(dto.getSourceId()) ;
+        String readerType = resourceSource.getReaderType() ;
+        IDataSourceReader dataSourceReader = SpringUtils.getBean(readerType.toLowerCase() + PipeConstants.READER_SUFFIX) ;
+
+        SourceReader reader = ReaderSourceMapping.getReaderSource(resourceSource , dto) ;
+        List<Map<String, Object>> rows = dataSourceReader.fetchData(reader) ;
+
+        AjaxResult ajax =  AjaxResult.success(rows);
+        ajax.put("fieldMeta" , dataSourceReader.analyseSourceField(reader));
+
+        return ajax ;
+    }
+
+    /**
+     * 获取到数据库源ID的表结构
+     * @param dto
+     * @return
+     */
+    @GetMapping("/fetchTableData")
+    public AjaxResult fetchTableData(String sourceId) {
+        log.debug("sourceId = {}", sourceId) ;
+
+        ReaderSourceEntity resourceSource = service.getById(sourceId) ;
+        String readerType = resourceSource.getReaderType() ;
+        IDataSourceReader dataSourceReader = SpringUtils.getBean(readerType.toLowerCase() + PipeConstants.READER_SUFFIX) ;
+
+        SourceReader reader = ReaderSourceMapping.getReaderSource(resourceSource , null) ;
+        List<TableMetaBean> rows = dataSourceReader.fetchTableData(reader) ;
+
+        return AjaxResult.success(rows);
     }
 
     @Override

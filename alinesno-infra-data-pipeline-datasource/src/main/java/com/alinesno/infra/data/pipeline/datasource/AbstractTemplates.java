@@ -3,6 +3,7 @@ package com.alinesno.infra.data.pipeline.datasource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SinkWriter;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -14,6 +15,7 @@ import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public abstract class AbstractTemplates {
 
     public KafkaTemplate<String,String> getKafkaTemplates(SinkWriter writer) {
@@ -48,7 +50,8 @@ public abstract class AbstractTemplates {
         try{
             Class.forName(driver);  //注册数据库驱动
             con = DriverManager.getConnection(url , username , password);  //获取数据库连接
-        }catch(Exception ignored){
+        }catch(Exception e){
+            log.error("数据库连接失败:{}", e.getMessage()) ;
         }
         return con;  //返回一个连接
     }

@@ -36,14 +36,6 @@ public class ReaderSourceEntity extends InfraBaseEntity {
     private String readerUrl;
 
     /**
-     * 读取源连接
-     */
-    @ColumnComment("读取源连接地址")
-    @Excel(name = "读取源连接地址")
-    @TableField(value = "jreaderc_url" , typeHandler = AESEncryptHandler.class)
-    private String jreadercUrl;
-
-    /**
      * 读取源用户名
      */
     @ColumnComment("读取源用户名")
@@ -81,7 +73,7 @@ public class ReaderSourceEntity extends InfraBaseEntity {
     // 类型（读取/写入)
     @ColumnComment("类型（读取/写入)")
     @Excel(name = "类型（读取/写入)")
-    @TableField("source_type")
-    private String sourceType;
+    @TableField("operation_type")
+    private String operationType;
 
 }

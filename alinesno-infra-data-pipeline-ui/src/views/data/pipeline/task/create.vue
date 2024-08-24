@@ -43,7 +43,7 @@
 
          <!-- CRON表达式 -->
          <el-form-item label="CRON表达式" prop="cronExpression">
-            <el-input v-model="form.cronExpression" placeholder="请输入CRON表达式">
+            <el-input disabled="true" v-model="form.cronExpression" placeholder="请输入CRON表达式">
                <template #append>
                   <el-button :icon="Search" @click="handleShowCron">生成CRON表达式</el-button> 
                </template>
@@ -55,8 +55,9 @@
             <el-col :span="11">
                <el-date-picker
                   v-model="form.startTime"
-                  type="date"
+                  type="datetime"
                   placeholder="开始日期"
+                  :shortcuts="shortcuts"
                   style="width: 100%"
                   />
             </el-col>
@@ -65,8 +66,9 @@
             </el-col>
             <el-col :span="11">
                <el-date-picker
-                  type="date"
+                  type="datetime"
                   v-model="form.endTime"
+                  :shortcuts="shortcuts"
                   placeholder="结束时间"
                   style="width: 100%"
                   />
@@ -96,7 +98,7 @@
     </el-dialog>
 
    <el-dialog title="全局环境变量" v-model="centerDialogVisible" append-to-body destroy-on-close class="scrollbar">
-      <ContextParam ref="contextParamRef" />
+      <ContextParam ref="contextParamRef" :context="form.context" />
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -136,6 +138,30 @@ const centerDialogVisible = ref(false)
 
 // 传入的表达式
 const expression = ref("")
+
+// 快捷选择
+const shortcuts = ref([
+  {
+    text: '今天',
+    value: new Date(),
+  },
+  {
+    text: '昨天',
+    value: () => {
+      const date = new Date()
+      date.setDate(date.getDate() - 1)
+      return date
+    },
+  },
+  {
+    text: '周前',
+    value: () => {
+      const date = new Date()
+      date.setDate(date.getDate() - 7)
+      return date
+    },
+  },
+])
 
 const data = reactive({
   form: {
@@ -199,6 +225,11 @@ function createDatasource(){
 
   proxy.$refs["databaseRef"].validate(valid => {
      if (valid) {
+         console.log('task form data = {}' , form.value)
+
+         // 将form数据转换为JSON字符串并存储到localStorage
+         localStorage.setItem('jobFormData', JSON.stringify(form.value));
+
          let path = '/task/data/pipeline/task/createDatasource' ;
          router.push({ path: path });
      }
@@ -226,6 +257,46 @@ function callContextParamRef(){
 function crontabFill(value) {
    form.value.cronExpression = value;
 }
+
+/** 定义一个方法来从localStorage中获取formData */
+function loadFormDataFromStorage() {
+  const formDataStr = localStorage.getItem('jobFormData');
+  if (formDataStr) {
+    try {
+      const formData = JSON.parse(formDataStr);
+      Object.assign(form.value, formData);
+
+      currentLoginStyle.value = form.value.dataCollectionTemplate;
+
+      console.log('Loaded form data from localStorage:', form.value);
+    } catch (error) {
+      console.error('Error parsing form data from localStorage:', error);
+    }
+  } else {
+    console.log('No form data found in localStorage.');
+  }
+}
+
+/** 重置表单 */
+function resetForm() {
+  form.value = {
+      taskName: "", // 任务名称
+      context: "", // 上下文内容
+      dataCollectionTemplate: "", // 数据采集模板
+      dataQuality: "", // 数据质量
+      isAlertEnabled: false, // 是否告警
+      monitorEmail: "", // 参与人监控邮箱
+      cronExpression: "", // cron表达式
+      startTime: "", // 开始时间
+      endTime: "", // 结束时间
+  };
+
+  // 清除localStorage中的数据
+  localStorage.removeItem('jobFormData');
+}
+
+// 调用此方法以加载数据
+loadFormDataFromStorage();
 
 </script>
 

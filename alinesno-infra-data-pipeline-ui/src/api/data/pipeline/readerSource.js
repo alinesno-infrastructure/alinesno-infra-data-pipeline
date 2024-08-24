@@ -26,7 +26,26 @@ var managerUrl = {
     fetchData: prefix + "fetchData",
     fetchFieldMeta: prefix + "fetchFieldMeta",
     fetchTableData: prefix + "fetchTableData",
+    checkConnection: prefix + "checkConnection",
+    checkConnectionByObj: prefix + "checkConnectionByObj",
     checkDBUrl: prefix + "checkDB",
+}
+
+/** 连接验证是否正常 */
+export function checkConnection(sourceId){
+  return request({
+    url: managerUrl.checkConnection + "?sourceId=" + parseStrEmpty(sourceId),
+    method: 'get',
+  })
+}
+
+/** 连接验证是否正常 */
+export function checkConnectionByObj(data){
+  return request({
+    url: managerUrl.checkConnectionByObj,
+    method: 'post',
+    data: data
+  })
 }
 
 // 获取到字段元数据

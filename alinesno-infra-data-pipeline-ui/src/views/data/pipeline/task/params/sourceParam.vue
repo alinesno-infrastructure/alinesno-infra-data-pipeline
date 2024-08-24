@@ -77,6 +77,12 @@
                         <el-switch v-model="form.database.readExistingData" />
                     </el-form-item>
                 </el-col>
+                <el-col :span="24">
+                    <el-button type="primary" @click="validateExecuteSql(form.database.querySql)">验证执行</el-button>
+                </el-col>
+                <el-col :span="24">
+                    <DsFetchData ref="fetchDataRef" />
+                </el-col>
             </el-row>
         </div>
 
@@ -84,7 +90,6 @@
 </template>
 
 <script setup name="JobReaderParams">
-// import { reactive, ref, toRefs } from 'vue';
 
 const props = defineProps({
     readerSource: {
@@ -92,6 +97,14 @@ const props = defineProps({
         default: () => ({ readerType: null })
     }
 });
+
+import { 
+    fetchData 
+} from '@/api/data/pipeline/readerSource';
+
+import DsFetchData from './dsFetchData.vue';
+
+const { proxy } = getCurrentInstance();
 
 const data = reactive({
   form: {
@@ -138,12 +151,25 @@ const { form, rules } = toRefs(data);
 const earliest = 'earliest';
 const latest = 'latest';
 
+// const fetchDataArr = ref([]);
+
+const fetchDataRef = ref(null);
 const ruleFormRef = ref(null);
+const validateFetchData = ref(false) // 是否验证执行SQL
+const readerFieldMate = ref([]) // 读取源字段
 
 const submitSourceParam = () => {
 
-    const filteredFormData = filterEmptyValues(form.value);
-    console.log('Filtered Form data:', filteredFormData);
+    if(!validateFetchData.value){
+        proxy.$modal.msgError("请点击执行确认数据源是否正常.");
+        return ;
+    }
+
+    // 设置读取字段信息
+    let filteredFormData = filterEmptyValues(form.value)
+    console.log('Filtered Form data:', filteredFormData)
+
+    filteredFormData['readerFieldMate'] = readerFieldMate.value
 
     return filteredFormData ;
 };
@@ -164,6 +190,19 @@ const filterEmptyValues = (formData) => {
         }
     }
     return result;
+};
+
+// 验证执行SQL
+const validateExecuteSql = (sql) => {
+    console.log('执行SQL语句：', sql);
+    fetchData({
+        sourceId: props.readerSource.id,
+        sql: sql
+    }).then(response => {
+        fetchDataRef.value.fetchData(response.data) 
+        readerFieldMate.value = response.fieldMeta
+        validateFetchData.value = true 
+    })
 };
 
 // 主动暴露方法

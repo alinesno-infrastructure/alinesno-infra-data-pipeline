@@ -49,6 +49,20 @@ public class ReaderSourceEntity extends InfraBaseEntity {
     @Excel(name = "读取源密码")
     @TableField(value = "reader_passwd" , typeHandler = AESEncryptHandler.class)
     private String readerPasswd;
+
+    /**
+     * 读取源连接
+     */
+    @ColumnComment("access_key")
+    @Excel(name = "access_key")
+    @TableField(value = "access_key" , typeHandler = AESEncryptHandler.class)
+    private String accessKey ;
+
+    @ColumnComment("secret_key")
+    @Excel(name = "secret_key")
+    @TableField(value = "secret_key" , typeHandler = AESEncryptHandler.class)
+    private String secretKey ;
+
     /**
      * 读取源连接端口
      */
@@ -65,10 +79,10 @@ public class ReaderSourceEntity extends InfraBaseEntity {
     @TableField("reader_type")
     private String readerType;
 
-    @ColumnComment("作者名")
-    @Excel(name = "作者名")
-    @TableField("author")
-    private String author;
+    @ColumnComment("数据来源组织")
+    @Excel(name = "数据来源组织")
+    @TableField("owner")
+    private String owner;
 
     // 类型（读取/写入)
     @ColumnComment("类型（读取/写入)")

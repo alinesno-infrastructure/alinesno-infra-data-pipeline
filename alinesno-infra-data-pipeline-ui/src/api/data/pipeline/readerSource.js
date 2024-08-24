@@ -23,7 +23,36 @@ var managerUrl = {
     changeField: prefix + "changeField",
     downloadfile: prefix + "downloadfile",
     allReaderSource: prefix + "allReaderSource",
+    fetchData: prefix + "fetchData",
+    fetchFieldMeta: prefix + "fetchFieldMeta",
+    fetchTableData: prefix + "fetchTableData",
     checkDBUrl: prefix + "checkDB",
+}
+
+// 获取到字段元数据
+export function fetchFieldMeta(data){
+  return request({
+    url: managerUrl.fetchFieldMeta,
+    method: 'post',
+    data: data
+  })
+}
+
+// 获取到数据源的表结构 
+export function fetchTableData(sourceId) {
+  return request({
+    url: managerUrl.fetchTableData + "?sourceId=" + parseStrEmpty(sourceId),
+    method: 'get',
+  })
+}
+
+// 数据库返回结果操作
+export function fetchData(data) {
+  return request({
+    url: managerUrl.fetchData,
+    method: 'post',
+    data: data
+  })
 }
 
 // 获取到所有数据源库

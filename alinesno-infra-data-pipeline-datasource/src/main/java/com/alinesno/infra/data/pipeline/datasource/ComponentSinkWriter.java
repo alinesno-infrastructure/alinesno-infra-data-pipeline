@@ -1,8 +1,7 @@
 package com.alinesno.infra.data.pipeline.datasource;
 
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public abstract class ComponentSinkWriter extends AbstractTemplates implements IDataSourceWriter {
-
-    private static final Logger log = LoggerFactory.getLogger(ComponentSinkWriter.class);
 
     /**
      * 保存到数据库源中

@@ -57,7 +57,7 @@ public enum DbDriverEnums {
      */
     public static String getDbDriver(String type) {
         for (DbDriverEnums dbEnum : DbDriverEnums.values()) {
-            if (dbEnum.getDbType().equals(type)) {
+            if (dbEnum.getDbType().equalsIgnoreCase(type)) {
                 return dbEnum.getDbDriver();
             }
         }

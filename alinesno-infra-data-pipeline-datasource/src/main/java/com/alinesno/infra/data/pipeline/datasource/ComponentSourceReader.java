@@ -1,12 +1,11 @@
 package com.alinesno.infra.data.pipeline.datasource;
 
 import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
+import com.alinesno.infra.data.pipeline.scheduler.enums.SinkReaderEnums;
 import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
-import com.alinesno.infra.data.pipeline.transfer.bean.ReaderSourceBean;
 import com.alinesno.infra.data.pipeline.transfer.bean.TableMetaBean;
 import com.google.common.base.CharMatcher;
 import lombok.SneakyThrows;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 
 import java.sql.*;
@@ -160,6 +159,31 @@ public abstract class ComponentSourceReader extends AbstractTemplates implements
         }
 
         return tableMetaBeans;
+    }
+
+    @Override
+    public void checkConnection(SourceReader reader) {
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            // 获取数据源连接
+            connection = getDataSource(reader);
+
+            // 创建 Statement
+            stmt = connection.createStatement();
+
+            // 查询所有表的元数据
+            rs = stmt.executeQuery(SinkReaderEnums.getValidateQuery(reader.getType()));
+            rs.next();
+        } catch (Exception e){
+            throw new RuntimeException("数据源连接失败！" + e.getMessage()) ;
+        }finally {
+            // 关闭资源
+            closeQuietly(rs);
+            closeQuietly(stmt);
+            closeQuietly(connection);
+        }
     }
 
     /**

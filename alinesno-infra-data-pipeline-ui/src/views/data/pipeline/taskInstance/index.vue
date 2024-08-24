@@ -45,13 +45,13 @@
 
 
               <!-- 业务字段-->
-              <el-table-column label="所属项目" align="left" width="250" key="projectName" prop="projectName" v-if="columns[0].visible">
+              <el-table-column label="所属项目" align="left" width="200" key="projectName" prop="projectName" v-if="columns[0].visible">
                  <template #default="scope">
                      <i class="fa-solid fa-link"></i>&nbsp;{{ scope.row.projectId}} 示例工作流项目
                  </template>
               </el-table-column>
-              <el-table-column label="任务名称" align="left" key="jobName" prop="jobName" v-if="columns[1].visible" />
-              <el-table-column label="运行状态" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
+              <el-table-column label="任务名称" align="left" key="jobName" prop="jobName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
+              <el-table-column label="运行状态" align="center" width="100" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
                  <template #default="scope">
                      <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.projectCode">
                         {{ scope.row.status}} <el-icon><CopyDocument /></el-icon>
@@ -59,19 +59,19 @@
                   </template>
               </el-table-column>
 
-              <el-table-column label="开始时间" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="开始时间" align="center" width="180" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
                     <span>{{ parseTime(scope.row.startTime) }}</span>
                  </template>
               </el-table-column>
 
-              <el-table-column label="结束时间" align="center" width="200" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="结束时间" align="center" width="180" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
                     <span>{{ parseTime(scope.row.endTime) }}</span>
                  </template>
               </el-table-column>
 
-              <el-table-column label="任务耗时" align="center" prop="addTime" v-if="columns[6].visible" width="160">
+              <el-table-column label="任务耗时" align="center" prop="addTime" v-if="columns[6].visible" width="100">
                  <template #default="scope">
                     <span>{{ timeDifference(scope.row.startTime , scope.row.endTime) }}</span>
                  </template>

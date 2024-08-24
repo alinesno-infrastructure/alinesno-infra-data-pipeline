@@ -1,13 +1,16 @@
 package com.alinesno.infra.data.pipeline.datasource;
 
 import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
 import com.alinesno.infra.data.pipeline.transfer.bean.ReaderSourceBean;
+import com.alinesno.infra.data.pipeline.transfer.bean.TableMetaBean;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据读取
@@ -29,10 +32,24 @@ public interface IDataSourceReader {
      * @param source
      * @return
      */
-    List<FieldMetaBean> analyseSourceField(ReaderSourceBean source) ;
+    List<FieldMetaBean> analyseSourceField(SourceReader source) ;
+
+    /**
+     * 获取数据
+     * @param source
+     * @return
+     */
+    List<Map<String, Object>> fetchData(SourceReader source) ;
 
     /**
      * 禁止读取
      */
-    public void destroy() ;
+    void destroy() ;
+
+    /**
+     * 获取数据源表结构
+     * @param reader
+     * @return
+     */
+    List<TableMetaBean> fetchTableData(SourceReader reader);
 }

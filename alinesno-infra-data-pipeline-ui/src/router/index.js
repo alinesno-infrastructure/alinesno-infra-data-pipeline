@@ -99,6 +99,13 @@ export const constantRoutes = [
         hidden: true,
         component: () => import('@/views/data/pipeline/task/createDatasource'),
         meta: { title: '创建抽取任务配置', icon: 'dashboard', affix: true }
+      },
+      {
+        path: '/task/data/pipeline/readerSource/addSource',
+        name: '/task/data/pipeline/readerSource/addSource',
+        hidden: true,
+        component: () => import('@/views/data/pipeline/readerSource/addSource'),
+        meta: { title: '创建读取源', icon: 'dashboard', affix: true }
       }
     ]
   },

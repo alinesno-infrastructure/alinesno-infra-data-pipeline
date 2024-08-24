@@ -4,7 +4,6 @@ import com.alinesno.infra.data.pipeline.entity.TransEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
-import com.alinesno.infra.data.pipeline.transfer.bean.ReaderSourceBean;
 import com.alinesno.infra.data.pipeline.transfer.bean.TableMetaBean;
 
 import java.io.File;
@@ -52,4 +51,11 @@ public interface IDataSourceReader {
      * @return
      */
     List<TableMetaBean> fetchTableData(SourceReader reader);
+
+    /**
+     * 连接源验证是否正常
+     * @param reader
+     */
+    void checkConnection(SourceReader reader);
+
 }

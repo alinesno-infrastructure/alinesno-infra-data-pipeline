@@ -55,9 +55,8 @@ public class DbParserUtils {
        
         e.setReaderPort(port);
         e.setReaderName(database) ;
-        e.setReaderUrl(host) ;
-        e.setJreadercUrl(jdbcUrl);
-        
+        e.setReaderUrl(jdbcUrl) ;
+
 	}
 
 }

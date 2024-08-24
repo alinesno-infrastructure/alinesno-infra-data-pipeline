@@ -45,7 +45,16 @@
                <el-table-column label="读取源" align="left"  prop="readerDesc" :show-overflow-tooltip="true">
                  <template #default="scope">
                      <div>
-                        {{ scope.row.readerName }}
+                        <el-popover
+                           placement="top-start"
+                           :title="scope.row.readerDesc"
+                           :width="500"
+                           trigger="hover"
+                           :content="scope.row.readerUrl + '【' + scope.row.readerUsername + '】'">
+                           <template #reference>
+                           {{ scope.row.readerName }}
+                           </template>
+                        </el-popover>
                      </div>
                      <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
                         {{ scope.row.readerDesc }}
@@ -53,7 +62,7 @@
                   </template>
                </el-table-column>
 
-               <el-table-column label="源类型" align="left" width="150" prop="operationType" :show-overflow-tooltip="true">
+               <el-table-column label="源类型" align="center" width="150" prop="operationType" :show-overflow-tooltip="true">
                  <template #default="scope">
                     <el-button v-if="scope.row.operationType == 'source'" type="primary" bg text> 
                         <i class="fa-solid fa-truck"></i>&nbsp;读取 
@@ -64,8 +73,8 @@
                  </template>
                </el-table-column>
 
-               <el-table-column label="作者" align="center" width="150" prop="author" :show-overflow-tooltip="true" />
-               <el-table-column label="类型" align="left" width="150" prop="readerType" :show-overflow-tooltip="true" />
+               <el-table-column label="作者" align="center" width="150" prop="owner" :show-overflow-tooltip="true" />
+               <el-table-column label="类型" align="center" width="150" prop="readerType" :show-overflow-tooltip="true" />
 
                <el-table-column label="状态" align="center" width="120" prop="hasStatus">
                   <template #default="scope">
@@ -79,13 +88,14 @@
                <!-- 操作字段  -->
                <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                   <template #default="scope">
+                     <el-tooltip content="连接验证" placement="top" v-if="scope.row.id !== 1">
+                        <el-button link type="primary" icon="Refresh" @click="handleCheckConnect(scope.row)" v-hasPermi="['system:ReaderSource:edit']"></el-button>
+                     </el-tooltip>
                      <el-tooltip content="修改" placement="top" v-if="scope.row.id !== 1">
-                        <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                           v-hasPermi="['system:ReaderSource:edit']"></el-button>
+                        <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:ReaderSource:edit']"></el-button>
                      </el-tooltip>
                      <el-tooltip content="删除" placement="top" v-if="scope.row.id !== 1">
-                        <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                           v-hasPermi="['system:ReaderSource:remove']"></el-button>
+                        <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:ReaderSource:remove']"></el-button>
                      </el-tooltip>
                   </template>
 
@@ -191,6 +201,7 @@ import {
    delReaderSource,
    getReaderSource,
    checkDbConfig,
+   checkConnection ,
    updateReaderSource,
    addReaderSource
 } from "@/api/data/pipeline/readerSource";
@@ -198,6 +209,8 @@ import {
 import {
   getAllSourceReader,
 } from "@/api/data/pipeline/jobBuilder";
+
+import { ElLoading } from 'element-plus'
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -282,7 +295,24 @@ function handleGetAllSourceReader() {
 function handleQuery() {
    queryParams.value.pageNum = 1;
    getList();
-};
+}
+
+/** 连接验证是否正常 */
+function handleCheckConnect(row) {
+   const loading = ElLoading.service({
+    lock: true,
+    text: row.readerDesc + '连接验证中',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+
+  checkConnection(row.id).then(response => {
+    loading.close()
+     proxy.$modal.msgSuccess("读取源校验成功");
+  }).catch(error => {
+    loading.close()
+  })
+
+}
 
 /** 重置按钮操作 */
 function resetQuery() {
@@ -291,7 +321,8 @@ function resetQuery() {
    queryParams.value.deptId = undefined;
    proxy.$refs.deptTreeRef.setCurrentKey(null);
    handleQuery();
-};
+}
+
 /** 删除按钮操作 */
 function handleDelete(row) {
    const readerIds = row.id || ids.value;
@@ -345,11 +376,9 @@ function handleAdd() {
 function handleUpdate(row) {
    reset();
    const id = row.id || ids.value;
-   getReaderSource(id).then(response => {
-      form.value = response.data;
-      open.value = true;
-      title.value = "修改数据源";
-   });
+
+   let path = '/task/data/pipeline/readerSource/addSource' ;
+   router.push({ path: path , query: { id : id } });
 };
 
 /** 提交按钮 */

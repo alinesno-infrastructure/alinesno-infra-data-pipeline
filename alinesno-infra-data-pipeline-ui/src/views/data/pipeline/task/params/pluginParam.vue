@@ -4,7 +4,6 @@
 
         <!-- 七牛参数配置 -->
         <div v-for="item in props.pluginSource" :key="item">
-            <!-- {{ item.icon }} - {{ item.name }} - {{ item.desc }} -->
             <el-divider content-position="left"><i :class="item.icon"></i> {{ item.desc }}</el-divider>
 
             <!-- 清理为空字段 -->
@@ -14,10 +13,10 @@
                     <el-form-item label="处理为空字段" prop="clearNull.fields">
                         <el-select v-model="form.clearNull.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                             <el-option
-                                v-for="option in options"
-                                :key="option.value"
-                                :label="option.label"
-                                :value="option.value"
+                                v-for="option in props.readerFieldMate"
+                                :key="option.name"
+                                :label="option.name"
+                                :value="option.name"
                             />
                         </el-select>
                     </el-form-item>
@@ -28,7 +27,7 @@
                             <el-radio
                                 v-for="(type, index) in randomTypes"
                                 :key="index"
-                                :label="type.label"
+                                :label="type.value"
                                 :value="type.value"
                             >{{ type.label }}</el-radio>
                             </el-radio-group>
@@ -44,10 +43,10 @@
                         <el-form-item label="转换字段" prop="convertCase.fields">
                             <el-select v-model="form.convertCase.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                                 <el-option
-                                    v-for="option in options"
-                                    :key="option.value"
-                                    :label="option.label"
-                                    :value="option.value"
+                                    v-for="option in props.readerFieldMate"
+                                    :key="option.name"
+                                    :label="option.name"
+                                    :value="option.name"
                                 />
                             </el-select>
                         </el-form-item>
@@ -74,10 +73,10 @@
                     <el-form-item label="需要加密字段" prop="encryptData.fields">
                     <el-select v-model="form.encryptData.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 240px">
                         <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                          v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                         />
                     </el-select>
                     </el-form-item>
@@ -104,10 +103,10 @@
                 <el-form-item label="需要解密字段" prop="decryptData.fields">
                     <el-select v-model="form.decryptData.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 240px">
                     <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                        v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                     />
                     </el-select>
                 </el-form-item>
@@ -139,10 +138,10 @@
                 <el-form-item label="格式化字段" prop="formatDate.fields">
                     <el-select v-model="form.formatDate.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                     <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                        v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                     />
                     </el-select>
                 </el-form-item>
@@ -162,10 +161,10 @@
                 <el-form-item label="合并字段" prop="mergeFields.fields">
                     <el-select v-model="form.mergeFields.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                     <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                        v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                     />
                     </el-select>
                 </el-form-item>
@@ -202,10 +201,10 @@
                 <el-form-item label="清理字段" prop="trimWhitespace.fields">
                     <el-select v-model="form.trimWhitespace.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                     <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                        v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                     />
                     </el-select>
                 </el-form-item>
@@ -220,10 +219,10 @@
                 <el-form-item label="替换字段" prop="replaceText.fields">
                     <el-select v-model="form.replaceText.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                     <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                        v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                     />
                     </el-select>
                 </el-form-item>
@@ -234,9 +233,9 @@
                 </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                <el-form-item label="替换文本" prop="replaceText.replacementText">
-                    <el-input v-model="form.replaceText.replacementText" placeholder="请输入替换文本" />
-                </el-form-item>
+                  <el-form-item label="替换文本" prop="replaceText.replacementText">
+                      <el-input v-model="form.replaceText.replacementText" placeholder="请输入替换文本" />
+                  </el-form-item>
                 </el-col>
             </el-row>
             </div> 
@@ -245,18 +244,18 @@
             <div v-if="item.name === 'FillMissing'">
             <el-row>
                 <el-col :span="24">
-                <el-form-item label="全字段" prop="fillMissing.allFields">
-                    <el-switch v-model="form.fillMissing.allFields" />
-                </el-form-item>
+                  <el-form-item label="全字段" prop="fillMissing.allFields">
+                      <el-switch v-model="form.fillMissing.allFields" />
+                  </el-form-item>
                 </el-col>
                 <el-col :span="24">
                 <el-form-item label="替换字段" prop="fillMissing.fields">
                     <el-select v-model="form.fillMissing.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                     <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                        v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                     />
                     </el-select>
                 </el-form-item>
@@ -276,10 +275,10 @@
                     <el-form-item label="替换字段" prop="formatData.fields">
                     <el-select v-model="form.formatData.fields" clearable multiple collapse-tags placeholder="选择字段" style="width: 100%">
                         <el-option
-                        v-for="option in options"
-                        :key="option.value"
-                        :label="option.label"
-                        :value="option.value"
+                        v-for="option in props.readerFieldMate"
+                          :key="option.name"
+                          :label="option.name"
+                          :value="option.name"
                         />
                     </el-select>
                     </el-form-item>
@@ -306,7 +305,10 @@ import { reactive, toRefs } from 'vue';
 const props = defineProps({
   pluginSource: {
     type: Array,
-  }
+  },
+  readerFieldMate: {
+    type: Array,
+  },
 });
 
 const data = reactive({
@@ -405,29 +407,6 @@ const data = reactive({
 });
 
 const { form, rules } = toRefs(data);
-
-const options = ref([
-  {
-    value: 'Option1',
-    label: 'Option1',
-  },
-  {
-    value: 'Option2',
-    label: 'Option2',
-  },
-  {
-    value: 'Option3',
-    label: 'Option3',
-  },
-  {
-    value: 'Option4',
-    label: 'Option4',
-  },
-  {
-    value: 'Option5',
-    label: 'Option5',
-  },
-]);
 
 const mergeMethods = ref([
   { value: 3, label: '求和' },

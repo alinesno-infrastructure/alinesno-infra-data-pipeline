@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row class="acp-dashboard-panel" :gutter="20">
-      <el-col class="panel-col" :span="19">
+      <el-col class="panel-col" :span="18">
         <div class="grid-content">
           <div class="panel-header">
             <div class="header-title"><i class="fa-solid fa-link"></i> 服务基础能力</div>
@@ -25,7 +25,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="5">
+      <el-col :span="6">
         <div class="grid-content">
           <div class="panel-header">
             <div class="header-title"><i class="fa-solid fa-link"></i> 应用场景</div>
@@ -64,9 +64,9 @@ const dataIntegrationAdvantages = [
 ];
 
 const dataIntegrationScenarios = [
-  { icon: 'fa-solid fa-database', name: '跨数据中心数据迁移', description: '支持将数据从一个数据中心迁移到另一个数据中心，例如从本地数据库迁移至云端数据库，确保数据一致性的同时，实现资源优化和成本控制。' },
-  { icon: 'fa-solid fa-sync', name: '实时数据同步', description: '实现实时的数据流处理和同步，例如将实时交易数据同步到分析系统中，以便进行即时分析和决策支持。' },
-  { icon: 'fa-solid fa-chart-bar', name: '批量数据导入导出', description: '支持大批量数据的导入导出操作，例如定期将历史数据归档至低成本存储，或从外部系统导入大量新数据。' },
+  { icon: 'fa-solid fa-database', name: '跨数据中心数据迁移', description: '支持将数据从一个数据中心迁移到另一个数据中心，例如从本地数据库迁移至云端数据库' },
+  { icon: 'fa-solid fa-sync', name: '实时数据同步', description: '实现实时的数据流处理和同步，以便进行即时分析和决策支持。' },
+  { icon: 'fa-solid fa-chart-bar', name: '批量数据导入导出', description: '支持大批量数据的导入导出操作，例如定期将历史数据归档至低成本存储。' },
 ];
 
 </script>

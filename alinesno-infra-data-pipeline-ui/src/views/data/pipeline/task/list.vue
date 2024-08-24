@@ -63,10 +63,10 @@
               <el-table-column label="迁移数据量" align="left" key="jobDesc" prop="jobDesc" v-if="columns[1].visible">
                  <template #default="scope">
                      <div style="margin-top: 5px;">
-                        <el-button type="primary" text> <i class="fa-solid fa-truck-fast"></i> 读: 74299422 条 </el-button>
+                        <el-button type="primary" text> <i class="fa-solid fa-truck-fast" style="margin-right:5px;"></i> 读: 74299422 条 </el-button>
                      </div>
                      <div style="margin-top: 5px;">
-                        <el-button type="danger" text> <i class="fa-solid fa-feather"></i> 写: 8742355 条</el-button>
+                        <el-button type="danger" text> <i class="fa-solid fa-feather" style="margin-right:5px"></i> 写: 8742355 条</el-button>
                      </div>
                   </template>
               </el-table-column>
@@ -85,10 +85,10 @@
                   </template>
               </el-table-column>
 
-              <el-table-column label="所属项目" align="center" width="150" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="迁移配置" align="center" width="150" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
                     <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> 
-                        <i class="fa-solid fa-link"></i>&nbsp;配置文档 
+                        <i class="fa-solid fa-link"></i>&nbsp;配置迁移参数
                      </el-button>
                  </template>
               </el-table-column>
@@ -450,7 +450,8 @@ function submitForm() {
 
 /** 配置文档类型 */
 function handleConfigType(id , documentType){
-  openDocumentTypeDialog.value = true ; 
+   let path = '/task/data/pipeline/task/createDatasource' ;
+   router.push({ path: path });
 }
 
 /** 修改状态 */

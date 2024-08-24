@@ -20,19 +20,14 @@ public class ReaderSourceServiceImpl extends IBaseServiceImpl<ReaderSourceEntity
     @Override
     public CheckDbConnectResult checkDbConnect(ReaderSourceEntity entity) {
 
-        switch (entity.getReaderType()) {
-            case DbType.MY_SQL: {
-                return checkMysqlConnect(entity);
-            }
-            default: {
-                return new CheckDbConnectResult("不支持的数据库类型", "401", false);
-            }
+        if (entity.getReaderType().equals(DbType.MY_SQL)) {
+            return checkMysqlConnect(entity);
         }
+        return new CheckDbConnectResult("不支持的数据库类型", "401", false);
     }
 
     private CheckDbConnectResult checkMysqlConnect(ReaderSourceEntity entity) {
-        String url = entity.getJreadercUrl()
-                ;
+        String url = entity.getReaderUrl();
 
         try {
             Connection connection = DriverManager.getConnection(

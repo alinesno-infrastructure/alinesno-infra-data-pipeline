@@ -67,9 +67,9 @@ public class PipelineInitServiceImpl implements IPipelineInitService {
         sampleDataSources.forEach(e -> {
             e.setId(id.getAndIncrement());
             if(id.get()%3 == 0){
-                e.setSourceType("source");
+                e.setOperationType("source");
             }else{
-                e.setSourceType("sink");
+                e.setOperationType("sink");
             }
         }) ;
 

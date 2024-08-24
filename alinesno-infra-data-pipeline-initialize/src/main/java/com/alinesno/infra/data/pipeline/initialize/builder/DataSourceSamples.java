@@ -27,7 +27,7 @@ public class DataSourceSamples {
         mysqlDataSource.setReaderPort("3306");
         mysqlDataSource.setReaderType(SinkReaderEnums.MYSQL.getCode());
         mysqlDataSource.setReaderDesc("这是一个MySQL数据源示例。");
-        mysqlDataSource.setAuthor("约翰·杜");
+        mysqlDataSource.setOwner("大罗村社区");
         mysqlDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(mysqlDataSource);
 
@@ -40,46 +40,46 @@ public class DataSourceSamples {
         postgresDataSource.setReaderPort("5432");
         postgresDataSource.setReaderType(SinkReaderEnums.POSTGRESQL.getCode());
         postgresDataSource.setReaderDesc("这是一个PostgreSQL数据源示例。");
-        postgresDataSource.setAuthor("简·杜");
+        postgresDataSource.setOwner("电商管理系统");
         postgresDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(postgresDataSource);
 
         // Oracle 数据源
         ReaderSourceEntity oracleDataSource = new ReaderSourceEntity();
-        oracleDataSource.setReaderName(SinkReaderEnums.ORACLE.name());
+        oracleDataSource.setReaderName(SinkReaderEnums.MINIO.name());
         oracleDataSource.setReaderUrl("jdbc:oracle:thin:@localhost:1521:orcl");
         oracleDataSource.setReaderUsername("scott");
         oracleDataSource.setReaderPasswd("tiger");
         oracleDataSource.setReaderPort("1521");
-        oracleDataSource.setReaderType(SinkReaderEnums.ORACLE.getCode());
+        oracleDataSource.setReaderType(SinkReaderEnums.MINIO.getCode());
         oracleDataSource.setReaderDesc("这是一个Oracle数据源示例。");
-        oracleDataSource.setAuthor("简·杜");
+        oracleDataSource.setOwner("电商管理系统");
         oracleDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(oracleDataSource);
 
         // SQL Server 数据源
         ReaderSourceEntity sqlServerDataSource = new ReaderSourceEntity();
-        sqlServerDataSource.setReaderName(SinkReaderEnums.SQLSERVER.name());
+        sqlServerDataSource.setReaderName(SinkReaderEnums.MINIO.name());
         sqlServerDataSource.setReaderUrl("jdbc:sqlserver://localhost:1433;databaseName=mydatabase");
         sqlServerDataSource.setReaderUsername("sa");
         sqlServerDataSource.setReaderPasswd("P@ssw0rd");
         sqlServerDataSource.setReaderPort("1433");
-        sqlServerDataSource.setReaderType(SinkReaderEnums.SQLSERVER.getCode());
+        sqlServerDataSource.setReaderType(SinkReaderEnums.MINIO.getCode());
         sqlServerDataSource.setReaderDesc("这是一个SQL Server数据源示例。");
-        sqlServerDataSource.setAuthor("约翰·杜");
+        sqlServerDataSource.setOwner("大罗村社区");
         sqlServerDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(sqlServerDataSource);
 
         // MongoDB 数据源
         ReaderSourceEntity mongoDataSource = new ReaderSourceEntity();
-        mongoDataSource.setReaderName(SinkReaderEnums.MONGODB.name());
+        mongoDataSource.setReaderName(SinkReaderEnums.REDIS.name());
         mongoDataSource.setReaderUrl("mongodb://localhost:27017/mydatabase");
         mongoDataSource.setReaderUsername("mongoUser");
         mongoDataSource.setReaderPasswd("mongoPassword");
         mongoDataSource.setReaderPort("27017");
-        mongoDataSource.setReaderType(SinkReaderEnums.MONGODB.getCode());
+        mongoDataSource.setReaderType(SinkReaderEnums.REDIS.getCode());
         mongoDataSource.setReaderDesc("这是一个MongoDB数据源示例。");
-        mongoDataSource.setAuthor("简·杜");
+        mongoDataSource.setOwner("电商管理系统");
         mongoDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(mongoDataSource);
 
@@ -92,7 +92,7 @@ public class DataSourceSamples {
         redisDataSource.setReaderPort("6379");
         redisDataSource.setReaderType(SinkReaderEnums.REDIS.getCode());
         redisDataSource.setReaderDesc("这是一个Redis数据源示例。");
-        redisDataSource.setAuthor("约翰·杜");
+        redisDataSource.setOwner("大罗村社区");
         redisDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(redisDataSource);
 
@@ -105,7 +105,7 @@ public class DataSourceSamples {
         kafkaDataSource.setReaderPort("9092");
         kafkaDataSource.setReaderType(SinkReaderEnums.KAFKA.getCode());
         kafkaDataSource.setReaderDesc("这是一个Kafka数据源示例。");
-        kafkaDataSource.setAuthor("简·杜");
+        kafkaDataSource.setOwner("电商管理系统");
         kafkaDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(kafkaDataSource);
 
@@ -118,7 +118,7 @@ public class DataSourceSamples {
         elasticsearchDataSource.setReaderPort("9200");
         elasticsearchDataSource.setReaderType(SinkReaderEnums.ELASTICSEARCH.getCode());
         elasticsearchDataSource.setReaderDesc("这是一个Elasticsearch数据源示例。");
-        elasticsearchDataSource.setAuthor("约翰·杜");
+        elasticsearchDataSource.setOwner("大罗村社区");
         elasticsearchDataSource.setOperationType(TransTypeEnums.READER.getCode());
         dataSources.add(elasticsearchDataSource);
 
@@ -131,7 +131,7 @@ public class DataSourceSamples {
         hiveDatasource.setReaderPort("9200");
         hiveDatasource.setReaderType(SinkReaderEnums.HIVE.getCode());
         hiveDatasource.setReaderDesc("这是一个Hive数据源示例。");
-        hiveDatasource.setAuthor("约翰·杜");
+        hiveDatasource.setOwner("大罗村社区");
         hiveDatasource.setOperationType(TransTypeEnums.WRITER.getCode());
         dataSources.add(hiveDatasource);
 
@@ -144,7 +144,7 @@ public class DataSourceSamples {
         qiniuDatasource.setReaderPort("9200");
         qiniuDatasource.setReaderType(SinkReaderEnums.QINIU.getCode());
         qiniuDatasource.setReaderDesc("这是一个七牛数据源示例。");
-        qiniuDatasource.setAuthor("约翰·杜");
+        qiniuDatasource.setOwner("大罗村社区");
         qiniuDatasource.setOperationType(TransTypeEnums.WRITER.getCode());
         dataSources.add(qiniuDatasource);
 

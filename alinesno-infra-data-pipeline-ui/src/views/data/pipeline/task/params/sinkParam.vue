@@ -68,6 +68,31 @@
                 </el-col> 
             </el-row>
         </div>
+
+        <!-- 数据库查询处理 -->
+        <div v-if="props.sinkSource.readerType === 'mysql' || 
+                props.sinkSource.readerType === 'postgresql' ||
+                props.sinkSource.readerType === 'sqlserver' ||
+                props.sinkSource.readerType === 'oracle'">
+
+            <el-row>
+                <el-col :span="24">
+                  <el-form-item label="目标表列表">
+                    <DsFetchTableData ref="fetchTableDataRef" style="width:100%" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                  <el-form-item label="新建表" prop="database.isGenTable">
+                      <el-switch v-model="form.database.isGenTable" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                  <el-form-item label="新表名" prop="database.newTableName">
+                      <el-input v-model="form.database.newTableName" placeholder="请输入新建表名" />
+                  </el-form-item>
+                </el-col>
+            </el-row>
+        </div>
         
     </el-form>
 
@@ -78,11 +103,18 @@
 const props = defineProps({
     sinkSource:{
         type: Object,
-        default: {
-            readerType: null 
-        }
+        default: () => ({ readerType: null })
     }
 })
+
+import { 
+   fetchTableData 
+} from '@/api/data/pipeline/readerSource';
+
+import DsFetchTableData from './dsFetchTableData.vue';
+
+const { proxy } = getCurrentInstance();
+
 
 const data = reactive({
   form: {
@@ -99,8 +131,9 @@ const data = reactive({
       offsetResetStrategy: ''
     },
     database: {
-      querySql: '',
-      readExistingData: false
+      targetTableName: '',
+      isGenTable: false,
+      newTableName: ''
     }
   },
   queryParams: {
@@ -129,12 +162,23 @@ const { form, rules } = toRefs(data);
 const earliest = 'earliest';
 const latest = 'latest';
 
+const fetchDataRef = ref(null);
 const ruleFormRef = ref(null);
+const validateFetchData = ref(false) // 是否验证执行SQL
+const sinkFieldMate = ref([]) // 读取源字段
 
 const submitSinkParam = () => {
 
-    const filteredFormData = filterEmptyValues(form.value);
-    console.log('Filtered Form data:', filteredFormData);
+    if(!validateFetchData.value){
+        proxy.$modal.msgError("请点击执行确认数据源是否正常.");
+        return ;
+    }
+
+    // 设置读取字段信息
+    let filteredFormData = filterEmptyValues(form.value)
+    console.log('Filtered Form data:', filteredFormData)
+
+    filteredFormData['sinkFieldMate'] = sinkFieldMate.value
 
     return filteredFormData ;
 };
@@ -156,6 +200,19 @@ const filterEmptyValues = (formData) => {
     }
     return result;
 };
+
+// 验证执行SQL
+const handleFetchTableData = () => {
+    fetchTableData(props.sinkSource.id,).then(response => {
+        // fetchDataRef.value.fetchData(response.data) 
+        // sinkFieldMate.value = response.fieldMeta
+        // validateFetchData.value = true 
+    })
+};
+
+onMounted(() => {
+    handleFetchTableData() ; 
+});
 
 // 主动暴露方法
 defineExpose({ submitSinkParam })

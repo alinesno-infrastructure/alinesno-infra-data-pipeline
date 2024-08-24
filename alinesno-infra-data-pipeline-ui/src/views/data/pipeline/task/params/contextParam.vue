@@ -36,8 +36,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
+
+const props = defineProps({
+  context: {
+    type: Object ,
+  }
+});
 
 // 定义环境变量列表
 const envVarsList = ref([
@@ -91,6 +96,23 @@ function getEnvVarsAsJson() {
   // 或者你可以将 JSON 发送到后端或者显示给用户
   return envVarsJson
 }
+
+// 定义一个方法来根据props.context初始化envVarsList
+function initEnvVarsListFromContext() {
+  if (props.context && typeof props.context === 'object') {
+    const list = Object.entries(props.context).map(([key, value]) => ({
+      key,
+      value,
+      editing: false
+    }));
+    envVarsList.value = list;
+  }
+}
+
+// 在组件挂载完成后调用此方法
+onMounted(() => {
+  initEnvVarsListFromContext();
+});
 
 // 主动暴露方法
 defineExpose({ getEnvVarsAsJson })

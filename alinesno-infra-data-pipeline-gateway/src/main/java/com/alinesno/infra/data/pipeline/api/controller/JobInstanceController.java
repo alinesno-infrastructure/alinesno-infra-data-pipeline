@@ -4,12 +4,17 @@ import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
+import com.alinesno.infra.data.pipeline.api.dto.JobInstanceDto;
+import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.entity.JobInstanceEntity;
+import com.alinesno.infra.data.pipeline.enums.JobStatusEnums;
 import com.alinesno.infra.data.pipeline.service.IJobInstanceService;
+import com.alinesno.infra.data.pipeline.service.IJobService;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
@@ -17,6 +22,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理与JobEntity相关的请求的Controller。
@@ -35,6 +45,9 @@ public class JobInstanceController extends BaseController<JobInstanceEntity, IJo
     @Autowired
     private IJobInstanceService service;
 
+    @Autowired
+    private IJobService jobService ;
+
     /**
      * 获取JobEntity的DataTables数据。
      *
@@ -46,7 +59,41 @@ public class JobInstanceController extends BaseController<JobInstanceEntity, IJo
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
-        return this.toPage(model, this.getFeign(), page);
+        TableDataInfo tableDataInfo = this.toPage(model, this.getFeign(), page);
+
+        Map<Long , JobEntity> jobEntities = new HashMap<>() ;
+        List<JobInstanceDto> list = new ArrayList<>() ;
+        List<Long> ids = new ArrayList<> () ;
+
+        tableDataInfo.getRows().forEach(item -> {
+            ids.add(((JobInstanceEntity)item).getJobId()) ;
+        }) ;
+
+        if (!ids.isEmpty()) {
+            List<JobEntity> jobE = jobService.listByIds(ids) ;
+            jobEntities = jobE.stream().collect(HashMap::new , (m , v) -> m.put(v.getId() , v) , HashMap::putAll) ;
+        }
+
+        Map<Long, JobEntity> finalJobEntities = jobEntities;
+        tableDataInfo.getRows().forEach(item -> {
+            JobInstanceEntity e = (JobInstanceEntity) item ;
+            JobInstanceDto dto = new JobInstanceDto() ;
+            BeanUtils.copyProperties(e , dto);
+
+            JobEntity job = finalJobEntities.get(e.getJobId()) ;
+
+            dto.setStatusLabel(JobStatusEnums.getLabelByStatus(dto.getStatus()));
+            dto.setJobName(job.getJobName()) ;
+            dto.setJobDesc(job.getJobDesc());
+            dto.setTargetDbType(job.getTargetDbType());
+            dto.setSourceDbType(job.getSourceDbType());
+
+            list.add(dto) ;
+        }) ;
+
+        tableDataInfo.setRows(list);
+
+        return tableDataInfo;
     }
 
     @Override

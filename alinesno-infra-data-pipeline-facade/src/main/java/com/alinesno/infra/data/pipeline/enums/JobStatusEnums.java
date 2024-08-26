@@ -35,4 +35,14 @@ public enum JobStatusEnums {
         this.label = label;
     }
 
+    // 通过status获取到label
+    public static String getLabelByStatus(String status) {
+        for (JobStatusEnums value : JobStatusEnums.values()) {
+            if (value.getStatus().equals(status)) {
+                return value.getLabel();
+            }
+        }
+        return null;
+    }
+
 }

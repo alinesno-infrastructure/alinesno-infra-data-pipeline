@@ -1,26 +1,35 @@
 package com.alinesno.infra.data.pipeline.scheduler.quartz;
 
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.PersistJobDataAfterExecution;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.hutool.core.util.IdUtil;
+import com.alinesno.infra.common.core.context.SpringContext;
+import com.alinesno.infra.data.pipeline.service.IJobInstanceService;
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Date;
 
-// 持久化
 // 禁止并发执行
-@PersistJobDataAfterExecution
+@Slf4j
 @DisallowConcurrentExecution
 public class QuartzJob extends QuartzJobBean {
 
-    private static final Logger log = LoggerFactory.getLogger(QuartzJob.class);
- 
+    private IJobInstanceService jobInstanceService ;
+
    @Override
    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-       String taskName = context.getJobDetail().getJobDataMap().getString("name");
+
+        jobInstanceService = SpringContext.getBean(IJobInstanceService.class) ;
+
+        long jobInstanceId = IdUtil.getSnowflakeNextId() ;
+
+        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap() ;
+        String taskName = jobDataMap.getString("name");
+        Long jobId = jobDataMap.getLong("jobId");
+
         log.info("---> Quartz job, time:{"+new Date()+"} ,name:{"+taskName+"}<----");
+
+        // 输出运行结果
+        jobInstanceService.startMonitorJob(jobId , jobInstanceId) ;
     }
 }

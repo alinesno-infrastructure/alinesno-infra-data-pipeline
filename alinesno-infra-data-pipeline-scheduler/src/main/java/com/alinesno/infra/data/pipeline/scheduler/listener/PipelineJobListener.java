@@ -44,7 +44,7 @@ public class PipelineJobListener implements JobListener {
 		jobExecutionContext.getJobDetail().getJobDataMap().put("jobInstanceId" , jobInstanceId);
 
 		// 输出运行结果
-		jobInstanceService.startMonitorJob(jobId , jobInstanceId) ;
+//		jobInstanceService.startMonitorJob(jobId , jobInstanceId) ;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class PipelineJobListener implements JobListener {
 			message = e.getMessage() ;
 		}
 
-		jobInstanceService.finishMonitorJob(jobId , jobInstanceId , status , message) ;
+//		jobInstanceService.finishMonitorJob(jobId , jobInstanceId , status , message) ;
 	}
 
 	/**

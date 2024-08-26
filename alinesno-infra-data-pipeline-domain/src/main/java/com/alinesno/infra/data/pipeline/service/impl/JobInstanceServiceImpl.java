@@ -7,6 +7,7 @@ import com.alinesno.infra.data.pipeline.enums.JobStatusEnums;
 import com.alinesno.infra.data.pipeline.mapper.JobInstanceMapper;
 import com.alinesno.infra.data.pipeline.mapper.JobMapper;
 import com.alinesno.infra.data.pipeline.service.IJobInstanceService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class JobInstanceServiceImpl extends IBaseServiceImpl<JobInstanceEntity, 
     public void startMonitorJob(Long jobId, long jobInstanceId) {
 
         log.info("开始监控任务:{} , jobInstanceId:{}", jobId , jobInstanceId);
+        long count = this.count(new LambdaQueryWrapper<JobInstanceEntity>().eq(JobInstanceEntity::getJobId, jobId)) ;
 
         JobEntity job = jobMapper.selectById(jobId) ;
 
@@ -35,8 +37,9 @@ public class JobInstanceServiceImpl extends IBaseServiceImpl<JobInstanceEntity, 
         e.setJobId(jobId);
 
         e.setProjectId(job.getProjectId());
-        e.setJobName(job.getJobName());
+//        e.setJobName(job.getJobName());
 
+        e.setCountOrder((int)(count + 1L));
         e.setStartTime(System.currentTimeMillis()) ;
         e.setStatus(JobStatusEnums.PROCESSING.getStatus());
         e.setId(jobInstanceId);

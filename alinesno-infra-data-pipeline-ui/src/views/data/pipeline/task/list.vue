@@ -60,24 +60,24 @@
                      </div>
                   </template>
               </el-table-column>
-              <el-table-column label="迁移数据量" align="left" key="jobDesc" prop="jobDesc" v-if="columns[1].visible">
+              <el-table-column label="迁移数据量" align="center" key="jobDesc" prop="jobDesc" v-if="columns[1].visible">
                  <template #default="scope">
                      <div style="margin-top: 5px;">
                         <el-button type="primary" text> <i class="fa-solid fa-truck-fast" style="margin-right:5px;"></i> 读: 74299422 条 </el-button>
-                     </div>
-                     <div style="margin-top: 5px;">
+                     <!-- </div>
+                     <div style="margin-top: 5px;"> -->
                         <el-button type="danger" text> <i class="fa-solid fa-feather" style="margin-right:5px"></i> 写: 8742355 条</el-button>
                      </div>
                   </template>
               </el-table-column>
-              <el-table-column label="迁移目标" align="left" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
+              <el-table-column label="迁移目标" align="center" key="projectCode" prop="projectCode" v-if="columns[2].visible">
                  <template #default="scope">
                      <div style="margin-top: 5px;">
                         <el-button type="primary" text>
                            <img style="margin-right:5px;width:20px; height:20px" :src="'http://data.linesno.com/icons/database/' + (scope.row.sourceDbType).toLowerCase() + '.png'" />  源库: {{ scope.row.sourceDbType }}
                         </el-button>
-                     </div>
-                     <div style="margin-top: 5px;">
+                     <!-- </div>
+                     <div style="margin-top: 5px;"> -->
                         <el-button type="primary" text>
                            <img style="margin-right:5px;width:20px; height:20px" :src="'http://data.linesno.com/icons/database/' + (scope.row.targetDbType).toLowerCase() + '.png'" />  目标: {{ scope.row.targetDbType }}
                         </el-button>
@@ -88,7 +88,7 @@
               <el-table-column label="迁移配置" align="center" width="150" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
                     <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> 
-                        <i class="fa-solid fa-link"></i>&nbsp;配置迁移参数
+                        <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;迁移参数
                      </el-button>
                  </template>
               </el-table-column>

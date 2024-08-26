@@ -36,10 +36,10 @@ public class JobInstanceEntity extends InfraBaseEntity {
     @ColumnComment("所属项目")
     private Long projectId ; // 所属项目
 
-    @TableField("job_name")
-    @ColumnType(value = MySqlTypeConstant.VARCHAR , length = 128)
-    @ColumnComment("任务名称")
-    private String jobName ; // 任务名称
+//    @TableField("job_name")
+//    @ColumnType(value = MySqlTypeConstant.VARCHAR , length = 128)
+//    @ColumnComment("任务名称")
+//    private String jobName ; // 任务名称
 
     @TableField("start_time")
     @ColumnType
@@ -50,6 +50,11 @@ public class JobInstanceEntity extends InfraBaseEntity {
     @ColumnType
     @ColumnComment("结束时间")
     private Long endTime ; // 结束时间
+
+    @TableField("count_order")
+    @ColumnType(value = MySqlTypeConstant.INT)
+    @ColumnComment("排序")
+    private int countOrder = 0 ;
 
     @TableField("status")
     @ColumnType(value = MySqlTypeConstant.VARCHAR , length = 16)

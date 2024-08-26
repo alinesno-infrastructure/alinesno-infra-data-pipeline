@@ -19,4 +19,10 @@ public interface IPipelineInitService {
      * 初始化读取源
      */
     void initReaderSource();
+
+    /**
+     * 初始化任务分类
+     */
+    void initJobCatalog();
+
 }

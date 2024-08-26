@@ -2,22 +2,17 @@ package com.alinesno.infra.data.pipeline.datasource.reader;
 
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSourceReader;
-import com.alinesno.infra.data.pipeline.datasource.IDataSourceReader;
 import com.alinesno.infra.data.pipeline.datasource.dto.ResultSetMetaInfo;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEvent;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
 import com.alinesno.infra.data.pipeline.datasource.exception.ReaderSourceException;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,16 +22,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+@Slf4j
 @Component("mysql" + PipeConstants.READER_SUFFIX)
 public class MySQLReader extends ComponentSourceReader {
-
-    private static final Logger log = LoggerFactory.getLogger(MySQLReader.class) ;
 
     @Autowired
     protected TransEventPublisher transEventPublisher ;
 
     @Override
-    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {
+    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransformEntity trans) throws SQLException {
 
         String querySql = buildQuerySql(taskInfoDto.getReader()) ;
 
@@ -48,7 +42,7 @@ public class MySQLReader extends ComponentSourceReader {
 
         ResultSet resultSet = statement.executeQuery(); //期间不会阻塞 直接返回结果行，过多的缓存在驱动内存中
 
-        long count = 1 ;
+        long count = 0 ;
         int line = 0 ;
 
         final StringBuilder sb = new StringBuilder(5000000 * 2);
@@ -69,11 +63,13 @@ public class MySQLReader extends ComponentSourceReader {
 
             processRow(columnCount, resultSet, sb);
             line++;
+            count ++ ;
 
-            log.debug("查询数据:{} , 指标:{}" , taskInfoDto.getReader().getName() , count ++);
+            log.debug("查询数据:{} , 指标:{}" , taskInfoDto.getReader().getName() , count);
 
             // 数据及时落盘
-            if (line >= 50000) {
+            if (line >= 2) {
+//          if (line >= 50000) {
 
                 transEvent.setTransCount(count);
                 transEvent.setTotalCount(0L);

@@ -35,47 +35,83 @@
            <el-table v-loading="loading" :data="JobInstanceList" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="50" align="center" />
               
-              <el-table-column label="图标" align="center" width="70" key="icon" v-if="columns[5].visible">
+              <el-table-column label="图标" align="center" width="120" key="icon" v-if="columns[5].visible">
                  <template #default="scope">
-                    <span style="font-size:25px;color:#3b5998">
-                       <i class="fa-solid fa-file-word" />
-                    </span>
-                 </template>
-              </el-table-column>
-
-
-              <!-- 业务字段-->
-              <el-table-column label="所属项目" align="left" width="200" key="projectName" prop="projectName" v-if="columns[0].visible">
-                 <template #default="scope">
-                     <i class="fa-solid fa-link"></i>&nbsp;{{ scope.row.projectId}} 示例工作流项目
-                 </template>
-              </el-table-column>
-              <el-table-column label="任务名称" align="left" key="jobName" prop="jobName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-              <el-table-column label="运行状态" align="center" width="100" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
-                 <template #default="scope">
-                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.projectCode">
-                        {{ scope.row.status}} <el-icon><CopyDocument /></el-icon>
+                     <div style="margin-top: 5px;">
+                        <el-button type="primary" style="float:left;padding:5px;" text>
+                           <img style="margin-right:5px;width:20px; height:20px" :src="'http://data.linesno.com/icons/database/' + (scope.row.sourceDbType).toLowerCase() + '.png'" /> 
+                            <!-- 源库: {{ scope.row.sourceDbType }} -->
+                        </el-button>
+                        <i class="fa-solid fa-angles-right" style="float:left;margin-top:7px"></i>
+                        <el-button type="primary" style="float:left;padding:5px;" text>
+                           <img style="margin-right:5px;width:20px; height:20px" :src="'http://data.linesno.com/icons/database/' + (scope.row.targetDbType).toLowerCase() + '.png'" /> 
+                            <!-- 目标: {{ scope.row.targetDbType }} -->
+                        </el-button>
                      </div>
                   </template>
               </el-table-column>
 
-              <el-table-column label="开始时间" align="center" width="180" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <!-- 业务字段-->
+              <el-table-column label="任务名称" align="left" width="200" key="projectName" prop="projectName" v-if="columns[0].visible" :show-overflow-tooltip="true">
                  <template #default="scope">
-                    <span>{{ parseTime(scope.row.startTime) }}</span>
+                     <div>
+                        {{ scope.row.jobName }}#{{ scope.row.countOrder }}
+                     </div>
+                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
+                       任务:{{ scope.row.jobDesc}}
+                     </div>
+                  </template>
+              </el-table-column>
+              <!-- <el-table-column label="任务描述" align="left" key="jobDesc" prop="jobDesc" v-if="columns[1].visible" :show-overflow-tooltip="true" /> -->
+              <el-table-column label="迁移数据量" align="center" key="jobDesc" prop="jobDesc" v-if="columns[1].visible">
+                 <template #default="scope">
+                     <div style="margin-top: 5px;">
+                        <el-button type="primary" text> <i class="fa-solid fa-truck-fast" style="margin-right:5px;"></i> 读: 7429条</el-button>
+                        <i class="fa-solid fa-angles-right" style="font-size:0.8rem;margin-top:10px"></i>
+                        <el-button type="success" text> <i class="fa-solid fa-feather" style="margin-right:5px"></i> 写: 8742条</el-button>
+                     </div>
+                  </template>
+              </el-table-column>
+              <el-table-column label="运行状态" align="center" width="140" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true">
+                 <template #default="scope">
+                     <!-- <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.projectCode">
+                        {{ scope.row.status}} 
+                     </div> -->
+                     <el-button type="primary" v-if="scope.row.status == 'processing'" text loading>
+                        <i class="fa-solid fa-file-signature"></i>{{ scope.row.statusLabel }} 
+                     </el-button>
+                     <el-button type="danger" v-if="scope.row.status == 'failed'" text>
+                        <i class="fa-solid fa-file-circle-xmark"></i>{{ scope.row.statusLabel }}
+                     </el-button>
+                     <el-button type="success" v-if="scope.row.status == 'completed'" text>
+                        <i class="fa-solid fa-file-shield"></i> {{ scope.row.statusLabel }}
+                     </el-button>
+                  </template>
+              </el-table-column>
+
+              <el-table-column label="开始时间" align="left" width="180" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+                 <template #default="scope">
+                    <div>{{ parseTime(scope.row.startTime) }}</div>
+                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
+                        下次执行:{{ timeDifference(scope.row.startTime , scope.row.endTime) }}
+                     </div>
                  </template>
               </el-table-column>
 
-              <el-table-column label="结束时间" align="center" width="180" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+              <el-table-column label="结束时间" align="left" width="180" key="hasStatus" prop="hasStatus" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                  <template #default="scope">
-                    <span>{{ parseTime(scope.row.endTime) }}</span>
+                    <div>{{ parseTime(scope.row.endTime) }}</div>
+                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
+                        任务耗时:{{ timeDifference(scope.row.startTime , scope.row.endTime) }}
+                     </div>
                  </template>
               </el-table-column>
 
-              <el-table-column label="任务耗时" align="center" prop="addTime" v-if="columns[6].visible" width="100">
+              <!-- <el-table-column label="任务耗时" align="center" prop="addTime" v-if="columns[6].visible" width="100">
                  <template #default="scope">
                     <span>{{ timeDifference(scope.row.startTime , scope.row.endTime) }}</span>
                  </template>
-              </el-table-column>
+              </el-table-column> -->
 
               <!-- 操作字段  -->
               <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">

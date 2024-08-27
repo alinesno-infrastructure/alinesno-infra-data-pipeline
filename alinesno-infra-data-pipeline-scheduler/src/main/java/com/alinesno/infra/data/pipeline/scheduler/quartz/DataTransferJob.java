@@ -15,12 +15,10 @@ import org.quartz.*;
 @DisallowConcurrentExecution
 public class DataTransferJob implements Job {
 
-    private IJobInstanceService jobInstanceService ;
-
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        jobInstanceService = SpringContext.getBean(IJobInstanceService.class) ;
+        IJobInstanceService jobInstanceService = SpringContext.getBean(IJobInstanceService.class);
         long jobInstanceId = IdUtil.getSnowflakeNextId() ;
 
         JobDataMap jobDataMap = context.getJobDetail().getJobDataMap() ;
@@ -35,7 +33,10 @@ public class DataTransferJob implements Job {
         try {
 
             jobInstanceService.startMonitorJob(jobId , jobInstanceId) ;
-            distSchedulerService.createCronJob(jobId);
+
+            // --->>>>>> 任务执行_start --->>>>
+            distSchedulerService.createCronJob(jobId , jobInstanceId);
+            // --->>>>>> 任务执行_end --->>>>
 
             jobInstanceService.finishMonitorJob(jobId , jobInstanceId , status , message) ;
         } catch (Exception e) {

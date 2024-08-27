@@ -3,9 +3,12 @@ package com.alinesno.infra.data.pipeline.service.impl;
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.entity.JobInstanceEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformMonitorEntity;
 import com.alinesno.infra.data.pipeline.enums.JobStatusEnums;
+import com.alinesno.infra.data.pipeline.enums.TransTypeEnums;
 import com.alinesno.infra.data.pipeline.mapper.JobInstanceMapper;
 import com.alinesno.infra.data.pipeline.mapper.JobMapper;
+import com.alinesno.infra.data.pipeline.mapper.TransMonitorMapper;
 import com.alinesno.infra.data.pipeline.service.IJobInstanceService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,9 @@ public class JobInstanceServiceImpl extends IBaseServiceImpl<JobInstanceEntity, 
     @Autowired
     private JobMapper jobMapper ;
 
+    @Autowired
+    private TransMonitorMapper transMonitorMapper ;
+
     @Override
     public void startMonitorJob(Long jobId, long jobInstanceId) {
 
@@ -37,7 +43,6 @@ public class JobInstanceServiceImpl extends IBaseServiceImpl<JobInstanceEntity, 
         e.setJobId(jobId);
 
         e.setProjectId(job.getProjectId());
-//        e.setJobName(job.getJobName());
 
         e.setCountOrder((int)(count + 1L));
         e.setStartTime(System.currentTimeMillis()) ;
@@ -62,5 +67,35 @@ public class JobInstanceServiceImpl extends IBaseServiceImpl<JobInstanceEntity, 
             this.updateById(jobInstance);
         }
 
+    }
+
+    @Override
+    public long getReaderCount(Long id) {
+        LambdaQueryWrapper<TransformMonitorEntity> q = new LambdaQueryWrapper<TransformMonitorEntity>()
+                .eq(TransformMonitorEntity::getJobInstanceId, id)
+                .eq(TransformMonitorEntity::getType , TransTypeEnums.READER.getCode()) ;
+
+        TransformMonitorEntity e = transMonitorMapper.selectOne(q);
+
+        if (e != null && e.getProcessDataCount() != null) {
+            return e.getProcessDataCount() ;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public long getWriterCount(Long id) {
+        LambdaQueryWrapper<TransformMonitorEntity> q = new LambdaQueryWrapper<TransformMonitorEntity>()
+                .eq(TransformMonitorEntity::getJobInstanceId, id)
+                .eq(TransformMonitorEntity::getType , TransTypeEnums.WRITER.getCode()) ;
+
+        TransformMonitorEntity e = transMonitorMapper.selectOne(q);
+
+        if (e != null && e.getProcessDataCount() != null) {
+            return e.getProcessDataCount() ;
+        }
+
+        return 0;
     }
 }

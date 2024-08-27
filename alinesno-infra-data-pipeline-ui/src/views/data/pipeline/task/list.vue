@@ -2,8 +2,34 @@
   <div class="app-container">
 
      <el-row :gutter="20">
+        <!--类型数据-->
+         <el-col :span="4" :xs="24">
+            <div class="head-container">
+               <el-input
+                  v-model="deptName"
+                  placeholder="请输入类型名称"
+                  clearable
+                  prefix-icon="Search"
+                  style="margin-bottom: 20px"
+               />
+            </div>
+            <div class="head-container">
+               <el-tree
+                  :data="deptOptions"
+                  :props="{ label: 'label', children: 'children' }"
+                  :expand-on-click-node="false"
+                  :filter-node-method="filterNode"
+                  ref="deptTreeRef"
+                  node-key="id"
+                  highlight-current
+                  @node-click="handleNodeClick"
+               />
+                  <!-- default-expand-all -->
+            </div>
+         </el-col>
+
         <!--任务数据-->
-        <el-col :span="24" :xs="24">
+        <el-col :span="20" :xs="24">
            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
               <el-form-item label="任务名称" prop="jobName">
                  <el-input v-model="queryParams.jobName" placeholder="请输入任务名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
@@ -55,7 +81,7 @@
                      <div>
                         {{ scope.row.jobName }}
                      </div>
-                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.promptId">
+                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" class="text-overflow" v-copyText="scope.row.promptId">
                         {{ scope.row.jobDesc }}
                      </div>
                   </template>
@@ -282,6 +308,7 @@ import {
   addJob,
   runOneTime , 
   resumeTrigger,
+  catalogTreeSelect,
   pauseTrigger,
   changStatusField
 } from "@/api/data/pipeline/job";
@@ -304,6 +331,7 @@ const title = ref("");
 const dateRange = ref([]);
 const openCron = ref(false);
 const expression = ref("");
+const deptOptions = ref(undefined);
 
 // 是否打开配置文档
 const openDocumentTypeDialog = ref(false);
@@ -353,6 +381,13 @@ function getList() {
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
+};
+
+/** 查询类型下拉树结构 */
+function getDeptTree() {
+  catalogTreeSelect().then(response => {
+    deptOptions.value = response.data;
+  });
 };
 
 /** 重置按钮操作 */
@@ -604,6 +639,7 @@ function handleCommand(command,row){
    }
 }
 
+getDeptTree();
 getList();
 
 </script>

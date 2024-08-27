@@ -13,6 +13,7 @@ import java.util.List;
 public class TaskInfoDto implements Serializable {
 
     // taskInfo
+    private long jobInstanceId; // 任务实例ID
     private String taskType ; // 任务类型
     private String name ;  // 任务名称
     private String describe ; // 任务描述

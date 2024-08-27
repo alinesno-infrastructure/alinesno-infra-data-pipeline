@@ -34,4 +34,7 @@ public class JobInstanceDto extends BaseDto {
     private String sourceDbType ; // 源数据库类型
     private String targetDbType ; // 目标数据库类型
 
+    private long readerCount ; // 读取数量
+    private long writerCount; // 写入数量
+
 }

@@ -3,13 +3,13 @@ package com.alinesno.infra.data.pipeline.transfer;
 import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.data.pipeline.datasource.IDataTransferHandleService;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.enums.TransTypeEnums;
 import com.alinesno.infra.data.pipeline.scheduler.IQuartzSchedulerService;
 import com.alinesno.infra.data.pipeline.scheduler.dto.FilterPlugins;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import com.alinesno.infra.data.pipeline.service.IJobService;
-import com.alinesno.infra.data.pipeline.service.ITransService;
+import com.alinesno.infra.data.pipeline.service.ITransformService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
     private IJobService jobService ;
 
     @Autowired
-    private ITransService transService ;
+    private ITransformService transService ;
 
     @Autowired
     private IQuartzSchedulerService schedulerService ;
@@ -81,11 +81,11 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
         jobService.save(jobEntity) ;
 
         // 创建任务节点
-        List<TransEntity> listTrans = new ArrayList<>() ;
+        List<TransformEntity> listTrans = new ArrayList<>() ;
 
         // 获取多个Trans
         // 创建读取数据
-        TransEntity readerTrans = new TransEntity() ;
+        TransformEntity readerTrans = new TransformEntity() ;
         readerTrans.setJobId(jobEntity.getId());
         readerTrans.setOrderStep(1);
 
@@ -98,7 +98,7 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
         genPluginsTrans(taskInfoDto.getPlugins() , listTrans , jobEntity)  ;
 
         // 创建写入数据
-        TransEntity writerTrans= new TransEntity() ;
+        TransformEntity writerTrans= new TransformEntity() ;
         writerTrans.setOrderStep(listTrans.size()+1);
         writerTrans.setJobId(jobEntity.getId());
 
@@ -118,12 +118,12 @@ public class DataTransferHandleServiceImpl implements IDataTransferHandleService
      * @param listTrans
      * @param jobEntity
      */
-    private void genPluginsTrans(List<FilterPlugins> plugins, List<TransEntity> listTrans, JobEntity jobEntity) {
+    private void genPluginsTrans(List<FilterPlugins> plugins, List<TransformEntity> listTrans, JobEntity jobEntity) {
 
         if(!plugins.isEmpty()){
 
             for(FilterPlugins p : plugins){
-                TransEntity t = new TransEntity() ;
+                TransformEntity t = new TransformEntity() ;
 
                 t.setJobId(jobEntity.getId());
                 t.setOrderStep(listTrans.size()+1);

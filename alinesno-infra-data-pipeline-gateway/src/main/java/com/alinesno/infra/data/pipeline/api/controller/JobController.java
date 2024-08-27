@@ -7,6 +7,7 @@ import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
+import com.alinesno.infra.data.pipeline.service.IJobCatalogService;
 import com.alinesno.infra.data.pipeline.service.IJobService;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,10 +17,7 @@ import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 处理与JobEntity相关的请求的Controller。
@@ -37,6 +35,9 @@ public class JobController extends BaseController<JobEntity, IJobService> {
 
     @Autowired
     private IJobService service;
+
+    @Autowired
+    private IJobCatalogService catalogService ;
 
     @Autowired
     private Scheduler scheduler ;
@@ -66,6 +67,11 @@ public class JobController extends BaseController<JobEntity, IJobService> {
         scheduler.triggerJob(jobKey);
 
         return AjaxResult.success() ;
+    }
+
+    @GetMapping("/catalogTreeSelect")
+    public AjaxResult catalogTreeSelect(){
+        return AjaxResult.success("success" , catalogService.selectCatalogTreeList()) ;
     }
 
     /**

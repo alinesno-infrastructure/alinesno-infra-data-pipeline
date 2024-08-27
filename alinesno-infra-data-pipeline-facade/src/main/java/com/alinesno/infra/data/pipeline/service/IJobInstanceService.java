@@ -29,4 +29,19 @@ public interface IJobInstanceService extends IBaseService<JobInstanceEntity> {
      */
     void finishMonitorJob(Long jobId, long jobInstanceId, String message, String eMessage);
 
+    /**
+     * 获取任务读取的数量
+     *
+     * @param id
+     * @return
+     */
+    long getReaderCount(Long id);
+
+    /**
+     * 获取到任务写入的数量
+     * @param id
+     * @return
+     */
+    long getWriterCount(Long id);
+
 }

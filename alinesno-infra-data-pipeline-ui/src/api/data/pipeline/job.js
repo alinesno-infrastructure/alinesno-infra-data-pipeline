@@ -27,7 +27,16 @@ var managerUrl = {
     updateJob: prefix + "updateJob", // 更新job
     changeField: prefix + "changeField",
     listAllJob: prefix + "listAllJob",
+    catalogTreeSelect: prefix + "catalogTreeSelect",
     downloadfile: prefix + "downloadfile"
+}
+
+// 查询部门下拉树结构
+export function catalogTreeSelect() {
+  return request({
+    url: managerUrl.catalogTreeSelect ,
+    method: 'get'
+  })
 }
 
 // 立即执行一次job

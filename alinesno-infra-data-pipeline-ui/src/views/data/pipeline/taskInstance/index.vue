@@ -66,9 +66,9 @@
               <el-table-column label="迁移数据量" align="center" key="jobDesc" prop="jobDesc" v-if="columns[1].visible">
                  <template #default="scope">
                      <div style="margin-top: 5px;">
-                        <el-button type="primary" text> <i class="fa-solid fa-truck-fast" style="margin-right:5px;"></i> 读: 7429条</el-button>
+                        <el-button type="primary" text> <i class="fa-solid fa-truck-fast" style="margin-right:5px;"></i> 读: {{ scope.row.readerCount }} 条</el-button>
                         <i class="fa-solid fa-angles-right" style="font-size:0.8rem;margin-top:10px"></i>
-                        <el-button type="success" text> <i class="fa-solid fa-feather" style="margin-right:5px"></i> 写: 8742条</el-button>
+                        <el-button type="success" text> <i class="fa-solid fa-feather" style="margin-right:5px"></i> 写: {{ scope.row.writerCount }} 条</el-button>
                      </div>
                   </template>
               </el-table-column>

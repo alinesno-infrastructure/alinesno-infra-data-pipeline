@@ -2,6 +2,7 @@ package com.alinesno.infra.data.pipeline.entity;
 
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import lombok.Data;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -22,6 +23,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("project")
 @Data
+@Table(comment = "存储应用")
 public class ProjectEntity extends InfraBaseEntity {
 
     /**

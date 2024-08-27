@@ -4,12 +4,11 @@ import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSinkWriter;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEvent;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SinkWriter;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
-import io.minio.errors.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
@@ -23,8 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 /**
@@ -48,7 +45,7 @@ public class MinioWriter extends ComponentSinkWriter {
      * @throws SQLException SQL异常
      */
     @Override
-    public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
+    public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransformEntity trans) throws IOException, SQLException {
 
         long count = 0L;
         long readCount = 0L;

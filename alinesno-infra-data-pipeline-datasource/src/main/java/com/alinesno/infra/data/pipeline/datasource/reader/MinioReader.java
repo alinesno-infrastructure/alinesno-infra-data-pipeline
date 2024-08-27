@@ -2,11 +2,10 @@ package com.alinesno.infra.data.pipeline.datasource.reader;
 
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSourceReader;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import io.minio.DownloadObjectArgs;
 import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
 import io.minio.errors.MinioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +38,7 @@ public class MinioReader extends ComponentSourceReader {
      * @throws SQLException SQL异常
      */
     @Override
-    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {
+    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransformEntity trans) throws SQLException {
         String endPoint = taskInfoDto.getReader().getEndPoint();
         String accessKey = taskInfoDto.getReader().getAccessKey();
         String secretKey = taskInfoDto.getReader().getSecurityKey();

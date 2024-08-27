@@ -2,7 +2,7 @@ package com.alinesno.infra.data.pipeline.datasource.reader;
 
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSourceReader;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class HttpReader extends ComponentSourceReader {
     private static final Logger log = LoggerFactory.getLogger(HttpReader.class) ;
 
     @Override
-    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {
+    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransformEntity trans) throws SQLException {
         String url = taskInfoDto.getReader().getDownloadUrl();
         String fileName = taskInfoDto.getReader().getFilename();
 

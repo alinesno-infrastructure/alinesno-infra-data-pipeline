@@ -1,5 +1,7 @@
 package com.alinesno.infra.data.pipeline.datasource;
 
+import com.alinesno.infra.common.core.cache.RedisUtils;
+import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SinkReaderEnums;
 import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
@@ -185,6 +187,7 @@ public abstract class ComponentSourceReader extends AbstractTemplates implements
             closeQuietly(connection);
         }
     }
+
 
     /**
      * 估算数据量大小

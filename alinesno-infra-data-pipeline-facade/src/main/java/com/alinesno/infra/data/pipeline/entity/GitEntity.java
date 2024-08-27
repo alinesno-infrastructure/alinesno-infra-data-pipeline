@@ -3,6 +3,9 @@ package com.alinesno.infra.data.pipeline.entity;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * gitLab仓库地址信息
@@ -13,7 +16,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("pipeline_git")
+@Table(comment = "gitLab仓库地址信息")
 public class GitEntity extends InfraBaseEntity {
 
     /**
@@ -106,122 +112,4 @@ public class GitEntity extends InfraBaseEntity {
     @TableField("bing_git_info")
     private String bingGitInfo; // 绑定第三方git账号信息
 
-    public String getGitName() {
-        return gitName;
-    }
-
-    public void setGitName(String gitName) {
-        this.gitName = gitName;
-    }
-
-    public String getGitIcon() {
-        return gitIcon;
-    }
-
-    public void setGitIcon(String gitIcon) {
-        this.gitIcon = gitIcon;
-    }
-
-    public String getGitUrl() {
-        return gitUrl;
-    }
-    public void setGitUrl(String gitUrl) {
-        this.gitUrl = gitUrl;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public String getGitUserName() {
-        return gitUserName;
-    }
-
-    public void setGitUserName(String gitUserName) {
-        this.gitUserName = gitUserName;
-    }
-
-    public int getGitUserId() {
-        return gitUserId;
-    }
-
-    public void setGitUserId(int gitUserId) {
-        this.gitUserId = gitUserId;
-    }
-
-    public String getGitNamespace() {
-        return gitNamespace;
-    }
-
-    public void setGitNamespace(String gitNamespace) {
-        this.gitNamespace = gitNamespace;
-    }
-
-    public String getGitType() {
-        return gitType;
-    }
-
-    public void setGitType(String gitType) {
-        this.gitType = gitType;
-    }
-
-    public int getInnerGit() {
-        return innerGit;
-    }
-
-    public void setInnerGit(int innerGit) {
-        this.innerGit = innerGit;
-    }
-
-    public int getHasBing() {
-        return hasBing;
-    }
-
-    public void setHasBing(int hasBing) {
-        this.hasBing = hasBing;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public int getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(int expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public String getBingGitInfo() {
-        return bingGitInfo;
-    }
-
-    public void setBingGitInfo(String bingGitInfo) {
-        this.bingGitInfo = bingGitInfo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getGitHost() {
-        return gitHost;
-    }
-
-    public void setGitHost(String gitHost) {
-        this.gitHost = gitHost;
-    }
 }

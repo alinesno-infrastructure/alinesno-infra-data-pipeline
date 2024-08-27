@@ -88,6 +88,9 @@ public class JobInstanceController extends BaseController<JobInstanceEntity, IJo
             dto.setTargetDbType(job.getTargetDbType());
             dto.setSourceDbType(job.getSourceDbType());
 
+            dto.setReaderCount(service.getReaderCount(e.getId()));
+            dto.setWriterCount(service.getWriterCount(e.getId()));
+
             list.add(dto) ;
         }) ;
 

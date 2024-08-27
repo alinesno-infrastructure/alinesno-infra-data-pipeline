@@ -7,7 +7,7 @@ import com.alinesno.infra.data.pipeline.datasource.MappingBean;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEvent;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
 import com.alinesno.infra.data.pipeline.datasource.mapping.SQLFieldMapping;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -47,7 +47,7 @@ public class DorisWriter extends ComponentSinkWriter {
      * @throws SQLException SQL异常
      */
     @Override
-    public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
+    public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransformEntity trans) throws IOException, SQLException {
 
         List<JSONObject> jsonObjectList = new ArrayList<>();
         long count = 0L;

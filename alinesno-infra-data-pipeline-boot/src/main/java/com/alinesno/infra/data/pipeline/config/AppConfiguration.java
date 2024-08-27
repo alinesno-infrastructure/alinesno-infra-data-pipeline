@@ -37,6 +37,8 @@ public class AppConfiguration implements CommandLineRunner {
 
         // pipelineInitService.initScheduler(); // 初始化定时任务
 
+        pipelineInitService.initJobCatalog() ; // 初始化任务分类
+
         pipelineInitService.initDemoJob() ; // 初始化演示任务
 
         pipelineInitService.initReaderSource() ; // 初始化读取源

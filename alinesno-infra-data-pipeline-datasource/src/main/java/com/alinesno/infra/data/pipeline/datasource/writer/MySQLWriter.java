@@ -3,7 +3,7 @@ package com.alinesno.infra.data.pipeline.datasource.writer;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSinkWriter;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class MySQLWriter extends ComponentSinkWriter {
      * @throws SQLException SQL异常
      */
     @Override
-    public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransEntity trans) throws IOException, SQLException {
+    public void writerData(TaskInfoDto taskInfoDto, File filterFile, TransformEntity trans) throws IOException, SQLException {
 
         log.debug("开始写入数据到MySQL");
 

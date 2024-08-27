@@ -1,6 +1,6 @@
 package com.alinesno.infra.data.pipeline.datasource;
 
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
@@ -24,7 +24,7 @@ public interface IDataSourceReader {
      * @return
      * @throws SQLException
      */
-    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException ;
+    File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransformEntity trans) throws SQLException ;
 
     /**
      * 根据源类型和操作的SQL语句分析字段并返回

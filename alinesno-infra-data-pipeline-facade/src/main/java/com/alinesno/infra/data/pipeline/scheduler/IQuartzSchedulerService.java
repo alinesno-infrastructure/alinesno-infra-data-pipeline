@@ -1,7 +1,7 @@
 package com.alinesno.infra.data.pipeline.scheduler;
 
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 
 import java.io.IOException;
@@ -16,17 +16,18 @@ public interface IQuartzSchedulerService {
 
     /**
      * 执行定时任务
+     *
      * @param taskInfoDto
      * @param jobEntity
      * @param listTrans
      */
-    void createCronJob(TaskInfoDto taskInfoDto, JobEntity jobEntity, List<TransEntity> listTrans) throws SQLException, IOException;
+    void createCronJob(TaskInfoDto taskInfoDto, JobEntity jobEntity, List<TransformEntity> listTrans) throws SQLException, IOException;
 
     /**
      * 执行定时任务
      * @param jobId
      */
-    void createCronJob(Long jobId) throws SQLException, IOException;
+    void createCronJob(Long jobId , long jobInstanceId) throws SQLException, IOException;
 
     /**
      * 添加任务

@@ -1,12 +1,14 @@
 package com.alinesno.infra.data.pipeline.scheduler;
 
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.common.core.context.SpringContext;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.IDataSourceReader;
 import com.alinesno.infra.data.pipeline.datasource.IDataSourceWriter;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformMonitorEntity;
 import com.alinesno.infra.data.pipeline.enums.JobStatusEnums;
 import com.alinesno.infra.data.pipeline.enums.TransTypeEnums;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
@@ -16,13 +18,15 @@ import com.alinesno.infra.data.pipeline.scheduler.listener.PipelineJobListener;
 import com.alinesno.infra.data.pipeline.scheduler.quartz.DataTransferJob;
 import com.alinesno.infra.data.pipeline.service.IJobInstanceService;
 import com.alinesno.infra.data.pipeline.service.IJobService;
-import com.alinesno.infra.data.pipeline.service.ITransService;
+import com.alinesno.infra.data.pipeline.service.ITransformMonitorService;
+import com.alinesno.infra.data.pipeline.service.ITransformService;
 import com.alinesno.infra.data.pipeline.transfer.IDataSourcePlugins;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.quartz.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,7 +50,10 @@ public class QuartzSchedulerServiceImpl implements IQuartzSchedulerService {
     private Scheduler scheduler ;
 
     @Autowired
-    private ITransService transService;
+    private ITransformService transService;
+
+    @Autowired
+    private ITransformMonitorService transformMonitorService;
 
     @Autowired
     private IDataSourcePlugins dataSourcePlugins;
@@ -68,13 +75,13 @@ public class QuartzSchedulerServiceImpl implements IQuartzSchedulerService {
     }
 
     @Override
-    public void createCronJob(TaskInfoDto taskInfoDto, JobEntity jobEntity, List<TransEntity> listTrans) throws SQLException, IOException {
+    public void createCronJob(TaskInfoDto taskInfoDto, JobEntity jobEntity, List<TransformEntity> listTrans) throws SQLException, IOException {
 
         IDataSourceReader dataSourceReader = (IDataSourceReader) SpringContext.getBean(taskInfoDto.getReader().getType() + PipeConstants.READER_SUFFIX);
         IDataSourceWriter dataSourceWriter = (IDataSourceWriter) SpringContext.getBean(taskInfoDto.getWriter().getType() + PipeConstants.WRITER_SUFFIX);
 
         // 使用Comparator接口创建一个比较器，按照order_step字段的值从小到大排序
-        Comparator<TransEntity> comparator = Comparator.comparingInt(TransEntity::getOrderStep);
+        Comparator<TransformEntity> comparator = Comparator.comparingInt(TransformEntity::getOrderStep);
 
         // 使用Collections工具类的sort方法对列表进行排序
         listTrans.sort(comparator);
@@ -89,50 +96,56 @@ public class QuartzSchedulerServiceImpl implements IQuartzSchedulerService {
 
         int step = 1 ;
         long readDataCount = 0 ;
-        for (TransEntity trans : listTrans) {
+        for (TransformEntity tranStep : listTrans) {
 
-            log.debug("--->>>>>>>>>>> step = {} , trans = {}", step ++ , JSONObject.toJSONString(trans));
+            log.debug("--->>>>>>>>>>> step = {} , trans = {}", step ++ , JSONObject.toJSONString(tranStep));
 
 //            if(JobStatusEnums.COMPLETED.getStatus().equals(trans.getStatus())){
 //               continue;
 //            }
 
+            TransformMonitorEntity transMonitor = new TransformMonitorEntity();
+            BeanUtils.copyProperties(tranStep , transMonitor) ;
+
             // 更新任务状态
-            trans.setStatus(JobStatusEnums.PROCESSING.getStatus());
-            transService.update(trans);
+            transMonitor.setId(IdUtil.getSnowflakeNextId());
+            transMonitor.setStatus(JobStatusEnums.PROCESSING.getStatus());
+            transMonitor.setJobInstanceId(taskInfoDto.getJobInstanceId());
+
+            transformMonitorService.save(transMonitor);
 
             try {
 
-                if (trans.getType().equals(TransTypeEnums.READER.getCode())) {  // 读取任务
+                if (transMonitor.getType().equals(TransTypeEnums.READER.getCode())) {  // 读取任务
                     // 读取数据
-                    sourceFile = dataSourceReader.readData(taskInfoDto, jobWorkspace , trans);
-                    readDataCount = trans.getProcessDataCount();
+                    sourceFile = dataSourceReader.readData(taskInfoDto, jobWorkspace , transMonitor);
+                    readDataCount = transMonitor.getProcessDataCount();
 
-                } else if (trans.getType().equals(TransTypeEnums.PLUGIN.getCode())) {  // 插件处理
+                } else if (transMonitor.getType().equals(TransTypeEnums.PLUGIN.getCode())) {  // 插件处理
 
-                    trans.setTotalDataCount(readDataCount);
+                    transMonitor.setTotalDataCount(readDataCount);
                     // 数据插件处理
-                    log.debug("插件数据处理:{}", trans.toString());
+                    log.debug("插件数据处理:{}", transMonitor.toString());
 
                     // File filterFile = dataSourcePlugins.transformData(taskInfoDto , sourceFile) ;
-                } else if (trans.getType().equals(TransTypeEnums.WRITER.getCode())) {  // 写入处理
+                } else if (transMonitor.getType().equals(TransTypeEnums.WRITER.getCode())) {  // 写入处理
 
-                    trans.setTotalDataCount(readDataCount);
+                    transMonitor.setTotalDataCount(readDataCount);
                     // 写入数据
-                    dataSourceWriter.writerData(taskInfoDto, sourceFile , trans);
+                    dataSourceWriter.writerData(taskInfoDto, sourceFile , transMonitor);
                 }
 
                 // 更新任务状态
-                trans.setStatus(JobStatusEnums.COMPLETED.getStatus());
-                transService.update(trans);
+                transMonitor.setStatus(JobStatusEnums.COMPLETED.getStatus());
+                transService.update(transMonitor);
 
             } catch (Exception e) {
-                trans.setStatus(JobStatusEnums.FAILED.getStatus());
-                transService.update(trans);
+                transMonitor.setStatus(JobStatusEnums.FAILED.getStatus());
+                transService.update(transMonitor);
 
-                AlarmEvent alarmEvent = new AlarmEvent(trans.getId()) ;
+                AlarmEvent alarmEvent = new AlarmEvent(transMonitor.getId()) ;
                 alarmEvent.setStep(step);
-                alarmEvent.setTransName(trans.getName());
+                alarmEvent.setTransName(transMonitor.getName());
 
                 alarmEventPublisher.publishEvent(alarmEvent);
 
@@ -143,15 +156,15 @@ public class QuartzSchedulerServiceImpl implements IQuartzSchedulerService {
     }
 
     @Override
-    public void createCronJob(Long jobId) throws SQLException, IOException {
+    public void createCronJob(Long jobId , long jobInstanceId) throws SQLException, IOException {
 
         JobEntity jobEntity = jobService.getById(jobId);
         TaskInfoDto taskInfoDto = JSONObject.parseObject(jobEntity.getJobContext(), TaskInfoDto.class);
 
-        List<TransEntity> transList = transService.list(new LambdaQueryWrapper<TransEntity>().eq(TransEntity::getJobId, jobId));
+        List<TransformEntity> transList = transService.list(new LambdaQueryWrapper<TransformEntity>().eq(TransformEntity::getJobId, jobId));
 
         // 使用Comparator接口创建一个比较器，按照order_step字段的值从小到大排序
-        Comparator<TransEntity> comparator = Comparator.comparingInt(TransEntity::getOrderStep);
+        Comparator<TransformEntity> comparator = Comparator.comparingInt(TransformEntity::getOrderStep);
 
         // 使用Collections工具类的sort方法对列表进行排序
         transList.sort(comparator);
@@ -160,6 +173,7 @@ public class QuartzSchedulerServiceImpl implements IQuartzSchedulerService {
         stopWatch.start("phase1");
         log.info("开始进行数据查询.");
 
+        taskInfoDto.setJobInstanceId(jobInstanceId);
         this.createCronJob(taskInfoDto, jobEntity, transList);
 
         stopWatch.stop();

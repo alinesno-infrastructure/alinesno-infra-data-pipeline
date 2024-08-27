@@ -3,7 +3,7 @@ package com.alinesno.infra.data.pipeline.datasource.reader;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSourceReader;
 import com.alinesno.infra.data.pipeline.datasource.exception.ReaderSourceException;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -27,7 +27,7 @@ import java.util.UUID;
 public class KafkaReader  extends ComponentSourceReader {
 
     @Override
-    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {
+    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransformEntity trans) throws SQLException {
 
         String bootstrapServers = taskInfoDto.getReader().getBootstraps() ;
         String groupId = UUID.randomUUID().toString() ;

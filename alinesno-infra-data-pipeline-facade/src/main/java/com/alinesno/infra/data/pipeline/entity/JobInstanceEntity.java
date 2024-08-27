@@ -36,11 +36,6 @@ public class JobInstanceEntity extends InfraBaseEntity {
     @ColumnComment("所属项目")
     private Long projectId ; // 所属项目
 
-//    @TableField("job_name")
-//    @ColumnType(value = MySqlTypeConstant.VARCHAR , length = 128)
-//    @ColumnComment("任务名称")
-//    private String jobName ; // 任务名称
-
     @TableField("start_time")
     @ColumnType
     @ColumnComment("开始时间")

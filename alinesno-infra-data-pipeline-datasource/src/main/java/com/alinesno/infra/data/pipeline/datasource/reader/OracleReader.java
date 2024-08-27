@@ -2,22 +2,18 @@ package com.alinesno.infra.data.pipeline.datasource.reader;
 
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.datasource.ComponentSourceReader;
-import com.alinesno.infra.data.pipeline.datasource.IDataSourceReader;
 import com.alinesno.infra.data.pipeline.datasource.dto.ResultSetMetaInfo;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEvent;
 import com.alinesno.infra.data.pipeline.datasource.event.TransEventPublisher;
 import com.alinesno.infra.data.pipeline.datasource.exception.ReaderSourceException;
-import com.alinesno.infra.data.pipeline.entity.TransEntity;
+import com.alinesno.infra.data.pipeline.entity.TransformEntity;
 import com.alinesno.infra.data.pipeline.scheduler.dto.TaskInfoDto;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,7 +44,7 @@ public class OracleReader extends ComponentSourceReader {
      * @throws SQLException SQL异常
      */
     @Override
-    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransEntity trans) throws SQLException {
+    public File readData(TaskInfoDto taskInfoDto, String jobWorkspace, TransformEntity trans) throws SQLException {
 
         String querySql = buildQuerySql(taskInfoDto.getReader());
 

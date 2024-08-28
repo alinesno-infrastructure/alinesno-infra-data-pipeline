@@ -1,10 +1,12 @@
 package com.alinesno.infra.data.pipeline.api.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
+import com.alinesno.infra.data.pipeline.api.JobConfig;
 import com.alinesno.infra.data.pipeline.constants.PipeConstants;
 import com.alinesno.infra.data.pipeline.entity.JobEntity;
 import com.alinesno.infra.data.pipeline.service.IJobCatalogService;
@@ -18,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * 处理与JobEntity相关的请求的Controller。
@@ -54,6 +59,21 @@ public class JobController extends BaseController<JobEntity, IJobService> {
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
         return this.toPage(model, this.getFeign(), page);
+    }
+
+    /**
+     * 运行数据抽取服务
+     * @param jobConfig
+     * @return
+     */
+    @PostMapping("commitJob")
+    public AjaxResult commitJob(@RequestBody JSONObject jobConfig) throws SQLException, IOException {
+
+        log.debug("taskInfo = {}" , jobConfig.toJSONString());
+        JobConfig config = JSONObject.toJavaObject(jobConfig , JobConfig.class) ;
+        log.debug("taskInfoObj = {}", config.toString());
+
+        return AjaxResult.success("任务保存成功.");
     }
 
     /**

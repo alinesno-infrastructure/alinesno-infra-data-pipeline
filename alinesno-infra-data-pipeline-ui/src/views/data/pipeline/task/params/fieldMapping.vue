@@ -41,21 +41,30 @@
 
 <script setup>
 
-const props = defineProps({
-  originalFields: {
-    type: Array,
-  },
-  targetFields: {
-    type: Array,
-  },
-});
+// const props = defineProps({
+//   originalFields: {
+//     type: Array,
+//   },
+//   targetFields: {
+//     type: Array,
+//   },
+// });
 
 // 在Vue 3中，你可以直接使用ref来管理响应式状态
-const originalFields = ref(props.originalFields);
-const targetFields = ref(props.targetFields);
+const originalFields = ref([]) ;// ref(props.originalFields);
+const targetFields = ref([]) ; // ref(props.targetFields);
 
-onMounted(() => {
-  console.log(`the component is now mounted.`)
+// onMounted(() => {
+//   console.log(`the component is now mounted.`)
+// })
+
+/** 获取映射关系 */
+function handleMappingData(o, t){
+
+  console.log("o = " + o + " , t = " + t);
+
+  originalFields.value = o ;
+  targetFields.value = t;
 
   // 设置默认值
   originalFields.value.forEach((field) => {
@@ -77,8 +86,7 @@ onMounted(() => {
       field.targetField = field.name;
     });
   });
-
-})
+}
 
 // 提交映射关系
 function submitMapping() {
@@ -94,6 +102,6 @@ function submitMapping() {
 }
 
 // 主动暴露方法
-defineExpose({ submitMapping })
+defineExpose({ submitMapping , handleMappingData })
 
 </script>

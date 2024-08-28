@@ -8,6 +8,7 @@ import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
 import com.alinesno.infra.data.pipeline.transfer.bean.TableMetaBean;
 import com.google.common.base.CharMatcher;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.support.JdbcUtils;
 
 import java.sql.*;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public abstract class ComponentSourceReader extends AbstractTemplates implements IDataSourceReader {
 
     protected String buildQuerySql(SourceReader reader) {
@@ -116,42 +118,40 @@ public abstract class ComponentSourceReader extends AbstractTemplates implements
         List<TableMetaBean> tableMetaBeans = new ArrayList<>();
 
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
+
         try {
-            // 获取数据源连接
             connection = getDataSource(reader);
 
-            // 创建 Statement
-            stmt = connection.createStatement();
+            String dbName = getCurrentDatabaseNameFromURL(reader.getJdbcUrl()) ;
+            log.debug("dbName = {}" , dbName);
 
-            // 获取数据库元数据
-            DatabaseMetaData metaData = connection.getMetaData();
+            // SQL 查询语句 - 获取所有表的名称
+            String sql = "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.tables WHERE TABLE_SCHEMA = ?";
 
-            // 查询所有表的元数据
-            rs = metaData.getTables(null, null, "%", new String[]{"TABLE"});
+            // 准备 SQL 语句
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, dbName); // 替换为实际的数据库名
 
+            // 执行查询
+            rs = stmt.executeQuery();
+
+            // 处理结果集
             while (rs.next()) {
-                TableMetaBean tableMetaBean = new TableMetaBean();
-
-                // 表名称
                 String tableName = rs.getString("TABLE_NAME");
+                String comment = rs.getString("TABLE_COMMENT");
+                int rowCount = getRowCount(connection, tableName);
+
+                log.debug("Table Name: " + tableName + ", Comment: " + comment + ", Row Count: " + rowCount);
+
+                TableMetaBean tableMetaBean = new TableMetaBean();
+                tableMetaBean.setComment(comment);
+                tableMetaBean.setDataSize(rowCount);
+                tableMetaBean.setEngine("");
                 tableMetaBean.setName(tableName);
 
-                // 表注释
-                String tableComment = rs.getString("REMARKS");
-                tableMetaBean.setComment(tableComment);
-
-                // 数据库引擎
-                String tableEngine = rs.getString("TABLE_TYPE");
-                tableMetaBean.setEngine(tableEngine);
-
-                // 数据量大小
-                // 这里假设使用一个简单的方法来估算数据量
-                int dataSize = estimateDataSize(connection, tableName);
-                tableMetaBean.setDataSize(String.valueOf(dataSize));
-
-                tableMetaBeans.add(tableMetaBean);
+                tableMetaBeans.add(tableMetaBean) ;
             }
         } finally {
             // 关闭资源
@@ -161,6 +161,32 @@ public abstract class ComponentSourceReader extends AbstractTemplates implements
         }
 
         return tableMetaBeans;
+    }
+
+    private static String getCurrentDatabaseNameFromURL(String url) {
+        int index = url.indexOf('?');
+        if (index == -1) {
+            index = url.length();
+        }
+        String databasePart = url.substring(url.indexOf("//") + 2, index);
+        int lastSlashIndex = databasePart.lastIndexOf('/');
+        if (lastSlashIndex != -1) {
+            return databasePart.substring(lastSlashIndex + 1);
+        }
+        return null;
+    }
+
+    private static int getRowCount(Connection conn, String tableName) throws SQLException {
+        String countSql = "SELECT COUNT(*) AS count FROM " + tableName;
+        PreparedStatement countPstmt = conn.prepareStatement(countSql);
+        ResultSet countRs = countPstmt.executeQuery();
+        int rowCount = 0;
+        if (countRs.next()) {
+            rowCount = countRs.getInt("count");
+        }
+        countRs.close();
+        countPstmt.close();
+        return rowCount;
     }
 
     @Override

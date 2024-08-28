@@ -6,12 +6,14 @@ import com.alinesno.infra.common.security.mapper.AESEncryptHandler;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "pipeline_reader_source" , autoResultMap = true)
 @Data
+@Table(comment = "读取源")
 public class ReaderSourceEntity extends InfraBaseEntity {
 
     @ColumnComment("描述")

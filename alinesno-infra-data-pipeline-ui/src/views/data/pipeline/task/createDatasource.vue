@@ -39,7 +39,7 @@
 
          </el-form-item>
 
-         <el-form-item label="配置源">
+         <el-form-item label="配置源" prop="readerSourceProps">
             <el-button type="primary" bg text @click="sourceDrawer = true"> 
                <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置读取源参数
             </el-button>
@@ -53,7 +53,7 @@
 
          <el-divider content-position="left">数据插件选择</el-divider>
 
-         <el-form-item label="数据插件">
+         <el-form-item label="数据插件" prop="plugins">
             <el-checkbox-group v-model="form.plugins">
                 <el-checkbox v-for="item in plugins" 
                   :value="item.name" 
@@ -95,8 +95,8 @@
 
          </el-form-item>
 
-         <el-form-item label="配置源">
-            <el-button type="primary" bg text @click="sinkDrawer = true"> 
+         <el-form-item label="配置源" props="pluginsProps">
+            <el-button type="primary" bg text @click="openSinkDrawer()"> 
                <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置写入取源参数
             </el-button>
          </el-form-item>
@@ -107,7 +107,7 @@
             </el-input-number>
          </el-form-item>
 
-         <el-form-item label="异常处理">
+         <el-form-item label="异常处理" prop="exception">
             <el-radio-group v-model="form.exception">
                <el-radio v-for="item in exceptionHandle" 
                   :key="item.method"
@@ -118,8 +118,8 @@
             </el-radio-group>
          </el-form-item>
 
-         <el-form-item label="字段映射">
-            <el-button type="primary" bg text @click="centerDialogVisible = true">
+         <el-form-item label="字段映射" prop="">
+            <el-button type="primary" bg text @click="openFieldMappingDrawer()">
                <i class="fa-solid fa-screwdriver-wrench"></i>&nbsp;配置映射关系
             </el-button>
          </el-form-item>
@@ -197,6 +197,15 @@ import {
   getAllPlugin,
 } from "@/api/data/pipeline/jobBuilder";
 
+import { 
+  commitJob 
+} from '@/api/data/pipeline/job';
+
+import { 
+   fetchTableData,
+   fetchTableMetaData
+} from '@/api/data/pipeline/readerSource';
+
 import SinkParam from "./params/sinkParam.vue";
 import SourceParam from "./params/sourceParam.vue";
 import PluginParam from "./params/pluginParam.vue";
@@ -231,10 +240,10 @@ const exceptionHandle = ref([
 const data = reactive({
   form: {
       readerSource: '' ,
-      readerSourceProps: {} ,
+      readerSourceProps: null ,
 
       sinkSource: '' ,
-      sinkSourceProps: '' ,
+      sinkSourceProps: null ,
 
       plugins: [],
       pluginsProps: [],
@@ -261,14 +270,17 @@ const data = reactive({
       dbDesc: undefined
   },
   rules: {
-     taskName: [
-         { required: true, message: "请输入任务名称", trigger: "blur" }
+     readerSource: [
+         { required: true, message: "请选择采集源", trigger: "blur" }
       ],
-      dataCollectionTemplate: [
-         { required: true, message: "请输入数据采集模板", trigger: "blur" }
+      readerSourceProps: [
+         { required: true, message: "请配置采集源字段", trigger: "blur" }
       ],
-      dataQuality: [
-         { required: true, message: "请输入数据质量要求", trigger: "blur" }
+      plugins: [
+         { required: true, message: "请选择插件", trigger: "blur" }
+      ],
+      pluginsProps: [
+         { required: true, message: "请配置插件参数", trigger: "blur" }
       ],
       batchExtractionAmount: [
          { required: true, message: "请输入批数据抽取量", trigger: "blur" }
@@ -276,12 +288,11 @@ const data = reactive({
       batchWriteAmount: [
          { required: true, message: "请输入批数写入量", trigger: "blur" }
       ],
-      isAlertEnabled: [
-         { required: true, message: "请选择是否启用告警", trigger: "change" }
+      exception: [
+         { required: true, message: "请选择异常处理机制", trigger: "change" }
       ],
-      monitorEmail: [
-         { required: true, message: "请输入参与人监控邮箱", trigger: "blur" },
-         { type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"] }
+      sinkSource: [
+         { required: true, message: "请选择写入源", trigger: "blur" },
       ] 
   }
 });
@@ -323,6 +334,18 @@ function submitForm() {
   proxy.$refs["ruleFormRef"].validate(valid => {
      if (valid) {
        console.log(JSON.stringify(form.value, null, 2));
+
+       // 将form数据转换为JSON字符串并存储到localStorage
+       localStorage.setItem('jobDatasourceFormData', JSON.stringify(form.value));
+
+       const formDataStr = localStorage.getItem('jobFormData');
+       form.value.info = JSON.parse(formDataStr);
+
+       commitJob(form.value).then(response => {
+          const jobId = response.data;
+          // router.push({ path: '/task/data/pipeline/task/list' });
+       });
+
        proxy.$modal.msgSuccess("提交成功");
      }
   });
@@ -350,7 +373,7 @@ const callFieldMappingRef= () => {
   let mappings = fieldMappingRef.value.submitMapping()
   console.log(JSON.stringify(mappings, null, 2));
 
-  sinkDrawer.value = false
+  centerDialogVisible.value = false
 }
 
 /** 提交源参数配置 */
@@ -370,9 +393,15 @@ const callSinkParams = () => {
   console.log(JSON.stringify(sinkParam, null, 2));
 
   form.value.sinkSourceProps = sinkParam;
-  sinkFieldMate.value = sinkParam.sinkFieldMate;
+  // sinkFieldMate.value = sinkParam.sinkFieldMate;
 
-  sinkDrawer.value = false
+  // 根据表获取到字段信息
+  fetchTableMetaData(form.value.sinkSource,sinkParam.database.targetTableName).then(res => {
+    sinkFieldMate.value = res.data ; 
+    form.value.sinkSourceProps.sinkFieldMate = res.data;
+    sinkDrawer.value = false
+  })
+
 }
 
 /** 获取插件参数配置 */
@@ -385,8 +414,50 @@ const callPluginsParams = () => {
   pluginDrawer.value = false
 }
 
+const openSinkDrawer = () => {
+  sinkDrawer.value = true
+
+  nextTick(() => {
+    // 获取到所有字段信息
+    sinkParamRef.value.handleFetchTableData(form.value.sinkSource) ;
+  })
+
+}
+
+/** 获取插件参数配置 */
+const openFieldMappingDrawer = () => {
+  centerDialogVisible.value = true
+
+  nextTick(() => {
+    // 获取到所有字段信息
+    fieldMappingRef.value.handleMappingData(readerFieldMate.value , sinkFieldMate.value) ;
+  })
+
+}
+
+/** 从本地存储加载表单数据 */
+function loadFormDataFromStorage() {
+  const formDataStr = localStorage.getItem('jobDatasourceFormData');
+  if (formDataStr) {
+    try {
+      const formData = JSON.parse(formDataStr);
+      Object.assign(form.value, formData);
+
+      readerFieldMate.value = form.value.readerSourceProps.readerFieldMate
+      sinkFieldMate.value = form.value.sinkSourceProps.sinkFieldMate
+
+      console.log('Loaded form data from localStorage:', form.value);
+    } catch (error) {
+      console.error('Error parsing form data from localStorage:', error);
+    }
+  } else {
+    console.log('No form data found in localStorage.');
+  }
+}
+
 handleGetAllPlugin();
 handleGetAllSourceReader();
+loadFormDataFromStorage(); // 调用此方法以加载数据
 
 </script>
 

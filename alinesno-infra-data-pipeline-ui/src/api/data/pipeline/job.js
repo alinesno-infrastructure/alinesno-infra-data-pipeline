@@ -27,8 +27,18 @@ var managerUrl = {
     updateJob: prefix + "updateJob", // 更新job
     changeField: prefix + "changeField",
     listAllJob: prefix + "listAllJob",
+    commitJob: prefix + "commitJob", // 保存任务
     catalogTreeSelect: prefix + "catalogTreeSelect",
     downloadfile: prefix + "downloadfile"
+}
+
+// 保存任务
+export function commitJob(data){
+  return request({
+    url: managerUrl.commitJob ,
+    method: 'post',
+    data: data
+  })
 }
 
 // 查询部门下拉树结构

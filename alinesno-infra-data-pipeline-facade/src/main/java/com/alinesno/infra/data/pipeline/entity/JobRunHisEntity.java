@@ -3,6 +3,9 @@ package com.alinesno.infra.data.pipeline.entity;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -17,7 +20,10 @@ import java.util.Date;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("pipeline_job_run_his")
+@Table(comment = "作业执行历史记录")
 public class JobRunHisEntity extends InfraBaseEntity {
 
     /**
@@ -50,73 +56,4 @@ public class JobRunHisEntity extends InfraBaseEntity {
     @TableField("remark")
     private String remark;
 
-    /**
-     * 获取作业ID
-     */
-    public String getRunJobId() {
-        return runJobId;
-    }
-
-    /**
-     * 设置作业ID
-     */
-    public void setRunJobId(String runJobId) {
-        this.runJobId = runJobId;
-    }
-
-    /**
-     * 获取执行开始时间
-     */
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * 设置执行开始时间
-     */
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * 获取执行结束时间
-     */
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * 设置执行结束时间
-     */
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    /**
-     * 获取作业执行结果,0:失败；1:成功
-     */
-    public int getRunStatus() {
-        return runStatus;
-    }
-
-    /**
-     * 设置作业执行结果,0:失败；1:成功
-     */
-    public void setRunStatus(int runStatus) {
-        this.runStatus = runStatus;
-    }
-
-    /**
-     * 获取作业执行日志
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 设置作业执行日志
-     */
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

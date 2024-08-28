@@ -17,6 +17,7 @@ import com.alinesno.infra.data.pipeline.scheduler.dto.SourceReader;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SinkReaderEnums;
 import com.alinesno.infra.data.pipeline.scheduler.enums.SourceReaderEnums;
 import com.alinesno.infra.data.pipeline.service.IReaderSourceService;
+import com.alinesno.infra.data.pipeline.transfer.bean.FieldMetaBean;
 import com.alinesno.infra.data.pipeline.transfer.bean.TableMetaBean;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -196,6 +197,27 @@ public class ReaderSourceController extends BaseController<ReaderSourceEntity, I
 
         SourceReader reader = ReaderSourceMapping.getReaderSource(resourceSource , null) ;
         List<TableMetaBean> rows = dataSourceReader.fetchTableData(reader) ;
+
+        return AjaxResult.success(rows);
+    }
+
+    /**
+     * 获取到数据库源ID的表结构
+     * @param sourceId
+     * @return
+     */
+    @GetMapping("/fetchTableMetaData")
+    public AjaxResult fetchTableMetaData(String sourceId , String tableName) {
+        log.debug("sourceId = {}", sourceId) ;
+
+        ReaderSourceEntity resourceSource = service.getById(sourceId) ;
+        String readerType = resourceSource.getReaderType() ;
+        IDataSourceReader dataSourceReader = SpringUtils.getBean(readerType.toLowerCase() + PipeConstants.READER_SUFFIX) ;
+
+        SourceReader reader = ReaderSourceMapping.getReaderSource(resourceSource , null) ;
+        reader.setQuerySql("select * from " + tableName);
+
+        List<FieldMetaBean> rows = dataSourceReader.analyseSourceField(reader) ;
 
         return AjaxResult.success(rows);
     }

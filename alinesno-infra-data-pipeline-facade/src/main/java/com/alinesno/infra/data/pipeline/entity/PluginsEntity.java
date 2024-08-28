@@ -3,6 +3,7 @@ package com.alinesno.infra.data.pipeline.entity;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @TableName("plugins")
 @NoArgsConstructor
+@Table(comment = "应用接入插件")
 public class PluginsEntity extends InfraBaseEntity {
 
     /**

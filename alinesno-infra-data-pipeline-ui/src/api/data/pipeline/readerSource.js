@@ -25,6 +25,7 @@ var managerUrl = {
     allReaderSource: prefix + "allReaderSource",
     fetchData: prefix + "fetchData",
     fetchFieldMeta: prefix + "fetchFieldMeta",
+    fetchTableMetaData: prefix + "fetchTableMetaData",
     fetchTableData: prefix + "fetchTableData",
     checkConnection: prefix + "checkConnection",
     checkConnectionByObj: prefix + "checkConnectionByObj",
@@ -54,6 +55,14 @@ export function fetchFieldMeta(data){
     url: managerUrl.fetchFieldMeta,
     method: 'post',
     data: data
+  })
+}
+
+// 获取到数据源的表结构 
+export function fetchTableMetaData(sourceId , tableName) {
+  return request({
+    url: managerUrl.fetchTableMetaData+ "?sourceId=" + parseStrEmpty(sourceId) + "&tableName=" + parseStrEmpty(tableName),
+    method: 'get',
   })
 }
 

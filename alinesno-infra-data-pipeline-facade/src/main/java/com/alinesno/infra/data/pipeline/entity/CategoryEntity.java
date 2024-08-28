@@ -3,6 +3,9 @@ package com.alinesno.infra.data.pipeline.entity;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 功能名： 【请填写功能名称】
@@ -15,7 +18,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("pipeline_category")
+@Table(comment = "流程分类")
 public class CategoryEntity extends InfraBaseEntity {
 
     /**
@@ -24,18 +30,4 @@ public class CategoryEntity extends InfraBaseEntity {
     @TableField("category_name")
     private String categoryName;
 
-    /**
-     * 获取 categoryName
-     */
-    public String getCategoryName() {
-        return this.categoryName;
-    }
-
-    /**
-     * 设置 categoryName
-     */
-    public CategoryEntity setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-        return this;
-    }
 }

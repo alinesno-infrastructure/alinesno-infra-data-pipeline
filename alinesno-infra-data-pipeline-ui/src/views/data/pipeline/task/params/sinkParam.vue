@@ -102,19 +102,17 @@
 
 const props = defineProps({
     sinkSource:{
-        type: Object,
-        default: () => ({ readerType: null })
+        type: Number 
     }
 })
 
 import { 
-   fetchTableData 
+   fetchTableData,
 } from '@/api/data/pipeline/readerSource';
 
 import DsFetchTableData from './dsFetchTableData.vue';
 
 const { proxy } = getCurrentInstance();
-
 
 const data = reactive({
   form: {
@@ -156,32 +154,36 @@ const data = reactive({
      'database.querySql': [{ required: true, message: "采集SQL语句不能为空", trigger: "blur" }],
      'database.readExistingData': [{ required: false, message: "存量数据读取不能为空", trigger: "change" }]
   }
-});
+})
 
 const { form, rules } = toRefs(data);
 const earliest = 'earliest';
 const latest = 'latest';
 
+const currentSourceId = ref(null) ;
 const fetchDataRef = ref(null);
+const fetchTableDataRef = ref(null);
 const ruleFormRef = ref(null);
 const validateFetchData = ref(false) // 是否验证执行SQL
 const sinkFieldMate = ref([]) // 读取源字段
 
 const submitSinkParam = () => {
 
-    if(!validateFetchData.value){
-        proxy.$modal.msgError("请点击执行确认数据源是否正常.");
-        return ;
-    }
+    // if(!validateFetchData.value){
+    //     proxy.$modal.msgError("请点击执行确认数据源是否正常.");
+    //     return ;
+    // }
+
+    let tableName = fetchTableDataRef.value.handleSubmitCurrentRow();
+    console.log('tableName = ' + tableName);
 
     // 设置读取字段信息
+    form.value.database.targetTableName = tableName
     let filteredFormData = filterEmptyValues(form.value)
-    console.log('Filtered Form data:', filteredFormData)
-
-    filteredFormData['sinkFieldMate'] = sinkFieldMate.value
+    console.log('--->>> Filtered Form data:', filteredFormData)
 
     return filteredFormData ;
-};
+}
 
 // 辅助函数，用于过滤掉没有值的表单项
 const filterEmptyValues = (formData) => {
@@ -199,30 +201,23 @@ const filterEmptyValues = (formData) => {
         }
     }
     return result;
-};
+}
 
 // 验证执行SQL
-const handleFetchTableData = () => {
-    fetchTableData(props.sinkSource.id,).then(response => {
-        // fetchDataRef.value.fetchData(response.data) 
-        // sinkFieldMate.value = response.fieldMeta
-        // validateFetchData.value = true 
-    })
-};
+const handleFetchTableData = (sourceId) => {
+    console.log('props.sinkSource = ' + sourceId);
 
-onMounted(() => {
-    handleFetchTableData() ; 
-});
+    // currentSourceId.value = sourceId 
+
+    fetchTableData(sourceId).then(response => {
+        fetchTableDataRef.value.fillData(response.data) 
+    })
+}
 
 // 主动暴露方法
-defineExpose({ submitSinkParam })
+defineExpose({ submitSinkParam , handleFetchTableData })
 
 </script>
 
 <style scoped lang="scss">
 </style>
-
-<style scoped lang="scss">
-</style>
-
-

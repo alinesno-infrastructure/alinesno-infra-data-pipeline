@@ -4,12 +4,14 @@ import com.alinesno.infra.common.facade.enable.EnableActable;
 import com.alinesno.infra.common.web.adapter.sso.enable.EnableInfraSsoApi;
 import com.alinesno.infra.common.web.log.aspect.LogAspect;
 import com.alinesno.infra.data.pipeline.initialize.IPipelineInitService;
+import com.dtflys.forest.springboot.annotation.ForestScan;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 应用配置
@@ -20,7 +22,12 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @EnableActable
 @EnableInfraSsoApi
+@EnableAsync
 @MapperScan("com.alinesno.infra.data.pipeline.mapper")
+@ForestScan({
+        "com.alinesno.infra.common.web.adapter.base.consumer" ,
+        "com.alinesno.infra.base.platform.adapter"
+})
 @Configuration
 public class AppConfiguration implements CommandLineRunner {
 

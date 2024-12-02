@@ -2,7 +2,7 @@ package com.alinesno.infra.common.web.adapter.login.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.alinesno.infra.common.facade.response.AjaxResult;
-import com.alinesno.infra.common.web.adapter.dto.LoginBodyDto;
+import com.alinesno.infra.common.web.adapter.base.dto.LoginBodyDto;
 import com.alinesno.infra.common.web.adapter.dto.menus.Menu;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * 集成一个Java开发示例工具
  * @author luoxiaodong
- * @since 2023年8月3日 上午6:23:43
+ * @since 1.0.0
  */
 @SpringBootApplication
 public class DataPipelineApplication {

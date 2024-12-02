@@ -7,14 +7,14 @@ spring:
     name: alinesno-infra-data-pipeline-boot
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3309/dev_alinesno_infra_data_pipeline_v100?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL
+    url: jdbc:mysql://localhost:3306/dev_alinesno_infra_data_pipeline_v100?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL
     username: root
     password: adminer
   data:
     redis:
       host: 127.0.0.1
       port: 6379
-      # password: aip@local
+      password: aip@local
   quartz:
     #是否自动启动
     autoStartup: false
@@ -59,10 +59,6 @@ spring:
     restart:
       enabled: true
 
-alinesno:
-  data:
-    pipeline:
-      workspacePath: ${user.home}/.infra-data-pipeline
 
 # actable配置
 actable:
@@ -79,7 +75,7 @@ actable:
 
 # sa-token配置
 sa-token:
-  token-name: satoken
+  token-name: Authorization
   host-path: http://alinesno-infra-base-identity-auth-application.beta.base.infra.linesno.com
   sso:
     auth-url: ${sa-token.host-path}/login
@@ -88,7 +84,21 @@ sa-token:
     slo-url: ${sa-token.host-path}/sso/signout
     get-data-url: ${sa-token.host-path}/sso/getData
   sign:
-    secret-key:
+    secret-key: kQwIOrYvnXmSDkwEiFngrKidMcdrgKor
+
+# wechat token
+alinesno:
+  data:
+    pipeline:
+      workspacePath: ${user.home}/.infra-data-pipeline
+  security:
+    # 排除路径
+    excludes:
+      - /sso/**
+      - /api/infra/base/platform/provider/**
+  infra:
+    gateway:
+      host: http://alinesno-infra-base-gateway-proxy-application.beta.base.infra.linesno.com
 
 org:
   quartz:

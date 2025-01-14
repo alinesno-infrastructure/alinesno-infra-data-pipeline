@@ -34,7 +34,7 @@ spring:
             #持久化方式配置数据驱动，MySQL数据库
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             #quartz相关数据表前缀名
-            tablePrefix: QRTZ_
+            tablePrefix: QUARTZ_
             #开启分布式部署
             isClustered: true
             #分布式节点有效性检查时间间隔，单位：毫秒
@@ -101,31 +101,32 @@ alinesno:
     gateway:
       host: http://alinesno-infra-base-gateway-proxy-application.beta.base.infra.linesno.com
 
-org:
-  quartz:
-    jobStore:
-      class: org.quartz.impl.jdbcjobstore.JobStoreTX
-      clusterCheckinInterval: 5000
-      driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-      isClustered: true
-      misfireThreshold: 60000
-      tablePrefix: QRTZ_
-      txIsolationLevelReadCommitted: true
-      useProperties: false
-    scheduler:
-      instanceId: AUTO
-      instanceName: ClusterQuartz
-      rmi:
-        export: false
-        proxy: false
-      wrapJobExecutionInUserTransaction: false
-
-# 定时任务
-db-scheduler:
-  immediate-execution-enabled: true
-  threads: 5
-  polling-interval: 5
-  polling-strategy: fetch
-  polling-strategy-lower-limit-fraction-of-threads: 0.5
-  polling-strategy-upper-limit-fraction-of-threads: 3.0
-  shutdown-max-wait: 30m
+#org:
+#  quartz:
+#    jobStore:
+#      class: org.quartz.impl.jdbcjobstore.JobStoreTX
+#      clusterCheckinInterval: 5000
+#      driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#      isClustered: true
+#      misfireThreshold: 60000
+#      tablePrefix: QUARTZ_
+#      txIsolationLevelReadCommitted: true
+#      useProperties: false
+#      initializeSchemaOnStartup: true # 注意：这取决于你的Quartz版本是否支持此选项
+#    scheduler:
+#      instanceId: AUTO
+#      instanceName: ClusterQuartz
+#      rmi:
+#        export: false
+#        proxy: false
+#      wrapJobExecutionInUserTransaction: false
+#
+## 定时任务
+#db-scheduler:
+#  immediate-execution-enabled: true
+#  threads: 5
+#  polling-interval: 5
+#  polling-strategy: fetch
+#  polling-strategy-lower-limit-fraction-of-threads: 0.5
+#  polling-strategy-upper-limit-fraction-of-threads: 3.0
+#  shutdown-max-wait: 30m

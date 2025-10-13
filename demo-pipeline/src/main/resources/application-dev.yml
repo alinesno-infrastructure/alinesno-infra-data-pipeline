@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: demo-kettle
+  datasource:
+    url: jdbc:mysql://localhost:3306/pipeline_demo?useSSL=false&serverTimezone=UTC
+    username: root
+    password: adminer
+    driver-class-name: com.mysql.cj.jdbc.Driver
   data:
     redis:
       host: 127.0.0.1

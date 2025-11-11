@@ -9,14 +9,14 @@ spring:
     username: root
     password: adminer
     driver-class-name: com.mysql.cj.jdbc.Driver
+  batch:
+    job:
+      enable: false
+    initialize-schema: always
+    jdbc:
+      table-prefix: my_batch_
   data:
     redis:
       host: 127.0.0.1
       port: 6379
       password: aip@local
-
-alinesno.data:
-  kettle:
-    env: development
-    kafkaServers: 192.168.101.18:9092
-    user-key: aip@local

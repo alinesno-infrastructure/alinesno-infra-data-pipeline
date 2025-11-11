@@ -16,6 +16,7 @@ spring:
       host: 127.0.0.1
       port: 6379
 #      password: aip@local
+      database: 1
   quartz:
     #是否自动启动
     autoStartup: false

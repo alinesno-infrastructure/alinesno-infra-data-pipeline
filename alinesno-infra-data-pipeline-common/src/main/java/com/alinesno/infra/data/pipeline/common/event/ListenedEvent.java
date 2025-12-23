@@ -10,8 +10,9 @@
 package com.alinesno.infra.data.pipeline.common.event;
 
 import com.google.common.base.Preconditions;
-import java.util.Arrays;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 public class ListenedEvent extends java.util.EventObject {

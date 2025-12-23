@@ -25,7 +25,8 @@ yarn.lock
 .mtj.tmp/
 
 # Package Files #
-*.jar
+target/*.jar
+dist/*.jar
 *.war
 *.ear
 *.zip

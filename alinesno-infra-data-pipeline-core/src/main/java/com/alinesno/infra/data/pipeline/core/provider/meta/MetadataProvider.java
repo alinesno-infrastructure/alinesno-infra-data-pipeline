@@ -10,11 +10,8 @@
 package com.alinesno.infra.data.pipeline.core.provider.meta;
 
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnDescription;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnMetaData;
-import com.alinesno.infra.data.pipeline.core.schema.IndexDescription;
-import com.alinesno.infra.data.pipeline.core.schema.TableDescription;
-import com.alinesno.infra.data.pipeline.core.schema.SourceProperties;
+import com.alinesno.infra.data.pipeline.core.schema.*;
+
 import java.sql.Connection;
 import java.util.List;
 
@@ -105,7 +102,7 @@ public interface MetadataProvider {
    * @return 字段元信息列表
    */
   List<ColumnDescription> queryTableColumnMeta(Connection connection, String schemaName,
-      String tableName);
+                                               String tableName);
 
   /**
    * 获取指定查询SQL的元信息
@@ -164,7 +161,7 @@ public interface MetadataProvider {
    * @return 字段定义字符串
    */
   String getFieldDefinition(ColumnMetaData v, List<String> pks, boolean useAutoInc, boolean addCr,
-      boolean withRemarks);
+                            boolean withRemarks);
 
   /**
    * 前置补充建表SQL

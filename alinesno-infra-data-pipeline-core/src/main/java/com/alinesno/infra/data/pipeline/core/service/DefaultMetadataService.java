@@ -9,24 +9,19 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.core.service;
 
+import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
+import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
+import com.alinesno.infra.data.pipeline.core.provider.ProductProviderFactory;
+import com.alinesno.infra.data.pipeline.core.provider.meta.MetadataProvider;
+import com.alinesno.infra.data.pipeline.core.provider.query.TableDataQueryProvider;
+import com.alinesno.infra.data.pipeline.core.schema.*;
+import com.alinesno.infra.data.pipeline.core.util.GenerateSqlUtils;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import javax.sql.DataSource;
-import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
-import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
-import com.alinesno.infra.data.pipeline.core.provider.ProductProviderFactory;
-import com.alinesno.infra.data.pipeline.core.provider.query.TableDataQueryProvider;
-import com.alinesno.infra.data.pipeline.core.provider.meta.MetadataProvider;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnDescription;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnValue;
-import com.alinesno.infra.data.pipeline.core.schema.IndexDescription;
-import com.alinesno.infra.data.pipeline.core.schema.SchemaTableData;
-import com.alinesno.infra.data.pipeline.core.schema.SchemaTableMeta;
-import com.alinesno.infra.data.pipeline.core.schema.SourceProperties;
-import com.alinesno.infra.data.pipeline.core.schema.TableDescription;
-import com.alinesno.infra.data.pipeline.core.util.GenerateSqlUtils;
 
 /**
  * 用DataSource对象的元数据获取服务

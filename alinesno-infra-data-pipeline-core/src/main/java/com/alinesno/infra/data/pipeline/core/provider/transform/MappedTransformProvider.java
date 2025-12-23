@@ -9,7 +9,9 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.core.provider.transform;
 
+
 import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

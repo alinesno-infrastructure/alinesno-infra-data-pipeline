@@ -9,9 +9,10 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.common.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.Locale;
 import java.util.StringTokenizer;
-import lombok.experimental.UtilityClass;
 
 /**
  * DDL的SQL语句格式化(摘自hibernate)

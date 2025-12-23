@@ -19,6 +19,8 @@ import com.alinesno.infra.data.pipeline.core.provider.query.TableDataQueryProvid
 import com.alinesno.infra.data.pipeline.core.provider.transform.RecordTransformProvider;
 import com.alinesno.infra.data.pipeline.core.service.DefaultMetadataService;
 import com.alinesno.infra.data.pipeline.core.service.MetadataService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -26,14 +28,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * 数据变化量计算核心类
@@ -473,15 +469,15 @@ public final class DefaultChangeCalculatorService implements RecordRowChangeCalc
       String s1 = ObjectCastUtils.castToString(o1);
       String s2 = ObjectCastUtils.castToString(o2);
       return s1.compareTo(s2);
-    } else if (JdbcTypesUtils.isNumeric(type) && o1 instanceof java.lang.Number
-        && o2 instanceof java.lang.Number) {
-      java.lang.Number s1 = (java.lang.Number) o1;
-      java.lang.Number s2 = (java.lang.Number) o2;
+    } else if (JdbcTypesUtils.isNumeric(type) && o1 instanceof Number
+        && o2 instanceof Number) {
+      Number s1 = (Number) o1;
+      Number s2 = (Number) o2;
       return Double.compare(s1.doubleValue(), s2.doubleValue());
-    } else if (JdbcTypesUtils.isInteger(type) && o1 instanceof java.lang.Number
-        && o2 instanceof java.lang.Number) {
-      java.lang.Number s1 = (java.lang.Number) o1;
-      java.lang.Number s2 = (java.lang.Number) o2;
+    } else if (JdbcTypesUtils.isInteger(type) && o1 instanceof Number
+        && o2 instanceof Number) {
+      Number s1 = (Number) o1;
+      Number s2 = (Number) o2;
       return Long.compare(s1.longValue(), s2.longValue());
     } else if (JdbcTypesUtils.isDateTime(type)) {
       if (o1 instanceof LocalTime) {

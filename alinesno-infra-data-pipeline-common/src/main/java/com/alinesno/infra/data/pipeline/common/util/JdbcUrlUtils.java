@@ -9,13 +9,14 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.common.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.experimental.UtilityClass;
 
 /**
  * JDBC-URL参数提取工具类

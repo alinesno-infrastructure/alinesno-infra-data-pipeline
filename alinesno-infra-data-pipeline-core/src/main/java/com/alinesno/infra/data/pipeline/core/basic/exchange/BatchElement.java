@@ -10,11 +10,13 @@
 package com.alinesno.infra.data.pipeline.core.basic.exchange;
 
 import com.alinesno.infra.data.pipeline.common.entity.ThreeArgsFunction;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+
+import java.util.List;
 
 /**
  * 队列中的批元素结构
@@ -33,7 +35,7 @@ public class BatchElement {
   /**
    * 数据写入回调函数
    */
-  private ThreeArgsFunction<List<String>, List<Object[]>, org.slf4j.Logger, Long> handler;
+  private ThreeArgsFunction<List<String>, List<Object[]>, Logger, Long> handler;
 
   /**
    * 写入回调函数的第1个参数

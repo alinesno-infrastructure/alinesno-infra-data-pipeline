@@ -10,16 +10,6 @@
 package com.alinesno.infra.data.pipeline.core.provider.query;
 
 import cn.hutool.core.util.HexUtil;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import com.alinesno.infra.data.pipeline.common.consts.Constants;
 import com.alinesno.infra.data.pipeline.common.entity.IncrementPoint;
 import com.alinesno.infra.data.pipeline.common.entity.ResultSetWrapper;
@@ -30,6 +20,13 @@ import com.alinesno.infra.data.pipeline.core.provider.AbstractCommonProvider;
 import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
 import com.alinesno.infra.data.pipeline.core.schema.ColumnValue;
 import com.alinesno.infra.data.pipeline.core.schema.SchemaTableData;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class DefaultTableDataQueryProvider
@@ -111,7 +108,7 @@ public class DefaultTableDataQueryProvider
 
   @Override
   public SchemaTableData queryTableData(Connection connection, String schemaName, String tableName,
-      int rowCount) {
+                                        int rowCount) {
     String fullTableName = quoteSchemaTableName(schemaName, tableName);
     String querySQL = String.format("SELECT * FROM %s ", fullTableName);
     SchemaTableData data = new SchemaTableData();

@@ -1,50 +1,34 @@
 <template>
   <div class="siderbar">
     <el-menu default-active="1" class="el-menu-vertical" :collapse="isCollapse" @open="handleOpen" @close="handleClose">
-      <el-menu-item index="1" @click="jumpTo">
-        <i class="fa-solid fa-desktop"></i>
-      </el-menu-item>
 
-      <el-menu-item index="2" @click="openServiceList">
-        <i class="fa-solid fa-sailboat"></i>
-      </el-menu-item>
+          <el-menu-item
+              :index="item.id"
+              @click="openServiceList(item.link)"
+              v-for="item in menuItems"
+              :key="item.id"
+              class="aip-menu-item">
+            <i :class="item.icon"></i>
+            <span>
+              {{ item.desc }}
+            </span>
+          </el-menu-item>
 
-      <el-menu-item index="3" @click="openSmartService">
-        <i class="fa-solid fa-user-shield"></i>
-      </el-menu-item>
     </el-menu>
 
     <el-menu style="" class="el-menu-vertical acp-suggest" :collapse="isCollapse" @open="handleOpen" @close="handleClose">
-      <el-menu-item index="11" @click="jumpToConstomTheme">
-        <i class="fa-solid fa-file-pen"></i>
-      </el-menu-item>
-      <el-menu-item index="12" @click="dialogVisible = true">
-        <i class="fa-solid fa-paper-plane"></i>
-      </el-menu-item>
+          <el-menu-item
+            :index="item.id"
+            v-for="item in footerMenuItems"
+            :key="item.id"
+            @click="openServiceList(item.link)"
+            class="aip-menu-item">
+            <i :class="item.icon"></i>
+            <span>
+              {{ item.desc }}
+            </span>
+          </el-menu-item>
     </el-menu>
-
-    <!-- 建议和反馈 -->
-    <el-dialog v-model="dialogVisible" title="使用建议和反馈" width="30%" :append-to-body="true" :before-close="handleClose">
-
-      <el-form ref="ruleFormRef" label-position="top" :model="ruleForm" :rules="rules" label-width="120px"
-        class="demo-ruleForm" :size="formSize" status-icon>
-
-        <el-form-item label="您对控制台首页满意吗？" prop="name">
-          <el-rate v-model="value2" :colors="colors" />
-        </el-form-item>
-
-        <el-form-item label="您对控制台首页满意吗？" prop="name">
-          <el-input type="textarea" />
-        </el-form-item>
-
-        <el-form-item style="margin-top:30px">
-          <el-button type="primary" @click="submitForm(ruleFormRef)">保存</el-button>
-          <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-        </el-form-item>
-
-      </el-form>
-
-    </el-dialog>
 
   </div>
 </template>
@@ -54,31 +38,31 @@
 const dialogVisible = ref(false)
 const router = useRouter();
 
-// 打开客户配置
-function jumpToConstomTheme() {
-  router.push({ path: "/dashboard/dashboardTheme" });
-}
+// 菜单列表
+const footerMenuItems = ref([
+  { id: '21', icon: 'fa-solid fa-chart-pie', link: '/data/pipeline/monitor', desc: '监控记录' },
+  { id: '22', icon: 'fa-solid fa-gears', link: '/data/pipeline/source/driver', desc: '驱动配置' },
+])
+
+const menuItems = ref([
+  { id:'3', icon:'fa-solid fa-desktop', link:'/index', desc:'仪表盘' },
+  { id:'8', icon:'fa-solid fa-tasks', link:'/data/pipeline/task', desc:'任务管理' },
+  { id:'5', icon:'fa-solid fa-server', link:'/data/pipeline/source', desc:'数据源' },
+  { id:'9', icon:'fa-solid fa-calendar-days', link:'/data/pipeline/schedule', desc:'监控调度' },
+  { id:'7', icon:'fa-solid fa-file-lines', link:'/data/pipeline/record', desc:'操作记录' },
+  { id:'4', icon:'fa-solid fa-network-wired', link:'/data/pipeline/navigation', desc:'数据导航' },
+]);
 
 // 打开服务市场
-function openServiceList() {
-  router.push({ path: "/dashboard/serviceList" });
-}
-
-// 打开首页
-function jumpTo() {
-  router.push({ path: "/index" });
-}
-
-// 打开智能客服
-function openSmartService() {
-  router.push({ path: "/dashboard/smartService" });
+function openServiceList(_path) {
+  router.push({ path: _path });
 }
 
 </script>
 
 <style lang="scss" scoped>
 .el-menu-vertical:not(.el-menu--collapse) {
-  width: 65px;
+  width: 70px;
 }
 
 .acp-suggest {
@@ -89,11 +73,28 @@ function openSmartService() {
 .siderbar {
   float: left;
   height: 100%;
-  width: 64px;
+  width: 70px;
   border-right: 1px solid #e6e6e6;
   padding-top: 40px;
   overflow: hidden;
   background-color: #fff;
   position: fixed;
+}
+
+.aip-menu-item {
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  line-height: 1.2rem;
+  padding-top: 0px;
+  margin: 5px;
+  border-radius: 10px;
+  justify-content: center;
+
+  span{
+    font-size:12px;
+    color: #888;
+  }
 }
 </style>

@@ -34,8 +34,8 @@ import OperationWorkspaceApps from './operation-workspace/apps.vue'
 import OperationWorkspaceService from './operation-workspace/service.vue'
 
 const currentEnvClusterObj = ref({
-  appName : '异构数据集成服务'  ,
-  clusterName: '异构数据集成服务'  ,
+  appName : '数据迁移服务'  ,
+  clusterName: '数据迁移服务'  ,
   desc: '集成多种数据源和集成多种数据源，提供数据集成服务。'
 })
 

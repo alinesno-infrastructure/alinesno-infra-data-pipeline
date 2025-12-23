@@ -1,288 +1,231 @@
 <template>
-   <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-         <el-form-item label="系统模块" prop="title">
-            <el-input
-               v-model="queryParams.title"
-               placeholder="请输入系统模块"
-               clearable
-               style="width: 240px;"
-               @keyup.enter="handleQuery"
-            />
-         </el-form-item>
-         <el-form-item label="操作人员" prop="operName">
-            <el-input
-               v-model="queryParams.operName"
-               placeholder="请输入操作人员"
-               clearable
-               style="width: 240px;"
-               @keyup.enter="handleQuery"
-            />
-         </el-form-item>
-         <el-form-item label="类型" prop="businessType">
-            <el-select
-               v-model="queryParams.businessType"
-               placeholder="操作类型"
-               clearable
-               style="width: 240px"
+  <div class="app-container">
+    <div class="sys-log-page">
+      <el-table 
+        v-loading="loading"
+        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
+        loading-text="拼命加载中"
+        loading-spinner="el-icon-loading"
+        loading-background="rgba(0, 0, 0, 0.8)"
+        :data="lists"
+        stripe
+      >
+        <!-- 展开列 -->
+        <el-table-column type="expand">
+          <template v-slot="props">
+            <el-form 
+              label-position="left"
+              inline
+              class="demo-table-expand"
             >
-               <el-option
-                  v-for="dict in sys_oper_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-               />
-            </el-select>
-         </el-form-item>
-         <el-form-item label="状态" prop="status">
-            <el-select
-               v-model="queryParams.status"
-               placeholder="操作状态"
-               clearable
-               style="width: 240px"
-            >
-               <el-option
-                  v-for="dict in sys_common_status"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-               />
-            </el-select>
-         </el-form-item>
-         <el-form-item label="操作时间" style="width: 308px">
-            <el-date-picker
-               v-model="dateRange"
-               value-format="YYYY-MM-DD"
-               type="daterange"
-               range-separator="-"
-               start-placeholder="开始日期"
-               end-placeholder="结束日期"
-            ></el-date-picker>
-         </el-form-item>
-         <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-         </el-form-item>
-      </el-form>
+              <el-form-item label="日志编号:">
+                <span>{{ props.row.id }}</span>
+              </el-form-item>
+              <el-form-item label="日志时间:">
+                <span>{{ props.row.createTime }}</span>
+              </el-form-item>
+              <el-form-item label="操作用户:">
+                <span>{{ props.row.username }}</span>
+              </el-form-item>
+              <el-form-item label="请求IP地址:">
+                <span>{{ props.row.ipAddress }}</span>
+              </el-form-item>
+              <el-form-item label="操作模块:">
+                <span>{{ props.row.moduleName }}</span>
+              </el-form-item>
+              <el-form-item label="操作描述:">
+                <span>{{ props.row.content }}</span>
+              </el-form-item>
+              <el-form-item label="处理耗时(ms):">
+                <span>{{ props.row.elapseSeconds }}</span>
+              </el-form-item>
+              <el-form-item label="请求路径:">
+                <span>{{ props.row.urlPath }}</span>
+              </el-form-item>
+              <el-form-item label="异常状态:">
+                <span></span>
+              </el-form-item>
+              <el-form-item label="异常日志:">
+                <el-input 
+                  type="textarea"
+                  style="font-size: 12px; width: 700px"
+                  :autosize="{ minRows: 2, maxRows: 5 }"
+                  v-model="props.row.exception"
+                  readonly
+                ></el-input>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
 
-      <el-row :gutter="10" class="mb8">
-         <el-col :span="1.5">
-            <el-button
-               type="danger"
-               plain
-               icon="Delete"
-               :disabled="multiple"
-               @click="handleDelete"
-               v-hasPermi="['monitor:operlog:remove']"
-            >删除</el-button>
-         </el-col>
-         <el-col :span="1.5">
-            <el-button
-               type="danger"
-               plain
-               icon="Delete"
-               @click="handleClean"
-               v-hasPermi="['monitor:operlog:remove']"
-            >清空</el-button>
-         </el-col>
-         <el-col :span="1.5">
-            <el-button
-               type="warning"
-               plain
-               icon="Download"
-               @click="handleExport"
-               v-hasPermi="['monitor:operlog:export']"
-            >导出</el-button>
-         </el-col>
-         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-      </el-row>
-
-      <el-table ref="operlogRef" v-loading="loading" :data="operlogList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-         <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="日志编号" align="center" prop="operId" />
-         <el-table-column label="系统模块" align="center" prop="title" />
-         <el-table-column label="操作类型" align="center" prop="businessType">
-            <template #default="scope">
-               <dict-tag :options="sys_oper_type" :value="scope.row.businessType" />
-            </template>
-         </el-table-column>
-         <el-table-column label="请求方式" align="center" prop="requestMethod" />
-         <el-table-column label="操作人员" align="center" prop="operName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" width="100" />
-         <el-table-column label="主机" align="center" prop="operIp" width="130" :show-overflow-tooltip="true" />
-         <el-table-column label="操作状态" align="center" prop="status">
-            <template #default="scope">
-               <dict-tag :options="sys_common_status" :value="scope.row.status" />
-            </template>
-         </el-table-column>
-         <el-table-column label="操作日期" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
-            <template #default="scope">
-               <span>{{ parseTime(scope.row.operTime) }}</span>
-            </template>
-         </el-table-column>
-         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-            <template #default="scope">
-               <el-button
-                  type="text"
-                  icon="View"
-                  @click="handleView(scope.row, scope.index)"
-                  v-hasPermi="['monitor:operlog:query']"
-               >详细</el-button>
-            </template>
-         </el-table-column>
+        <!-- 表格列定义 -->
+        <el-table-column 
+          prop="createTime"
+          label="日志时间"
+          min-width="15%"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
+        <el-table-column 
+          prop="username"
+          label="操作用户"
+          min-width="10%"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
+        <el-table-column 
+          prop="ipAddress"
+          label="请求IP"
+          min-width="10%"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
+        <el-table-column 
+          prop="moduleName"
+          label="操作类型"
+          min-width="10%"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
+        <el-table-column 
+          prop="elapseSeconds"
+          label="耗时(ms)"
+          min-width="10%"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
+        <el-table-column 
+          prop="urlPath"
+          label="请求路径"
+          min-width="20%"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
+        <el-table-column 
+          prop="failed"
+          label="异常"
+          :formatter="boolFormat"
+          min-width="10%"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
       </el-table>
 
-      <pagination
-         v-show="total > 0"
-         :total="total"
-         v-model:page="queryParams.pageNum"
-         v-model:limit="queryParams.pageSize"
-         @pagination="getList"
-      />
-
-      <!-- 操作日志详细 -->
-      <el-dialog title="操作日志详细" v-model="open" width="700px" append-to-body>
-         <el-form :model="form" label-width="100px">
-            <el-row>
-               <el-col :span="12">
-                  <el-form-item label="操作模块：">{{ form.title }} / {{ typeFormat(form) }}</el-form-item>
-                  <el-form-item
-                    label="登录信息："
-                  >{{ form.operName }} / {{ form.operIp }} / {{ form.operLocation }}</el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="请求地址：">{{ form.operUrl }}</el-form-item>
-                  <el-form-item label="请求方式：">{{ form.requestMethod }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="操作方法：">{{ form.method }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="请求参数：">{{ form.operParam }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="返回参数：">{{ form.jsonResult }}</el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="操作状态：">
-                     <div v-if="form.status === 0">正常</div>
-                     <div v-else-if="form.status === 1">失败</div>
-                  </el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="操作时间：">{{ parseTime(form.operTime) }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="异常信息：" v-if="form.status === 1">{{ form.errorMsg }}</el-form-item>
-               </el-col>
-            </el-row>
-         </el-form>
-         <template #footer>
-            <div class="dialog-footer">
-               <el-button @click="open = false">关 闭</el-button>
-            </div>
-         </template>
-      </el-dialog>
-   </div>
+      <!-- 分页组件 -->
+      <div class="pagination-wrapper">
+        <el-pagination 
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 20, 40]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCount"
+          size="small"
+        ></el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script setup name="Operlog">
-import { list, delOperlog, cleanOperlog } from "@/api/data/pipeline/apiRecord";
+<script setup>
+import { ref, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
+import { getSysLogList } from '@/api/data/pipeline/sysLogApi' // 导入API方法
 
-const { proxy } = getCurrentInstance();
-const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type","sys_common_status");
+// 响应式数据
+const loading = ref(true)
+const lists = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+const totalCount = ref(0)
 
-const operlogList = ref([]);
-const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
-const title = ref("");
-const dateRange = ref([]);
-const defaultSort = ref({ prop: "operTime", order: "descending" });
-
-const data = reactive({
-  form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    title: undefined,
-    operName: undefined,
-    businessType: undefined,
-    status: undefined
+// 加载日志数据
+const loadData = async () => {
+  loading.value = true
+  try {
+    const res = await getSysLogList(2, currentPage.value, pageSize.value)
+    if (res.code === 200) {
+      // 更新分页和列表数据
+      currentPage.value = res.pagination.page
+      pageSize.value = res.pagination.size
+      totalCount.value = res.pagination.total
+      lists.value = res.data
+    } else {
+      ElMessage.error(`加载数据失败: ${res.message || '未知错误'}`)
+    }
+  } catch (error) {
+    ElMessage.error(`数据加载错误: ${error.message}`)
+  } finally {
+    loading.value = false
   }
-});
-
-const { queryParams, form } = toRefs(data);
-
-/** 查询登录日志 */
-function getList() {
-  loading.value = true;
-  list(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    operlogList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
-}
-/** 操作日志类型字典翻译 */
-function typeFormat(row, column) {
-  return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
-}
-/** 搜索按钮操作 */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
-/** 重置按钮操作 */
-function resetQuery() {
-  dateRange.value = [];
-  proxy.resetForm("queryRef");
-  proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
-  handleQuery();
-}
-/** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.operId);
-  multiple.value = !selection.length;
-}
-/** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-/** 详细按钮操作 */
-function handleView(row) {
-  open.value = true;
-  form.value = row;
-}
-/** 删除按钮操作 */
-function handleDelete(row) {
-  const operIds = row.operId || ids.value;
-  proxy.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
-    return delOperlog(operIds);
-  }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
-}
-/** 清空按钮操作 */
-function handleClean() {
-  proxy.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
-    return cleanOperlog();
-  }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("清空成功");
-  }).catch(() => {});
-}
-/** 导出按钮操作 */
-function handleExport() {
-  proxy.download("monitor/operlog/export",{
-    ...queryParams.value,
-  }, `config_${new Date().getTime()}.xlsx`);
 }
 
-getList();
+// 布尔值格式化（是否异常）
+const boolFormat = (row) => {
+  return row.failed ? '是' : '否'
+}
+
+// 分页大小变更
+const handleSizeChange = (newPageSize) => {
+  pageSize.value = newPageSize
+  loadData()
+}
+
+// 当前页变更
+const handleCurrentChange = (newCurrentPage) => {
+  currentPage.value = newCurrentPage
+  loadData()
+}
+
+// 查看详情（保留原方法，可扩展）
+const handleDetail = (index, row) => {
+  ElMessage.info(`查看日志详情 ${index} - ${row.id}`)
+}
+
+// 生命周期：组件挂载时加载数据
+onMounted(() => {
+  loadData()
+})
 </script>
+
+<style lang="scss" scoped>
+.sys-log-page {
+  margin-top: 15px;
+  width: 100%;
+
+  .el-table {
+    width: 100%;
+    height: 100%;
+  }
+
+  // 展开行表单样式
+  .demo-table-expand {
+    font-size: 0;
+
+    label {
+      width: 90px;
+      color: #99a9bf;
+    }
+
+    .el-form-item {
+      margin-right: 0;
+      margin-bottom: 0;
+      width: 50%;
+      padding: 4px 0;
+    }
+
+    .el-textarea {
+      font-size: 12px;
+      width: 700px;
+
+      ::v-deep .el-textarea__inner {
+        resize: vertical;
+      }
+    }
+  }
+
+  // 分页组件样式
+  .pagination-wrapper {
+    margin-top: 15px;
+    text-align: right;
+
+    .el-pagination {
+      --el-pagination-font-size: 12px;
+    }
+  }
+}
+</style>

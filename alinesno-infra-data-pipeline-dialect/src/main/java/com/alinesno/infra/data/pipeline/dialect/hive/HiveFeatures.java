@@ -1,0 +1,24 @@
+// Copyright tang.  All rights reserved.
+// https://gitee.com/inrgihc/dbswitch
+//
+// Use of this source code is governed by a BSD-style license
+//
+// Author: tang (inrgihc@126.com)
+// Date : 2020/1/2
+// Location: beijing , china
+/////////////////////////////////////////////////////////////
+package com.alinesno.infra.data.pipeline.dialect.hive;
+
+import com.alinesno.infra.data.pipeline.core.features.DefaultProductFeatures;
+
+public class HiveFeatures extends DefaultProductFeatures {
+
+  /**
+   * 是否使用CreateTableAs方式建表
+   *
+   * @return boolean
+   */
+  public boolean useCTAS() {
+    return false;
+  }
+}

@@ -9,8 +9,9 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.common.util;
 
-import java.util.UUID;
 import lombok.experimental.UtilityClass;
+
+import java.util.UUID;
 
 /**
  * UUID工具类

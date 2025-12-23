@@ -11,15 +11,15 @@ package com.alinesno.infra.data.pipeline.core.calculate;
 
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
 import com.alinesno.infra.data.pipeline.core.provider.transform.RecordTransformProvider;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import javax.sql.DataSource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+
+import javax.sql.DataSource;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 任务参数实体类定义

@@ -9,8 +9,9 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.common.entity;
 
-import java.util.Objects;
 import org.slf4j.MDC;
+
+import java.util.Objects;
 
 public abstract class AbstractLogging {
 

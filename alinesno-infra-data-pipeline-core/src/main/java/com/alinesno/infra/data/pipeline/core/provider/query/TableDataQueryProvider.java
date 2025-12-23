@@ -9,14 +9,16 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.core.provider.query;
 
-import java.sql.Connection;
-import java.util.Collections;
-import java.util.List;
+
 import com.alinesno.infra.data.pipeline.common.entity.IncrementPoint;
 import com.alinesno.infra.data.pipeline.common.entity.ResultSetWrapper;
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
 import com.alinesno.infra.data.pipeline.core.schema.ColumnValue;
 import com.alinesno.infra.data.pipeline.core.schema.SchemaTableData;
+
+import java.sql.Connection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 表数据查询

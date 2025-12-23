@@ -11,10 +11,11 @@ package com.alinesno.infra.data.pipeline.core.provider.manage;
 
 import com.alinesno.infra.data.pipeline.core.provider.AbstractCommonProvider;
 import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DefaultTableManageProvider

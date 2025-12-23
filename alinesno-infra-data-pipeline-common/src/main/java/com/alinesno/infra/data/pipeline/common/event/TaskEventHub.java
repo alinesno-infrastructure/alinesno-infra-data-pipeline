@@ -10,15 +10,12 @@
 package com.alinesno.infra.data.pipeline.common.event;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.Nullable;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import java.util.concurrent.*;
 
 public class TaskEventHub {
 

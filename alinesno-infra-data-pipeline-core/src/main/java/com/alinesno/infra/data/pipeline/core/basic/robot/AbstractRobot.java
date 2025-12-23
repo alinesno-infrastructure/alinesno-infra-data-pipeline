@@ -11,6 +11,7 @@ package com.alinesno.infra.data.pipeline.core.basic.robot;
 
 import com.alinesno.infra.data.pipeline.core.basic.exchange.MemChannel;
 import com.alinesno.infra.data.pipeline.core.basic.task.TaskResult;
+
 import java.util.Optional;
 
 public abstract class AbstractRobot<R extends TaskResult> implements Robot {

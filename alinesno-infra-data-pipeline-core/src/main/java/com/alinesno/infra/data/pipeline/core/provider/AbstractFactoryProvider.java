@@ -9,11 +9,12 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.core.provider;
 
-import com.alinesno.infra.data.pipeline.core.annotation.Product;
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
 import com.alinesno.infra.data.pipeline.common.util.ExamineUtils;
-import java.util.Objects;
+import com.alinesno.infra.data.pipeline.core.annotation.Product;
+
 import javax.sql.DataSource;
+import java.util.Objects;
 
 public abstract class AbstractFactoryProvider implements ProductFactoryProvider {
 

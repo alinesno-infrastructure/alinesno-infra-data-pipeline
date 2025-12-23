@@ -4,6 +4,10 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONUtil;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
@@ -12,17 +16,10 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 @UtilityClass
@@ -76,7 +73,7 @@ public final class ObjectCastUtils {
       return in.toString().getBytes();
     } else if (in instanceof java.sql.Blob) {
       return blob2Bytes((java.sql.Blob) in);
-    } else if (in instanceof java.lang.String || in instanceof java.lang.Character) {
+    } else if (in instanceof String || in instanceof Character) {
       return in.toString().getBytes();
     } else if (in instanceof java.sql.Clob) {
       return clob2Str((java.sql.Clob) in).getBytes();
@@ -109,9 +106,9 @@ public final class ObjectCastUtils {
     } else if (in instanceof java.util.Calendar) {
       return (short) ((java.util.Calendar) in).getTime().getTime();
     } else if (in instanceof LocalDateTime) {
-      return (short) java.sql.Timestamp.valueOf((LocalDateTime) in).getTime();
+      return (short) Timestamp.valueOf((LocalDateTime) in).getTime();
     } else if (in instanceof java.time.OffsetDateTime) {
-      return (short) java.sql.Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
+      return (short) Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
           .getTime();
     } else if (in instanceof String || in instanceof Character) {
       try {
@@ -166,9 +163,9 @@ public final class ObjectCastUtils {
     } else if (in instanceof java.util.Calendar) {
       return (int) ((java.util.Calendar) in).getTime().getTime();
     } else if (in instanceof LocalDateTime) {
-      return (int) java.sql.Timestamp.valueOf((LocalDateTime) in).getTime();
+      return (int) Timestamp.valueOf((LocalDateTime) in).getTime();
     } else if (in instanceof java.time.OffsetDateTime) {
-      return (int) java.sql.Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
+      return (int) Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
           .getTime();
     } else if (in instanceof String || in instanceof Character) {
       try {
@@ -223,9 +220,9 @@ public final class ObjectCastUtils {
     } else if (in instanceof java.util.Calendar) {
       return ((java.util.Calendar) in).getTime().getTime();
     } else if (in instanceof LocalDateTime) {
-      return java.sql.Timestamp.valueOf((LocalDateTime) in).getTime();
+      return Timestamp.valueOf((LocalDateTime) in).getTime();
     } else if (in instanceof java.time.OffsetDateTime) {
-      return java.sql.Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
+      return Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
           .getTime();
     } else if (in instanceof String || in instanceof Character) {
       try {
@@ -278,9 +275,9 @@ public final class ObjectCastUtils {
     } else if (in instanceof java.util.Calendar) {
       return ((java.util.Calendar) in).getTime().getTime();
     } else if (in instanceof LocalDateTime) {
-      return java.sql.Timestamp.valueOf((LocalDateTime) in).getTime();
+      return Timestamp.valueOf((LocalDateTime) in).getTime();
     } else if (in instanceof java.time.OffsetDateTime) {
-      return java.sql.Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
+      return Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
           .getTime();
     } else if (in instanceof String || in instanceof Character) {
       try {
@@ -333,9 +330,9 @@ public final class ObjectCastUtils {
     } else if (in instanceof java.util.Calendar) {
       return (float) ((java.util.Calendar) in).getTime().getTime();
     } else if (in instanceof LocalDateTime) {
-      return (float) java.sql.Timestamp.valueOf((LocalDateTime) in).getTime();
+      return (float) Timestamp.valueOf((LocalDateTime) in).getTime();
     } else if (in instanceof java.time.OffsetDateTime) {
-      return (float) java.sql.Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
+      return (float) Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
           .getTime();
     } else if (in instanceof String || in instanceof Character) {
       try {
@@ -388,9 +385,9 @@ public final class ObjectCastUtils {
     } else if (in instanceof java.util.Calendar) {
       return (double) ((java.util.Calendar) in).getTime().getTime();
     } else if (in instanceof LocalDateTime) {
-      return (double) java.sql.Timestamp.valueOf((LocalDateTime) in).getTime();
+      return (double) Timestamp.valueOf((LocalDateTime) in).getTime();
     } else if (in instanceof java.time.OffsetDateTime) {
-      return (double) java.sql.Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
+      return (double) Timestamp.valueOf(((java.time.OffsetDateTime) in).toLocalDateTime())
           .getTime();
     } else if (in instanceof String || in instanceof Character) {
       try {
@@ -442,8 +439,8 @@ public final class ObjectCastUtils {
           .atZone(ZoneId.systemDefault())
           .toLocalDate();
       return localDate;
-    } else if (in instanceof java.sql.Timestamp) {
-      java.sql.Timestamp t = (java.sql.Timestamp) in;
+    } else if (in instanceof Timestamp) {
+      Timestamp t = (Timestamp) in;
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime.toLocalDate();
     } else if (in instanceof java.util.Date) {
@@ -470,7 +467,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("timestampValue");
-        java.sql.Timestamp date = (java.sql.Timestamp) m.invoke(in);
+        Timestamp date = (Timestamp) m.invoke(in);
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return localDate;
       } catch (Exception e) {
@@ -480,7 +477,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("getTimestamp");
-        java.sql.Timestamp t = (java.sql.Timestamp) m.invoke(in);
+        Timestamp t = (Timestamp) m.invoke(in);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return localDateTime.toLocalDate();
@@ -514,7 +511,7 @@ public final class ObjectCastUtils {
             String.format("无法将java.sql.Clob类型转换为java.time.LocalDate类型:%s", e.getMessage()));
       }
     } else if (in instanceof Number) {
-      java.sql.Timestamp t = new java.sql.Timestamp(((Number) in).longValue());
+      Timestamp t = new Timestamp(((Number) in).longValue());
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime.toLocalDate();
     }
@@ -534,8 +531,8 @@ public final class ObjectCastUtils {
       LocalTime localTime = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault())
           .toLocalTime();
       return localTime;
-    } else if (in instanceof java.sql.Timestamp) {
-      java.sql.Timestamp t = (java.sql.Timestamp) in;
+    } else if (in instanceof Timestamp) {
+      Timestamp t = (Timestamp) in;
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime.toLocalTime();
     } else if (in instanceof java.util.Date) {
@@ -558,7 +555,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("timestampValue");
-        java.sql.Timestamp date = (java.sql.Timestamp) m.invoke(in);
+        Timestamp date = (Timestamp) m.invoke(in);
         LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault())
             .toLocalDateTime();
         return localDateTime.toLocalTime();
@@ -569,7 +566,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("getTimestamp");
-        java.sql.Timestamp t = (java.sql.Timestamp) m.invoke(in);
+        Timestamp t = (Timestamp) m.invoke(in);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return localDateTime.toLocalTime();
@@ -597,7 +594,7 @@ public final class ObjectCastUtils {
             String.format("无法将java.sql.Clob类型转换为java.sql.Time类型:%s", e.getMessage()));
       }
     } else if (in instanceof Number) {
-      java.sql.Timestamp t = new java.sql.Timestamp(((Number) in).longValue());
+      Timestamp t = new Timestamp(((Number) in).longValue());
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime.toLocalTime();
     }
@@ -612,8 +609,8 @@ public final class ObjectCastUtils {
    * @return java.time.LocalDateTime类型
    */
   public static LocalDateTime castToLocalDateTime(final Object in) {
-    if (in instanceof java.sql.Timestamp) {
-      java.sql.Timestamp t = (java.sql.Timestamp) in;
+    if (in instanceof Timestamp) {
+      Timestamp t = (Timestamp) in;
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime;
     } else if (in instanceof java.sql.Date) {
@@ -624,15 +621,15 @@ public final class ObjectCastUtils {
       return localDateTime;
     } else if (in instanceof java.sql.Time) {
       java.sql.Time date = (java.sql.Time) in;
-      java.sql.Timestamp t = new java.sql.Timestamp(date.getTime());
+      Timestamp t = new Timestamp(date.getTime());
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime;
     } else if (in instanceof java.util.Date) {
-      java.sql.Timestamp t = new java.sql.Timestamp(((java.util.Date) in).getTime());
+      Timestamp t = new Timestamp(((java.util.Date) in).getTime());
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime;
     } else if (in instanceof java.util.Calendar) {
-      java.sql.Timestamp t = new java.sql.Timestamp(((java.util.Calendar) in).getTime().getTime());
+      Timestamp t = new Timestamp(((java.util.Calendar) in).getTime().getTime());
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime;
     } else if (in instanceof LocalDate) {
@@ -653,7 +650,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("timestampValue");
-        java.sql.Timestamp t = (java.sql.Timestamp) m.invoke(in);
+        Timestamp t = (Timestamp) m.invoke(in);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return localDateTime;
@@ -664,7 +661,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("getTimestamp");
-        java.sql.Timestamp t = (java.sql.Timestamp) m.invoke(in);
+        Timestamp t = (Timestamp) m.invoke(in);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return localDateTime;
@@ -687,7 +684,7 @@ public final class ObjectCastUtils {
         if (null == v) {
           return null;
         }
-        java.sql.Timestamp t = java.sql.Timestamp.valueOf(v);
+        Timestamp t = Timestamp.valueOf(v);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return localDateTime;
@@ -696,7 +693,7 @@ public final class ObjectCastUtils {
             String.format("无法将java.sql.Clob类型转换为java.sql.TimeStamp类型:%s", e.getMessage()));
       }
     } else if (in instanceof Number) {
-      java.sql.Timestamp t = new java.sql.Timestamp(((Number) in).longValue());
+      Timestamp t = new Timestamp(((Number) in).longValue());
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return localDateTime;
     }
@@ -711,8 +708,8 @@ public final class ObjectCastUtils {
    * @return java.sql.Timestamp类型
    */
   public static Timestamp castToTimestamp(final Object in) {
-    if (in instanceof java.sql.Timestamp) {
-      return (java.sql.Timestamp) in;
+    if (in instanceof Timestamp) {
+      return (Timestamp) in;
     } else if (in instanceof java.sql.Date) {
       java.sql.Date date = (java.sql.Date) in;
       LocalDate localDate = date.toLocalDate();
@@ -721,11 +718,11 @@ public final class ObjectCastUtils {
       return Timestamp.valueOf(localDateTime);
     } else if (in instanceof java.sql.Time) {
       java.sql.Time date = (java.sql.Time) in;
-      return new java.sql.Timestamp(date.getTime());
+      return new Timestamp(date.getTime());
     } else if (in instanceof java.util.Date) {
-      return new java.sql.Timestamp(((java.util.Date) in).getTime());
+      return new Timestamp(((java.util.Date) in).getTime());
     } else if (in instanceof java.util.Calendar) {
-      return new java.sql.Timestamp(((java.util.Calendar) in).getTime().getTime());
+      return new Timestamp(((java.util.Calendar) in).getTime().getTime());
     } else if (in instanceof LocalDate) {
       LocalDate localDate = (LocalDate) in;
       LocalTime localTime = LocalTime.of(0, 0, 0);
@@ -744,7 +741,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("timestampValue");
-        java.sql.Timestamp t = (java.sql.Timestamp) m.invoke(in);
+        Timestamp t = (Timestamp) m.invoke(in);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return Timestamp.valueOf(localDateTime);
@@ -755,7 +752,7 @@ public final class ObjectCastUtils {
       Class<?> clz = in.getClass();
       try {
         Method m = clz.getMethod("getTimestamp");
-        java.sql.Timestamp t = (java.sql.Timestamp) m.invoke(in);
+        Timestamp t = (Timestamp) m.invoke(in);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return Timestamp.valueOf(localDateTime);
@@ -778,7 +775,7 @@ public final class ObjectCastUtils {
         if (null == v) {
           return null;
         }
-        java.sql.Timestamp t = java.sql.Timestamp.valueOf(v);
+        Timestamp t = Timestamp.valueOf(v);
         LocalDateTime localDateTime = LocalDateTime
             .ofInstant(t.toInstant(), ZoneId.systemDefault());
         return Timestamp.valueOf(localDateTime);
@@ -787,7 +784,7 @@ public final class ObjectCastUtils {
             String.format("无法将java.sql.Clob类型转换为java.sql.TimeStamp类型:%s", e.getMessage()));
       }
     } else if (in instanceof Number) {
-      java.sql.Timestamp t = new java.sql.Timestamp(((Number) in).longValue());
+      Timestamp t = new Timestamp(((Number) in).longValue());
       LocalDateTime localDateTime = LocalDateTime.ofInstant(t.toInstant(), ZoneId.systemDefault());
       return Timestamp.valueOf(localDateTime);
     }
@@ -859,29 +856,29 @@ public final class ObjectCastUtils {
   }
 
   public static String castToString(final Object in) {
-    if (in instanceof java.lang.Character) {
+    if (in instanceof Character) {
       return in.toString();
-    } else if (in instanceof java.lang.String) {
+    } else if (in instanceof String) {
       return in.toString();
-    } else if (in instanceof java.lang.Character) {
+    } else if (in instanceof Character) {
       return in.toString();
     } else if (in instanceof java.sql.Clob) {
       return clob2Str((java.sql.Clob) in);
     } else if (in instanceof java.sql.Blob) {
       return Base64.encode(blob2Bytes((java.sql.Blob) in));
-    } else if (in instanceof java.lang.Number) {
+    } else if (in instanceof Number) {
       return in.toString();
     } else if (in instanceof java.sql.RowId) {
       return in.toString();
-    } else if (in instanceof java.lang.Boolean) {
+    } else if (in instanceof Boolean) {
       return in.toString();
     } else if (in instanceof java.util.Date) {
       return in.toString();
-    } else if (in instanceof java.time.LocalDate) {
+    } else if (in instanceof LocalDate) {
       return in.toString();
-    } else if (in instanceof java.time.LocalTime) {
+    } else if (in instanceof LocalTime) {
       return in.toString();
-    } else if (in instanceof java.time.LocalDateTime) {
+    } else if (in instanceof LocalDateTime) {
       return in.toString();
     } else if (in instanceof java.time.OffsetDateTime) {
       return in.toString();

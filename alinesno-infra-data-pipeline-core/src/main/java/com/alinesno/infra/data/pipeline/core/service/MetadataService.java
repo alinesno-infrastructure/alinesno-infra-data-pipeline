@@ -9,16 +9,11 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.core.service;
 
-import java.util.List;
-import javax.sql.DataSource;
 import com.alinesno.infra.data.pipeline.core.provider.meta.MetadataProvider;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnDescription;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnValue;
-import com.alinesno.infra.data.pipeline.core.schema.IndexDescription;
-import com.alinesno.infra.data.pipeline.core.schema.SchemaTableData;
-import com.alinesno.infra.data.pipeline.core.schema.SchemaTableMeta;
-import com.alinesno.infra.data.pipeline.core.schema.SourceProperties;
-import com.alinesno.infra.data.pipeline.core.schema.TableDescription;
+import com.alinesno.infra.data.pipeline.core.schema.*;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 public interface MetadataService {
 
@@ -170,6 +165,6 @@ public interface MetadataService {
    * @return 对应数据库的DDL建表语句
    */
   List<String> getDDLCreateTableSQL(MetadataProvider provider, List<ColumnDescription> fieldNames,
-      List<String> primaryKeys, String schemaName, String tableName, String tableRemarks,
-      boolean autoIncr, SourceProperties tblProperties);
+                                    List<String> primaryKeys, String schemaName, String tableName, String tableRemarks,
+                                    boolean autoIncr, SourceProperties tblProperties);
 }

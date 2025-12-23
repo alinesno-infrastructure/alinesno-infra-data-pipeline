@@ -9,8 +9,8 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.common.entity;
 
-import java.io.Closeable;
 import javax.sql.DataSource;
+import java.io.Closeable;
 
 public interface CloseableDataSource extends DataSource, Closeable {
 

@@ -10,9 +10,10 @@
 package com.alinesno.infra.data.pipeline.common.util;
 
 import com.google.common.base.Preconditions;
-import java.util.Collection;
-import javax.annotation.Nullable;
 import lombok.experimental.UtilityClass;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
 
 @UtilityClass
 public final class ExamineUtils {

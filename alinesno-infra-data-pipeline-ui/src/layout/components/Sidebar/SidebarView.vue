@@ -11,7 +11,7 @@
 export default {
   data () {
     return {
-      currentApplicationName: '异构数据集成服务'
+      currentApplicationName: '数据迁移服务'
     }
   },
   mounted () {

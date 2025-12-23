@@ -10,6 +10,7 @@
 package com.alinesno.infra.data.pipeline.common.event;
 
 import com.google.common.eventbus.Subscribe;
+
 import java.util.function.Consumer;
 
 public class EventSubscriber {

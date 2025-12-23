@@ -1,6 +1,7 @@
 package com.alinesno.infra.data.pipeline.core.schema;
 
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
+
 import java.util.List;
 
 public class SourceProperties {

@@ -19,13 +19,14 @@ import com.alinesno.infra.data.pipeline.core.schema.ColumnMetaData;
 import com.alinesno.infra.data.pipeline.core.schema.SourceProperties;
 import com.alinesno.infra.data.pipeline.core.schema.TableDescription;
 import com.google.common.collect.Lists;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * 拼接SQL工具类

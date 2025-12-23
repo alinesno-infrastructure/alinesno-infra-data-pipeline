@@ -11,10 +11,11 @@ package com.alinesno.infra.data.pipeline.core.provider;
 
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
 import com.alinesno.infra.data.pipeline.common.util.ExamineUtils;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.sql.DataSource;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.sql.DataSource;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ProductProviderFactory {

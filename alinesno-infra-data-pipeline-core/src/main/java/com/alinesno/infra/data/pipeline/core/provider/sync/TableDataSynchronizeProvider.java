@@ -10,8 +10,9 @@
 package com.alinesno.infra.data.pipeline.core.provider.sync;
 
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
-import java.util.List;
+
 import javax.sql.DataSource;
+import java.util.List;
 
 /**
  * 数据同步接口定义

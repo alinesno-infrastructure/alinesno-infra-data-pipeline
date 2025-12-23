@@ -13,29 +13,16 @@ import cn.hutool.core.text.StrPool;
 import com.alinesno.infra.data.pipeline.common.type.TableIndexEnum;
 import com.alinesno.infra.data.pipeline.core.provider.AbstractCommonProvider;
 import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnDescription;
-import com.alinesno.infra.data.pipeline.core.schema.ColumnMetaData;
-import com.alinesno.infra.data.pipeline.core.schema.IndexDescription;
-import com.alinesno.infra.data.pipeline.core.schema.IndexFieldMeta;
-import com.alinesno.infra.data.pipeline.core.schema.SourceProperties;
-import com.alinesno.infra.data.pipeline.core.schema.TableDescription;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
+import com.alinesno.infra.data.pipeline.core.schema.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
+
+import java.sql.*;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * 数据库元信息抽象基类
@@ -144,7 +131,7 @@ public abstract class AbstractMetadataProvider
 
   @Override
   public List<ColumnDescription> queryTableColumnMeta(Connection connection, String schemaName,
-      String tableName) {
+                                                      String tableName) {
     String sql = this.getTableFieldsQuerySQL(schemaName, tableName);
     List<ColumnDescription> ret = this.querySelectSqlColumnMeta(connection, sql);
 

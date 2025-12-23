@@ -9,7 +9,9 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.core.schema;
 
+
 import com.alinesno.infra.data.pipeline.common.type.TableIndexEnum;
+
 import java.util.List;
 
 public class IndexDescription {

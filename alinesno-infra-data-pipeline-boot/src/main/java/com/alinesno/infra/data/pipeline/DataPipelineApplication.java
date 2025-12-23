@@ -1,5 +1,6 @@
 package com.alinesno.infra.data.pipeline;
 
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DataPipelineApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DataPipelineApplication.class, args);
+        SpringApplication springApplication = new SpringApplication(DataPipelineApplication.class);
+        springApplication.setBannerMode(Banner.Mode.OFF);
+        springApplication.run(args);
 	}
 
 }

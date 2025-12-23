@@ -11,15 +11,16 @@ package com.alinesno.infra.data.pipeline.core.provider.write;
 
 import com.alinesno.infra.data.pipeline.core.provider.AbstractCommonProvider;
 import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class DefaultTableDataWriteProvider

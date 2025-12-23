@@ -10,10 +10,10 @@
 package com.alinesno.infra.data.pipeline.common.util;
 
 import com.alinesno.infra.data.pipeline.common.entity.PatternMapper;
+import lombok.experimental.UtilityClass;
 
 import java.util.Arrays;
 import java.util.List;
-import lombok.experimental.UtilityClass;
 
 /**
  * 基于正则的名称替换工具类

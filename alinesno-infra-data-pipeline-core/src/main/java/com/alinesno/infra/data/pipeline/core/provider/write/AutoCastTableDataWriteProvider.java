@@ -2,6 +2,7 @@ package com.alinesno.infra.data.pipeline.core.provider.write;
 
 import com.alinesno.infra.data.pipeline.common.util.ObjectCastUtils;
 import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
+
 import java.util.List;
 
 public class AutoCastTableDataWriteProvider extends DefaultTableDataWriteProvider {

@@ -9,19 +9,20 @@
 /////////////////////////////////////////////////////////////
 package com.alinesno.infra.data.pipeline.core.provider;
 
+
 import com.alinesno.infra.data.pipeline.common.type.ProductTypeEnum;
+import com.alinesno.infra.data.pipeline.core.features.ProductFeatures;
 import com.alinesno.infra.data.pipeline.core.provider.manage.DefaultTableManageProvider;
 import com.alinesno.infra.data.pipeline.core.provider.manage.TableManageProvider;
+import com.alinesno.infra.data.pipeline.core.provider.meta.MetadataProvider;
 import com.alinesno.infra.data.pipeline.core.provider.query.DefaultTableDataQueryProvider;
 import com.alinesno.infra.data.pipeline.core.provider.query.TableDataQueryProvider;
-import com.alinesno.infra.data.pipeline.core.provider.transform.MappedTransformProvider;
-import com.alinesno.infra.data.pipeline.core.provider.write.DefaultTableDataWriteProvider;
-import com.alinesno.infra.data.pipeline.core.provider.write.TableDataWriteProvider;
-import com.alinesno.infra.data.pipeline.core.features.ProductFeatures;
-import com.alinesno.infra.data.pipeline.core.provider.meta.MetadataProvider;
 import com.alinesno.infra.data.pipeline.core.provider.sync.DefaultTableDataSynchronizeProvider;
 import com.alinesno.infra.data.pipeline.core.provider.sync.TableDataSynchronizeProvider;
+import com.alinesno.infra.data.pipeline.core.provider.transform.MappedTransformProvider;
 import com.alinesno.infra.data.pipeline.core.provider.transform.RecordTransformProvider;
+import com.alinesno.infra.data.pipeline.core.provider.write.DefaultTableDataWriteProvider;
+import com.alinesno.infra.data.pipeline.core.provider.write.TableDataWriteProvider;
 
 import javax.sql.DataSource;
 

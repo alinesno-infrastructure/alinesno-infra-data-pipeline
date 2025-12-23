@@ -29,25 +29,6 @@
 
 		<dependency>
 			<groupId>com.alinesno.infra.data</groupId>
-			<artifactId>alinesno-infra-data-pipeline-datasource</artifactId>
-			<version>${revision}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alinesno.infra.data</groupId>
-			<artifactId>alinesno-infra-data-pipeline-plugins</artifactId>
-			<version>${revision}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alinesno.infra.data</groupId>
-			<artifactId>alinesno-infra-data-pipeline-scheduler</artifactId>
-			<version>${revision}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alinesno.infra.data</groupId>
 			<artifactId>alinesno-infra-data-pipeline-adapter</artifactId>
 			<version>${revision}</version>
 		</dependency>
@@ -58,18 +39,38 @@
 			<version>${revision}</version>
 		</dependency>
 
-		<dependency>
+        <dependency>
+            <groupId>com.alinesno.infra.data</groupId>
+            <artifactId>alinesno-infra-data-pipeline-dialect</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- C3P0 连接池依赖 -->
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.5.5</version>
+        </dependency>
+
+        <!-- Flyway core -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>9.22.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+            <version>9.22.3</version>
+        </dependency>
+
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-
-        <dependency>
-            <groupId>com.alinesno.infra.data</groupId>
-            <artifactId>alinesno-infra-data-pipeline-initialize</artifactId>
-			<version>${revision}</version>
-        </dependency>
 
     </dependencies>
 

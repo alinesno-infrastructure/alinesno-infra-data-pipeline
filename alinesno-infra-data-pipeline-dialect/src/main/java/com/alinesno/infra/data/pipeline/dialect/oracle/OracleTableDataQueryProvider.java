@@ -1,0 +1,43 @@
+// Copyright tang.  All rights reserved.
+// https://gitee.com/inrgihc/dbswitch
+//
+// Use of this source code is governed by a BSD-style license
+//
+// Author: tang (inrgihc@126.com)
+// Date : 2020/1/2
+// Location: beijing , china
+/////////////////////////////////////////////////////////////
+package com.alinesno.infra.data.pipeline.dialect.oracle;
+
+import java.sql.Types;
+import com.alinesno.infra.data.pipeline.common.entity.IncrementPoint;
+import com.alinesno.infra.data.pipeline.common.util.JdbcTypesUtils;
+import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
+import com.alinesno.infra.data.pipeline.core.provider.query.DefaultTableDataQueryProvider;
+
+public class OracleTableDataQueryProvider extends DefaultTableDataQueryProvider {
+
+  private static final String TIMESTAMP_PATTERN = "yyyy-mm-dd hh24:mi:ss.ff";
+  private static final String DATE_PATTERN = "yyyy-mm-dd hh24:mi:ss";
+
+  public OracleTableDataQueryProvider(ProductFactoryProvider factoryProvider) {
+    super(factoryProvider);
+  }
+
+  @Override
+  protected String toGreaterThanCondition(IncrementPoint point) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(quoteName(point.getColumnName()));
+    sb.append(" > ");
+    if (JdbcTypesUtils.isInteger(point.getJdbcType())) {
+      sb.append(point.getMaxValue());
+    } else if (JdbcTypesUtils.isDateTime(point.getJdbcType())) {
+      if (Types.TIMESTAMP == point.getJdbcType() || Types.TIMESTAMP_WITH_TIMEZONE == point.getJdbcType()) {
+        sb.append(String.format("TO_TIMESTAMP('%s', '%s')", point.getMaxValue(), TIMESTAMP_PATTERN));
+      } else {
+        sb.append(String.format("TO_DATE('%s', '%s')", point.getMaxValue(), DATE_PATTERN));
+      }
+    }
+    return sb.toString();
+  }
+}

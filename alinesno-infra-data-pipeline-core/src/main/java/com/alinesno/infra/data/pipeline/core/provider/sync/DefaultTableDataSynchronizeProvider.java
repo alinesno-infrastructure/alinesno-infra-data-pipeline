@@ -12,20 +12,15 @@ package com.alinesno.infra.data.pipeline.core.provider.sync;
 import cn.hutool.json.JSONUtil;
 import com.alinesno.infra.data.pipeline.core.provider.AbstractCommonProvider;
 import com.alinesno.infra.data.pipeline.core.provider.ProductFactoryProvider;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 数据同步抽象基类

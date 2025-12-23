@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
-//import Layout from '@/layout/SaaSLayout'
-import Layout from '@/layout'
+import Layout from '@/layout/SaaSLayout'
+// import Layout from '@/layout'
 
 /**
  * Note: 路由配置项
@@ -32,11 +32,11 @@ export const constantRoutes = [
     component: () => import('@/views/login'),
     hidden: true
   },
-   {
-     path: '/sso/login',
-     component: () => import('@/views/loginSso'),
-     hidden: true
-   },
+  {
+    path: '/sso/login',
+    component: () => import('@/views/loginSso'),
+    hidden: true
+  },
   {
     path: "/:pathMatch(.*)*",
     component: () => import('@/views/error/404'),
@@ -50,8 +50,7 @@ export const constantRoutes = [
   {
     path: '',
     component: Layout,
-    redirect: '/index',
-    hidden: true,
+    redirect: '/data/dashboard',
     children: [
       {
         path: '/index',
@@ -59,53 +58,160 @@ export const constantRoutes = [
         name: '/index',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       },
-
-      // {
-      //   path: '/dashboard/smartService',
-      //   component: () => import('@/views/smartService'),
-      //   name: '/dashboard/smartService',
-      //   meta: { title: '智能客服', icon: 'dashboard', affix: true }
-      // },
-      // {
-      //   path: '/dashboard/serviceList',
-      //   component: () => import('@/views/serviceList'),
-      //   name: '/dashboard/serviceList',
-      //   meta: { title: '服务列表', icon: 'dashboard', affix: true }
-      // },
+      // 仪表盘（菜单主入口）
+      {
+        path: '/data/dashboard',
+        component: () => import('@/views/index'),
+        name: 'DataMigrationDashboard',
+        meta: { title: '仪表盘', icon: 'square-poll-vertical', affix: true }
+      },
+      // 数据源管理（菜单主入口）
       {
         path: '/dashboard/suportTechnique',
         component: () => import('@/views/suportTechnique'),
         name: '/dashboard/suportTechnique',
         meta: { title: '支持管理', icon: 'dashboard', affix: true }
       },
+      // 帮助中心（菜单主入口）
       {
         path: '/dashboard/learnPanel',
         component: () => import('@/views/learnPanel'),
         name: '/dashboard/learnPanel',
         meta: { title: '学习手册', icon: 'dashboard', affix: true }
       },
+      // 任务管理（菜单路径）
+      {
+        path: '/data/pipeline/task',
+        component: () => import('@/views/data/pipeline/task/index'), // 补充任务管理主页面
+        name: 'DataMigrationPipelineTask',
+        meta: { title: '任务管理', icon: 'tasks', affix: true }
+      },
+      {
+        path: '/data/pipeline/task/create',
+        component: () => import('@/views/data/pipeline/task/create'), // 补充任务管理主页面
+        name: 'DataMigrationPipelineTaskCreate',
+        meta: { title: '任务管理', icon: 'tasks', affix: true }
+      },
+      {
+        path: '/data/pipeline/task/update',
+        component: () => import('@/views/data/pipeline/task/update'), // 补充任务管理主页面
+        name: 'DataMigrationPipelineTaskUpdate',
+        meta: { title: '任务管理', icon: 'tasks', affix: true }
+      },
+      {
+        path: '/data/pipeline/task/detail',
+        component: () => import('@/views/data/pipeline/task/detail'), // 补充任务管理主页面
+        name: 'DataMigrationPipelineTaskDetail',
+        meta: { title: '任务管理', icon: 'tasks', affix: true }
+      },
+      // 数据源（菜单路径）
+      {
+        path: '/data/pipeline/source',
+        component: () => import('@/views/data/pipeline/source/index'), // 补充数据源主页面
+        name: 'DataMigrationSourceManagement',
+        meta: { title: '数据源', icon: 'server', affix: true }
+      },
+      {
+        path: '/data/pipeline/source/select',
+        component: () => import('@/views/data/pipeline/source/select'), // 补充数据源主页面
+        name: 'DataMigrationSourceManagementSelect',
+        meta: { title: '数据源', icon: 'server', affix: true }
+      },
+      {
+        path: '/data/pipeline/source/driver',
+        component: () => import('@/views/data/pipeline/source/driver'), // 补充数据源主页面
+        name: 'DataMigrationSourceManagementDriver',
+        meta: { title: '驱动配置', icon: 'server', affix: true }
+      },
+      {
+        path: '/data/pipeline/source/detail',
+        component: () => import('@/views/data/pipeline/source/detail'), // 补充数据源主页面
+        name: 'DataMigrationSourceManagementDetail',
+        meta: { title: '数据源', icon: 'server', affix: true }
+      },
+      {
+        path: '/data/pipeline/source/update',
+        component: () => import('@/views/data/pipeline/source/update'), // 补充数据源主页面
+        name: 'DataMigrationSourceManagementUpdate',
+        meta: { title: '数据源', icon: 'server', affix: true }
+      },
+      {
+        path: '/data/pipeline/source/create',
+        component: () => import('@/views/data/pipeline/source/create'), // 补充数据源主页面
+        name: 'DataMigrationSourceManagementCreate',
+        meta: { title: '数据源', icon: 'server', affix: true }
+      },
+      // 数据导航（菜单路径）
+      {
+        path: '/data/pipeline/navigation',
+        component: () => import('@/views/data/pipeline/navigation/index'), // 补充数据导航主页面
+        name: 'DataMigrationPipelineNavigation',
+        meta: { title: '数据导航', icon: 'network-wired', affix: true }
+      },
+      // 监控调度（菜单路径）
+      {
+        path: '/data/pipeline/schedule',
+        component: () => import('@/views/data/pipeline/schedule/index'), // 补充监控调度主页面
+        name: 'DataMigrationPipelineSchedule',
+        meta: { title: '监控调度', icon: 'calendar-days', affix: true }
+      },
+      // 操作记录（菜单路径）
+      {
+        path: '/data/pipeline/record',
+        component: () => import('@/views/data/pipeline/record/index'), // 补充操作记录主页面
+        name: 'DataMigrationPipelineOperationLog',
+        meta: { title: '操作记录', icon: 'file-lines', affix: true }
+      },
+      // 监控记录（底部菜单路径）
+      {
+        path: '/data/pipeline/monitor',
+        component: () => import('@/views/data/pipeline/monitor/index'), // 补充监控记录主页面
+        name: 'DataMigrationPipelineMonitor',
+        meta: { title: '监控记录', icon: 'magnifying-glass-chart', affix: true }
+      },
+      // 驱动配置（底部菜单路径）
+      {
+        path: '/data/pipeline/config',
+        component: () => import('@/views/data/pipeline/config/index'), // 补充驱动配置主页面
+        name: 'DataMigrationPipelineConfig',
+        meta: { title: '驱动配置', icon: 'gears', affix: true }
+      },
 
-      // ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      // 原有隐藏路由（任务创建相关）
+//      {
+//        path: '/data/pipeline/task/create',
+//        name: 'DataMigrationPipelineTaskCreate',
+//        hidden: true,
+//        component: () => import('@/views/data/pipeline/task/create'),
+//        meta: { title: '创建抽取任务配置', icon: 'tasks', affix: true }
+//      },
+//      {
+//        path: '/data/pipeline/task/createDatasource',
+//        name: 'DataMigrationPipelineTaskCreateDatasource',
+//        hidden: true,
+//        component: () => import('@/views/data/pipeline/task/createDatasource'),
+//        meta: { title: '创建抽取任务配置', icon: 'tasks', affix: true }
+//      },
+//      {
+//        path: '/data/pipeline/readerSource/addSource',
+//        name: 'DataMigrationPipelineReaderSourceAdd',
+//        hidden: true,
+//        component: () => import('@/views/data/pipeline/readerSource/addSource'),
+//        meta: { title: '创建读取源', icon: 'server', affix: true }
+//      },
+
+      // 原有业务模块
       {
-        path: '/task/data/pipeline/task/create',
-        name: 'task/data/pipeline/task/create',
-        hidden: true,
-        component: () => import('@/views/data/pipeline/task/create'),
-        meta: { title: '创建抽取任务配置', icon: 'dashboard', affix: true }
+        path: '/data/support',
+        component: () => import('@/views/suportTechnique'),
+        name: 'DataMigrationSupport',
+        meta: { title: '支持管理', icon: 'dashboard', affix: true }
       },
       {
-        path: '/task/data/pipeline/task/createDatasource',
-        name: 'task/data/pipeline/task/createDatasource',
-        hidden: true,
-        component: () => import('@/views/data/pipeline/task/createDatasource'),
-        meta: { title: '创建抽取任务配置', icon: 'dashboard', affix: true }
-      },
-      {
-        path: '/task/data/pipeline/readerSource/addSource',
-        name: '/task/data/pipeline/readerSource/addSource',
-        hidden: true,
-        component: () => import('@/views/data/pipeline/readerSource/addSource'),
-        meta: { title: '创建读取源', icon: 'dashboard', affix: true }
+        path: '/data/guide',
+        component: () => import('@/views/learnPanel'),
+        name: 'DataMigrationGuide',
+        meta: { title: '学习手册', icon: 'dashboard', affix: true }
       }
     ]
   },

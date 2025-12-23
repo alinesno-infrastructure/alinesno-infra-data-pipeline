@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.dromara.dbswitch.product.register.ProductRegisterAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=register.com.alinesno.infra.data.pipeline.dialect.ProductRegisterAutoConfiguration
